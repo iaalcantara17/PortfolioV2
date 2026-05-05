@@ -58,7 +58,7 @@ export default function HumanIsrael({ isVisible }) {
           {/* Header */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span className="eyebrow">07 / 08 — Outside the Screen</span>
+              <span className="eyebrow">06 / 07 — Outside the Screen</span>
               <span
                 className="eyebrow"
                 style={{ color: '#bbbbbb', fontSize: 9 }}

@@ -217,7 +217,6 @@ export default function Hero({ isVisible }) {
               </div>
               <span className="eyebrow" style={{ color: '#D4AF37' }}>Scroll</span>
             </div>
-            <span className="eyebrow" style={{ color: '#bbbbbb' }}>01 / 07</span>
           </div>
         </div>
 

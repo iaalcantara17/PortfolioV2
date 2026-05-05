@@ -3,6 +3,7 @@ import Cursor from './components/Cursor'
 import ScrollProgress from './components/ScrollProgress'
 import Nav from './components/Nav'
 import SectionIndicator from './components/SectionIndicator'
+import SectionCounter from './components/SectionCounter'
 
 import Hero from './components/sections/Hero'
 import About from './components/sections/About'
@@ -53,6 +54,7 @@ export default function App() {
       <ScrollProgress containerRef={containerRef} />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
       <SectionIndicator current={currentSection} onNavigate={navigateTo} />
+      <SectionCounter current={currentSection} />
 
       <div ref={containerRef} className="snap-container">
         {SECTION_COMPONENTS.map((Component, i) => (
