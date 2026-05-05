@@ -199,7 +199,7 @@ export default function About({ isVisible }) {
                     marginBottom: 4,
                   }}
                 >
-                  {item.num}<span style={{ color: '#D4AF37' }}>{item.suffix}</span>
+                  {item.num}<span style={{ color: '#D4AF37', fontWeight: 600 }}>{item.suffix}</span>
                 </div>
                 <div className="eyebrow">{item.label}</div>
               </div>

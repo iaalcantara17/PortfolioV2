@@ -170,14 +170,14 @@ export default function Experience({ isVisible }) {
                 lineHeight: 1,
               }}
             >
-              4<span style={{ color: '#D4AF37' }}>+</span>
+              4<span style={{ color: '#D4AF37', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Years of experience</div>
           </div>
         </div>
 
         {/* Right column */}
-        <div style={{ overflowY: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
           {roles.map((role, i) => {
             const tc = tagColors[role.tagColor]
             return (
@@ -185,11 +185,12 @@ export default function Experience({ isVisible }) {
                 key={role.title}
                 className="exp-card"
                 style={{
-                  padding: '24px 48px',
+                  flex: 1,
+                  padding: '0 48px',
                   borderBottom: i < roles.length - 1 ? '0.5px solid #d4cfc5' : 'none',
                   display: 'flex',
                   gap: 16,
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                 }}
               >
                 {/* Fix 6 — all left dots are neutral #d4cfc5, purely decorative */}

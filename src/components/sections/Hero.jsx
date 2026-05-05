@@ -10,10 +10,10 @@ const SCRAMBLE_TICK = 40
 const NAME_LINE1 = 'Israel'.split('').map(ch => ({ ch }))
 const NAME_LINE2 = [
   { ch: 'A' }, { ch: 'l' }, { ch: 'c' },
-  { ch: 'á', style: { color: '#7F77DD' } },
+  { ch: 'á' },
   { ch: 'n' },
   { ch: ' ', noScramble: true },
-  { ch: '—', style: { color: '#7F77DD', fontSize: '0.8em' } },
+  { ch: '—', style: { color: '#7F77DD', fontSize: '0.8em', fontWeight: '700' } },
 ]
 const NAME_LINE3 = 'tara.'.split('').map(ch => ({ ch }))
 
@@ -265,7 +265,7 @@ export default function Hero({ isVisible }) {
           {/* Stats with gold suffixes */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
             {[
-              { num: '12', suffix: 'w', label: 'AWS Internship' },
+              { num: '12', suffix: 'W', label: 'AWS Internship' },
               { num: '6', suffix: '+', label: 'Projects shipped' },
             ].map((item, i) => (
               <div
@@ -285,7 +285,7 @@ export default function Hero({ isVisible }) {
                     marginBottom: 4,
                   }}
                 >
-                  {item.num}<span style={{ color: '#D4AF37' }}>{item.suffix}</span>
+                  {item.num}<span style={{ color: '#D4AF37', fontWeight: 600 }}>{item.suffix}</span>
                 </div>
                 <div className="eyebrow">{item.label}</div>
               </div>

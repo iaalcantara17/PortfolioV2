@@ -138,22 +138,26 @@ export default function Skills({ isVisible }) {
                 lineHeight: 1,
               }}
             >
-              25<span style={{ color: '#D4AF37' }}>+</span>
+              25<span style={{ color: '#D4AF37', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Technologies</div>
           </div>
         </div>
 
         {/* Right column */}
-        <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {categories.map((cat, ci) => (
             <div
               key={cat.name}
               className="skill-row"
               style={{
-                padding: '24px 48px',
+                flex: 1,
+                padding: '0 48px',
                 borderBottom: ci < categories.length - 1 ? '0.5px solid #d4cfc5' : 'none',
-                flex: ci < 2 ? '1.2' : '0.8',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
@@ -169,6 +173,7 @@ export default function Skills({ isVisible }) {
               </div>
             </div>
           ))}
+          </div>
 
           {/* Legend */}
           <div
@@ -178,6 +183,7 @@ export default function Skills({ isVisible }) {
               display: 'flex',
               gap: 24,
               alignItems: 'center',
+              flexShrink: 0,
             }}
           >
             {[
