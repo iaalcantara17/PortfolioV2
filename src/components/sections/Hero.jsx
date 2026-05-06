@@ -235,30 +235,19 @@ export default function Hero({ isVisible }) {
           <div
             className="photo-placeholder"
             style={{
-              flex: 1,
-              maxHeight: 360,
-              aspectRatio: '3/4',
+              width: '100%',
+              height: 380,
               borderRadius: 4,
               border: '0.5px solid #d4cfc5',
               position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            <span>Portrait Photo</span>
-            <div
-              className="eyebrow"
-              style={{
-                position: 'absolute',
-                bottom: 10,
-                left: 10,
-                background: '#f5f2ec',
-                padding: '3px 8px',
-                borderRadius: 20,
-                border: '0.5px solid #d4cfc5',
-                color: '#666',
-              }}
-            >
-              Photo Placeholder
-            </div>
+            <img
+              src="/photos/portrait.jpg"
+              alt="Israel Alcántara"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }}
+            />
           </div>
 
           {/* Stats with gold suffixes */}

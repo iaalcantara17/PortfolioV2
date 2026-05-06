@@ -23,7 +23,7 @@ export default function HumanIsrael({ isVisible }) {
     gsap.set(section.querySelectorAll('.gallery-cell'), { opacity: 0, scale: 0.97 })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — animate in once, never reverse
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -33,9 +33,6 @@ export default function HumanIsrael({ isVisible }) {
       tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
         .to(section.querySelectorAll('.gallery-cell'), { opacity: 1, scale: 1, stagger: 0.08, duration: 0.6, ease: 'power2.out' }, '-=0.4')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 
@@ -57,8 +54,7 @@ export default function HumanIsrael({ isVisible }) {
         <div style={{ padding: '40px 48px', borderRight: '0.5px solid #d4cfc5', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
           {/* Header */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span className="eyebrow">06 / 07 — Outside the Screen</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 4 }}>
               <span
                 className="eyebrow"
                 style={{ color: '#bbbbbb', fontSize: 9 }}
@@ -89,57 +85,79 @@ export default function HumanIsrael({ isVisible }) {
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gridTemplateRows: '1fr 1fr 1fr',
-              gap: 8,
-              flex: 1,
+              gap: 12,
+              alignItems: 'start',
             }}
           >
-            {/* Portrait — tall */}
+            {/* Streetwear — tall left */}
             <div
               className="gallery-cell photo-placeholder"
               style={{
-                gridRow: 'span 2',
+                width: '100%',
+                height: 580,
                 borderRadius: 4,
                 border: '0.5px solid #d4cfc5',
                 position: 'relative',
+                overflow: 'hidden',
                 cursor: 'none',
               }}
             >
-              <span style={{ fontSize: 10 }}>Portrait</span>
+              <img
+                src="/photos/streetwear.jpg"
+                alt="Israel — streetwear"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }}
+              />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
                 Streetwear
               </div>
             </div>
 
-            {/* City */}
-            <div
-              className="gallery-cell photo-placeholder"
-              style={{
-                borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
-                position: 'relative',
-                cursor: 'none',
-              }}
-            >
-              <span style={{ fontSize: 10 }}>City</span>
-              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
-                NYC
+            {/* City + Nature wrapper */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {/* City */}
+              <div
+                className="gallery-cell photo-placeholder"
+                style={{
+                  width: '100%',
+                  height: 284,
+                  borderRadius: 4,
+                  border: '0.5px solid #d4cfc5',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: 'none',
+                }}
+              >
+                <img
+                  src="/photos/city.jpg"
+                  alt="Israel — city"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
+                />
+                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+                  NYC
+                </div>
               </div>
-            </div>
 
-            {/* Nature */}
-            <div
-              className="gallery-cell photo-placeholder"
-              style={{
-                borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
-                position: 'relative',
-                cursor: 'none',
-              }}
-            >
-              <span style={{ fontSize: 10 }}>Nature</span>
-              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
-                Outdoors
+              {/* Nature */}
+              <div
+                className="gallery-cell photo-placeholder"
+                style={{
+                  width: '100%',
+                  height: 284,
+                  borderRadius: 4,
+                  border: '0.5px solid #d4cfc5',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: 'none',
+                }}
+              >
+                <img
+                  src="/photos/nature.jpg"
+                  alt="Israel — nature"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
+                />
+                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+                  Outdoors
+                </div>
               </div>
             </div>
 
@@ -148,13 +166,20 @@ export default function HumanIsrael({ isVisible }) {
               className="gallery-cell photo-placeholder"
               style={{
                 gridColumn: 'span 2',
+                width: '100%',
+                height: 420,
                 borderRadius: 4,
                 border: '0.5px solid #d4cfc5',
                 position: 'relative',
+                overflow: 'hidden',
                 cursor: 'none',
               }}
             >
-              <span style={{ fontSize: 10 }}>Friends</span>
+              <img
+                src="/photos/friends.jpg"
+                alt="Israel — friends"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%', display: 'block' }}
+              />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
                 People
               </div>

@@ -20,7 +20,7 @@ export default function Contact({ isVisible }) {
     gsap.set(section.querySelectorAll('.link-row'), { x: 30, opacity: 0 })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — animate in once, never reverse
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -31,9 +31,6 @@ export default function Contact({ isVisible }) {
         .to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.6 }, '-=0.3')
         .to(section.querySelectorAll('.link-row'), { x: 0, opacity: 1, stagger: 0.1, duration: 0.6 }, '-=0.2')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 

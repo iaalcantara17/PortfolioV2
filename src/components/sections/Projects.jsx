@@ -16,7 +16,7 @@ export default function Projects({ isVisible }) {
     gsap.set(section.querySelectorAll('.grid-card'), { y: 30, opacity: 0, rotateX: 5 })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — animate in once, never reverse
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -27,9 +27,6 @@ export default function Projects({ isVisible }) {
         .to(section.querySelector('.featured-card'), { opacity: 1, duration: 0.8 }, '-=0.4')
         .to(section.querySelectorAll('.grid-card'), { y: 0, opacity: 1, rotateX: 0, stagger: 0.12, duration: 0.7 }, '-=0.3')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 

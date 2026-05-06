@@ -97,7 +97,7 @@ export default function Experience({ isVisible }) {
     gsap.set(section.querySelectorAll('.timeline-dot'), { scale: 0 })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — animate in once, never reverse
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -108,9 +108,6 @@ export default function Experience({ isVisible }) {
         .to(section.querySelectorAll('.exp-card'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.4')
         .to(section.querySelectorAll('.timeline-dot'), { scale: 1, stagger: 0.08, duration: 0.3, ease: 'back.out(2)' }, '-=0.3')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 

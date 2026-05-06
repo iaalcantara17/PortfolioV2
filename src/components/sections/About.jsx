@@ -23,6 +23,7 @@ const stats = [
 
 export default function About({ isVisible }) {
   const sectionRef = useRef(null)
+  const onceTlRef = useRef(null)
   const tlRef = useRef(null)
 
   // Fix 1 — set initial hidden state on mount
@@ -30,18 +31,25 @@ export default function About({ isVisible }) {
     const section = sectionRef.current
     if (!section) return
     gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
+    gsap.set(section.querySelectorAll('.pull-quote'), { y: 30, opacity: 0 })
     gsap.set(section.querySelectorAll('.body-para'), { y: 20, opacity: 0 })
     gsap.set(section.querySelectorAll('.interest-pill'), { y: 12, opacity: 0, scale: 0.9 })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — headings animate once; pull quote, paragraphs, and pills reverse on scroll back up
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
+    if (isVisible && !onceTlRef.current) {
+      const onceTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      onceTl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.06, duration: 0.7 })
+      onceTlRef.current = onceTl
+    }
+
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.06, duration: 0.7 })
+      tl.to(section.querySelectorAll('.pull-quote'), { y: 0, opacity: 1, duration: 0.7 })
         .to(section.querySelectorAll('.body-para'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.3')
         .to(section.querySelectorAll('.interest-pill'), { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 }, '-=0.2')
       tlRef.current = tl
@@ -79,7 +87,7 @@ export default function About({ isVisible }) {
           <span className="eyebrow" data-animate>Who I Am</span>
 
           {/* Pull quote */}
-          <div className="pull-quote" data-animate>
+          <div className="pull-quote">
             I'm not just someone who builds things.
             <br />
             I'm someone who{' '}
@@ -134,15 +142,20 @@ export default function About({ isVisible }) {
           <div
             className="photo-placeholder tilt-card"
             style={{
-              flex: 1,
-              maxHeight: 340,
+              width: '100%',
+              height: 380,
               borderRadius: 4,
               border: '0.5px solid #d4cfc5',
               position: 'relative',
+              overflow: 'hidden',
               cursor: 'none',
             }}
           >
-            <span>Main Portrait Photo</span>
+            <img
+              src="/photos/portrait.jpg"
+              alt="Israel Alcántara"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
+            />
             <div
               className="eyebrow"
               style={{
@@ -162,21 +175,60 @@ export default function About({ isVisible }) {
 
           {/* Three thumbnails */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-            {['City', 'Nature', 'Friends'].map((label) => (
-              <div
-                key={label}
-                className="photo-placeholder tilt-card"
-                style={{
-                  aspectRatio: '1/1',
-                  borderRadius: 4,
-                  border: '0.5px solid #d4cfc5',
-                  position: 'relative',
-                  cursor: 'none',
-                }}
-              >
-                <span style={{ fontSize: 10 }}>{label}</span>
-              </div>
-            ))}
+            <div
+              className="photo-placeholder tilt-card"
+              style={{
+                width: '100%',
+                height: 160,
+                borderRadius: 4,
+                border: '0.5px solid #d4cfc5',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'none',
+              }}
+            >
+              <img
+                src="/photos/city.jpg"
+                alt="City"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
+              />
+            </div>
+            <div
+              className="photo-placeholder tilt-card"
+              style={{
+                width: '100%',
+                height: 160,
+                borderRadius: 4,
+                border: '0.5px solid #d4cfc5',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'none',
+              }}
+            >
+              <img
+                src="/photos/nature.jpg"
+                alt="Nature"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
+              />
+            </div>
+            <div
+              className="photo-placeholder tilt-card"
+              style={{
+                width: '100%',
+                height: 160,
+                borderRadius: 4,
+                border: '0.5px solid #d4cfc5',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'none',
+              }}
+            >
+              <img
+                src="/photos/friends.jpg"
+                alt="Friends"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 75%', display: 'block' }}
+              />
+            </div>
           </div>
 
           {/* Fix 9 — Stats with gold suffixes */}

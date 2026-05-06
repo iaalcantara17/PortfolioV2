@@ -62,7 +62,7 @@ export default function Skills({ isVisible }) {
     gsap.set(section.querySelectorAll('.category-line'), { scaleX: 0, transformOrigin: 'left center' })
   }, [])
 
-  // Fix 2 — play/reverse
+  // Fix 2 — animate in once, never reverse
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -73,9 +73,6 @@ export default function Skills({ isVisible }) {
         .to(section.querySelectorAll('.category-line'), { scaleX: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out' }, '-=0.4')
         .to(section.querySelectorAll('.skill-pill'), { y: 0, opacity: 1, scale: 1, stagger: 0.025, duration: 0.35, ease: 'power2.out' }, '-=0.3')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 
