@@ -95,7 +95,7 @@ export default function About({ isVisible }) {
           </div>
 
           {/* Body paragraphs */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="body-para-list" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {bodyParagraphs.map((p, i) => (
               <p
                 key={i}
@@ -131,6 +131,7 @@ export default function About({ isVisible }) {
 
         {/* Right column */}
         <div
+          className="about-right"
           style={{
             padding: '48px 48px 40px',
             display: 'flex',
@@ -144,6 +145,7 @@ export default function About({ isVisible }) {
             style={{
               width: '100%',
               height: 380,
+              maxHeight: 380,
               borderRadius: 4,
               border: '0.5px solid #d4cfc5',
               position: 'relative',
@@ -152,9 +154,9 @@ export default function About({ isVisible }) {
             }}
           >
             <img
-              src="/photos/portrait.jpg"
+              src="/photos/streetwear.jpg"
               alt="Israel Alcántara"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />
             <div
               className="eyebrow"
@@ -170,64 +172,6 @@ export default function About({ isVisible }) {
               }}
             >
               Canon SL3
-            </div>
-          </div>
-
-          {/* Three thumbnails */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-            <div
-              className="photo-placeholder tilt-card"
-              style={{
-                width: '100%',
-                height: 160,
-                borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
-                position: 'relative',
-                overflow: 'hidden',
-                cursor: 'none',
-              }}
-            >
-              <img
-                src="/photos/city.jpg"
-                alt="City"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
-              />
-            </div>
-            <div
-              className="photo-placeholder tilt-card"
-              style={{
-                width: '100%',
-                height: 160,
-                borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
-                position: 'relative',
-                overflow: 'hidden',
-                cursor: 'none',
-              }}
-            >
-              <img
-                src="/photos/nature.jpg"
-                alt="Nature"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
-              />
-            </div>
-            <div
-              className="photo-placeholder tilt-card"
-              style={{
-                width: '100%',
-                height: 160,
-                borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
-                position: 'relative',
-                overflow: 'hidden',
-                cursor: 'none',
-              }}
-            >
-              <img
-                src="/photos/friends.jpg"
-                alt="Friends"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 75%', display: 'block' }}
-              />
             </div>
           </div>
 

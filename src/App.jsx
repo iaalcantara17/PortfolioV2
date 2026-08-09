@@ -40,7 +40,10 @@ export default function App() {
           }
         })
       },
-      { root: container, threshold: 0.5 }
+      // 0.15 (not 0.5) — on mobile, stacked sections can grow taller than the
+      // viewport, so a 50% ratio is unreachable and entrance animations would
+      // never fire (see About/Experience/Projects at mobile widths).
+      { root: container, threshold: 0.15 }
     )
 
     sectionRefs.current.forEach((el) => { if (el) observer.observe(el) })
@@ -63,6 +66,7 @@ export default function App() {
             key={SECTION_KEYS[i]}
             ref={setRef(i)}
             data-section-index={i}
+            className="section-wrapper"
             style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
           >
             <Component isVisible={currentSection === i} />

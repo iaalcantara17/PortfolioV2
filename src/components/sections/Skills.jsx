@@ -92,6 +92,7 @@ export default function Skills({ isVisible }) {
       >
         {/* Left column */}
         <div
+          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid #d4cfc5',
@@ -103,6 +104,7 @@ export default function Skills({ isVisible }) {
           <div>
             <div
               data-animate
+              className="section-intro-title"
               style={{
                 fontFamily: "'DM Serif Display', Georgia, serif",
                 fontSize: 'clamp(28px, 3vw, 36px)',
@@ -125,7 +127,7 @@ export default function Skills({ isVisible }) {
           </div>
 
           {/* Stat — 25+ already has gold suffix */}
-          <div data-animate>
+          <div data-animate className="section-stat">
             <div
               style={{
                 fontFamily: "'DM Serif Display', Georgia, serif",
@@ -142,8 +144,8 @@ export default function Skills({ isVisible }) {
         </div>
 
         {/* Right column */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="section-right-col" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="skills-categories" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {categories.map((cat, ci) => (
             <div
               key={cat.name}
@@ -157,7 +159,7 @@ export default function Skills({ isVisible }) {
                 justifyContent: 'center',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+              <div className="skill-cat-header" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                 <span className="eyebrow category-line" style={{ display: 'block' }}>{cat.name}</span>
                 <div className="category-line" style={{ flex: 1, height: '0.5px', background: '#d4cfc5' }} />
               </div>
@@ -174,6 +176,7 @@ export default function Skills({ isVisible }) {
 
           {/* Legend */}
           <div
+            className="skills-legend"
             style={{
               padding: '16px 48px',
               borderTop: '0.5px solid #d4cfc5',

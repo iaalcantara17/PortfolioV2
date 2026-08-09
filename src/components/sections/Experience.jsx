@@ -127,6 +127,7 @@ export default function Experience({ isVisible }) {
       >
         {/* Left column */}
         <div
+          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid #d4cfc5',
@@ -138,6 +139,7 @@ export default function Experience({ isVisible }) {
           <div>
             <div
               data-animate
+              className="section-intro-title"
               style={{
                 fontFamily: "'DM Serif Display', Georgia, serif",
                 fontSize: 'clamp(26px, 2.8vw, 36px)',
@@ -157,7 +159,7 @@ export default function Experience({ isVisible }) {
               Not just what I built, but where I was, what I did, and how I carried myself doing it.
             </p>
           </div>
-          <div data-animate>
+          <div data-animate className="section-stat">
             <div
               style={{
                 fontFamily: "'DM Serif Display', Georgia, serif",
@@ -174,7 +176,7 @@ export default function Experience({ isVisible }) {
         </div>
 
         {/* Right column */}
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+        <div className="section-right-col exp-right-col" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
           {roles.map((role, i) => {
             const tc = tagColors[role.tagColor]
             return (
@@ -200,16 +202,16 @@ export default function Experience({ isVisible }) {
 
                 <div style={{ flex: 1 }}>
                   {/* Header row */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
+                  <div className="exp-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 500, color: '#0d0d0d', lineHeight: 1.3, marginBottom: 2 }}>
+                      <div className="exp-title" style={{ fontSize: 13, fontWeight: 500, color: '#0d0d0d', lineHeight: 1.3, marginBottom: 2 }}>
                         {role.title}
                       </div>
                       <div className="eyebrow" style={{ color: '#666' }}>
                         {role.company}{role.location ? `, ${role.location}` : ''}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+                    <div className="exp-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
                       <span
                         style={{
                           display: 'inline-flex',
@@ -231,7 +233,7 @@ export default function Experience({ isVisible }) {
                       <span className="eyebrow" style={{ color: '#bbbbbb' }}>{role.period}</span>
                     </div>
                   </div>
-                  <p style={{ color: '#666', fontSize: 12, lineHeight: 1.85, marginTop: 8 }}>{role.desc}</p>
+                  <p className="exp-desc" style={{ color: '#666', fontSize: 12, lineHeight: 1.85, marginTop: 8 }}>{role.desc}</p>
                 </div>
               </div>
             )
@@ -239,6 +241,7 @@ export default function Experience({ isVisible }) {
 
           {/* Legend */}
           <div
+            className="exp-legend"
             style={{
               padding: '14px 48px',
               borderTop: '0.5px solid #d4cfc5',

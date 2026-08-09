@@ -165,9 +165,9 @@ export default function Hero({ isVisible }) {
       style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
     >
       <div
+        className="hero-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
           height: '100%',
           paddingTop: 56,
         }}
@@ -209,7 +209,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Bottom — scroll indicator + counter, fades in after full animation */}
-          <div ref={bottomRef}>
+          <div ref={bottomRef} className="hero-bottom">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                 <div style={{ width: 1, height: 32, background: '#D4AF37' }} />
@@ -225,9 +225,10 @@ export default function Hero({ isVisible }) {
           ref={rightColRef}
           className="hero-right"
           style={{
-            padding: '60px 48px 48px',
+            padding: '60px 0 48px',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
             gap: 24,
           }}
         >
@@ -236,7 +237,8 @@ export default function Hero({ isVisible }) {
             className="photo-placeholder"
             style={{
               width: '100%',
-              height: 380,
+              maxWidth: 420,
+              aspectRatio: '1 / 1',
               borderRadius: 4,
               border: '0.5px solid #d4cfc5',
               position: 'relative',
@@ -251,7 +253,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Stats with gold suffixes */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
+          <div style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
             {[
               { num: '12', suffix: 'W', label: 'AWS Internship' },
               { num: '6', suffix: '+', label: 'Projects shipped' },
@@ -281,7 +283,9 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Spotify */}
-          <SpotifyWidget />
+          <div style={{ width: '100%', maxWidth: 420 }}>
+            <SpotifyWidget />
+          </div>
         </div>
       </div>
 
