@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-const TOTAL = 7
+const TOTAL = 8
 const TICK_MS = 40
 const SCRAMBLE_MS = 200
 
@@ -111,7 +111,7 @@ export default function SectionCounter({ containerRef }) {
           display: 'block',
         }}
       >
-        <span ref={numRef}>01</span> / 07
+        <span ref={numRef}>01</span> / 08
       </span>
     </div>
   )

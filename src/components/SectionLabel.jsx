@@ -22,7 +22,7 @@ export default function SectionLabel({ index }) {
           display: 'block',
         }}
       >
-        {num} / 07
+        {num} / 08
       </span>
     </div>
   )

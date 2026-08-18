@@ -16,7 +16,7 @@ export default function Projects({ isVisible }) {
     gsap.set(section.querySelectorAll('.grid-card'), { y: 30, opacity: 0, rotateX: 5 })
   }, [])
 
-  // Fix 2 — animate in once, never reverse
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -89,7 +89,7 @@ export default function Projects({ isVisible }) {
               built<span style={{ color: '#7F77DD' }}>.</span>
             </div>
             <p data-animate style={{ color: '#666', fontSize: 12, lineHeight: 1.85 }}>
-              Projects I can speak to in full, start to finish, in any interview.
+              Projects I can speak to in full, start to finish.
             </p>
           </div>
           <div data-animate>

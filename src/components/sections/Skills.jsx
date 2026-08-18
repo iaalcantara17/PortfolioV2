@@ -62,7 +62,7 @@ export default function Skills({ isVisible }) {
     gsap.set(section.querySelectorAll('.category-line'), { scaleX: 0, transformOrigin: 'left center' })
   }, [])
 
-  // Fix 2 — animate in once, never reverse
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return

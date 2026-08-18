@@ -21,8 +21,8 @@ const roles = [
     title: 'Community Assistant',
     company: 'Office of Residential Life, NJIT',
     location: 'Newark, NJ',
-    period: 'Jun 2025 — Present',
-    active: true,
+    period: 'Jun 2025 — May 2026',
+    active: false,
     tag: 'Leadership',
     tagColor: 'gold',
     desc: (
@@ -50,8 +50,8 @@ const roles = [
     title: 'Delivery and Lab Technician',
     company: 'Media and Technology Support Services, NJIT',
     location: '',
-    period: 'Oct 2022 — Present',
-    active: true,
+    period: 'Oct 2022 — May 2026',
+    active: false,
     tag: 'Operations',
     tagColor: 'green',
     desc: (
@@ -97,7 +97,7 @@ export default function Experience({ isVisible }) {
     gsap.set(section.querySelectorAll('.timeline-dot'), { scale: 0 })
   }, [])
 
-  // Fix 2 — animate in once, never reverse
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -192,12 +192,8 @@ export default function Experience({ isVisible }) {
                   alignItems: 'center',
                 }}
               >
-                {/* Fix 6 — all left dots are neutral #d4cfc5, purely decorative */}
                 <div style={{ paddingTop: 5 }}>
-                  <div
-                    className="timeline-dot"
-                    style={{ background: '#d4cfc5' }}
-                  />
+                  <div className={`timeline-dot${role.active ? ' active' : ''}`} />
                 </div>
 
                 <div style={{ flex: 1 }}>

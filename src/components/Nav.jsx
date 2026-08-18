@@ -5,7 +5,8 @@ const links = [
   { label: 'Experience', section: 3 },
   { label: 'Projects', section: 4 },
   { label: 'Life', section: 5 },
-  { label: 'Contact', section: 6 },
+  { label: 'Gallery', section: 6 },
+  { label: 'Contact', section: 7 },
 ]
 
 export default function Nav({ containerRef, onNavigate }) {

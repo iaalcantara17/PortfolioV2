@@ -27,10 +27,35 @@ const SUBTEXT_CHARS = [
 
 const SIEMPRE_CHARS = 'Siempre aprendiendo.'.split('').map(ch => ({ ch }))
 
-function scheduleChars(charDefs, containerRef, startOffset, timers, intervals) {
+function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
     const startAt = startOffset + i * CHAR_STAGGER
+    const state = { span: null, iv: null, resolveT: null, done: false }
+
+    const finishNow = () => {
+      if (state.done) return
+      state.done = true
+      if (state.iv) clearInterval(state.iv)
+      if (state.resolveT) clearTimeout(state.resolveT)
+      const container = containerRef.current
+      if (charDef.isBR) {
+        if (!state.span && container) container.appendChild(document.createElement('br'))
+        state.span = true
+        return
+      }
+      if (!state.span) {
+        if (!container) return
+        const span = document.createElement('span')
+        if (charDef.style) Object.assign(span.style, charDef.style)
+        span.textContent = charDef.ch
+        container.appendChild(span)
+        state.span = span
+      } else {
+        state.span.textContent = charDef.ch
+      }
+    }
+    resolvers.push(finishNow)
 
     const t = setTimeout(() => {
       const container = containerRef.current
@@ -38,15 +63,19 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals) {
 
       if (charDef.isBR) {
         container.appendChild(document.createElement('br'))
+        state.span = true
+        state.done = true
         return
       }
 
       const span = document.createElement('span')
       if (charDef.style) Object.assign(span.style, charDef.style)
+      state.span = span
 
       if (charDef.noScramble || charDef.ch === ' ') {
         span.textContent = charDef.ch
         container.appendChild(span)
+        state.done = true
         return
       }
 
@@ -56,12 +85,15 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals) {
       const iv = setInterval(() => {
         span.textContent = POOL[Math.floor(Math.random() * POOL.length)]
       }, SCRAMBLE_TICK)
+      state.iv = iv
       intervals.push(iv)
 
       const resolveT = setTimeout(() => {
         clearInterval(iv)
         span.textContent = charDef.ch
+        state.done = true
       }, SCRAMBLE_MS)
+      state.resolveT = resolveT
       timers.push(resolveT)
     }, startAt)
 
@@ -81,6 +113,7 @@ export default function Hero({ isVisible }) {
   const bottomRef = useRef(null)
   const rightColRef = useRef(null)
   const statusRef = useRef(null)
+  const completedRef = useRef(false)
 
   // Set initial hidden state on mount
   useEffect(() => {
@@ -93,8 +126,8 @@ export default function Hero({ isVisible }) {
   useEffect(() => {
     if (!isVisible) return
 
-    // If already animated (text in DOM), restore visibility and exit
-    if (word1Ref.current && word1Ref.current.childNodes.length > 0) {
+    // If already resolved (naturally or via a snap), restore visibility and exit
+    if (completedRef.current) {
       gsap.to(eyebrowRef.current, { opacity: 1, duration: 0.3 })
       gsap.to(rightColRef.current, { opacity: 1, x: 0, duration: 0.4 })
       gsap.to(statusRef.current, { opacity: 1, y: 0, duration: 0.3 })
@@ -104,17 +137,18 @@ export default function Hero({ isVisible }) {
 
     const timers = []
     const intervals = []
+    const resolvers = []
 
     // Eyebrow fades in before typing starts
     gsap.to(eyebrowRef.current, { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.15 })
 
     // Schedule name lines back-to-back
     let offset = 0
-    const line1End = scheduleChars(NAME_LINE1, word1Ref, offset, timers, intervals)
+    const line1End = scheduleChars(NAME_LINE1, word1Ref, offset, timers, intervals, resolvers)
     offset = NAME_LINE1.length * CHAR_STAGGER
-    const line2End = scheduleChars(NAME_LINE2, word2Ref, offset, timers, intervals)
+    const line2End = scheduleChars(NAME_LINE2, word2Ref, offset, timers, intervals, resolvers)
     offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
-    const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals)
+    const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
 
     // Right column fades in right after name resolves — not gated on full animation
     const rightFadeT = setTimeout(() => {
@@ -126,18 +160,19 @@ export default function Hero({ isVisible }) {
     const subtextDoneAt = scheduleChars(
       SUBTEXT_CHARS, subtextBodyRef,
       nameDoneAt + 400,
-      timers, intervals
+      timers, intervals, resolvers
     )
 
     // Siempre after 300ms pause from subtext end
     const siempreDoneAt = scheduleChars(
       SIEMPRE_CHARS, siepreRef,
       subtextDoneAt + 300,
-      timers, intervals
+      timers, intervals, resolvers
     )
 
     // Status bar and bottom fade in after full animation
     const finalFadeT = setTimeout(() => {
+      completedRef.current = true
       gsap.to(statusRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
       gsap.to(bottomRef.current, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
     }, siempreDoneAt + 150)
@@ -146,6 +181,17 @@ export default function Hero({ isVisible }) {
     return () => {
       timers.forEach(clearTimeout)
       intervals.forEach(clearInterval)
+
+      // If we're tearing down mid-scramble (scrolled away before it finished),
+      // snap every character to its final text instead of leaving it stuck.
+      if (!completedRef.current) {
+        resolvers.forEach((finishNow) => finishNow())
+        gsap.set(eyebrowRef.current, { opacity: 1 })
+        gsap.set(rightColRef.current, { opacity: 1, x: 0 })
+        gsap.set(statusRef.current, { opacity: 1, y: 0 })
+        gsap.set(bottomRef.current, { opacity: 1 })
+        completedRef.current = true
+      }
     }
   }, [isVisible])
 

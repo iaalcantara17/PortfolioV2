@@ -12,10 +12,11 @@ import Skills from './components/sections/Skills'
 import Experience from './components/sections/Experience'
 import Projects from './components/sections/Projects'
 import HumanIsrael from './components/sections/HumanIsrael'
+import Gallery from './components/sections/Gallery'
 import Contact from './components/sections/Contact'
 
-const SECTION_COMPONENTS = [Hero, About, Skills, Experience, Projects, HumanIsrael, Contact]
-const SECTION_KEYS = ['hero', 'about', 'skills', 'experience', 'projects', 'human', 'contact']
+const SECTION_COMPONENTS = [Hero, About, Skills, Experience, Projects, HumanIsrael, Gallery, Contact]
+const SECTION_KEYS = ['hero', 'about', 'skills', 'experience', 'projects', 'human', 'gallery', 'contact']
 
 export default function App() {
   const containerRef = useRef(null)
@@ -40,10 +41,11 @@ export default function App() {
           }
         })
       },
-      // 0.15 (not 0.5) — on mobile, stacked sections can grow taller than the
-      // viewport, so a 50% ratio is unreachable and entrance animations would
-      // never fire (see About/Experience/Projects at mobile widths).
-      { root: container, threshold: 0.15 }
+      // 0.01 — entrances only need to fire once, so the threshold is kept low
+      // to reliably register even a fast, brief pass through the viewport
+      // (and on mobile, stacked sections can grow taller than the viewport,
+      // making a higher ratio unreachable).
+      { root: container, threshold: 0.01 }
     )
 
     sectionRefs.current.forEach((el) => { if (el) observer.observe(el) })

@@ -20,7 +20,7 @@ export default function Contact({ isVisible }) {
     gsap.set(section.querySelectorAll('.link-row'), { x: 30, opacity: 0 })
   }, [])
 
-  // Fix 2 — animate in once, never reverse
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return

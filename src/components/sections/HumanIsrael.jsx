@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import { AnimatePresence, motion } from 'framer-motion'
 import SpotifyWidget from '../SpotifyWidget'
+import Lightbox from '../Lightbox'
 
 const photos = [
   { src: '/photos/streetwear.jpg', alt: 'Israel — streetwear', label: 'Streetwear' },
@@ -15,7 +15,7 @@ const pills = ['Music', 'Fashion', 'Photography', 'Basketball', 'Gym', 'Running'
 export default function HumanIsrael({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
-  const [lightboxPhoto, setLightboxPhoto] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function HumanIsrael({ isVisible }) {
     gsap.set(section.querySelectorAll('.gallery-cell'), { opacity: 0, scale: 0.97 })
   }, [])
 
-  // Fix 2 — animate in once, never reverse
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -37,16 +37,6 @@ export default function HumanIsrael({ isVisible }) {
       tlRef.current = tl
     }
   }, [isVisible])
-
-  // Close lightbox on Escape
-  useEffect(() => {
-    if (!lightboxPhoto) return
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') setLightboxPhoto(null)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [lightboxPhoto])
 
   return (
     <section
@@ -104,7 +94,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Streetwear — tall left */}
             <div
               className="gallery-cell gallery-cell-streetwear photo-placeholder"
-              onClick={() => setLightboxPhoto(photos[0])}
+              onClick={() => setLightboxIndex(0)}
               style={{
                 width: '100%',
                 height: 676,
@@ -130,7 +120,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* City */}
               <div
                 className="gallery-cell gallery-cell-city photo-placeholder"
-                onClick={() => setLightboxPhoto(photos[1])}
+                onClick={() => setLightboxIndex(1)}
                 style={{
                   width: '100%',
                   height: 284,
@@ -154,7 +144,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* Nature */}
               <div
                 className="gallery-cell gallery-cell-nature photo-placeholder"
-                onClick={() => setLightboxPhoto(photos[2])}
+                onClick={() => setLightboxIndex(2)}
                 style={{
                   width: '100%',
                   height: 380,
@@ -180,7 +170,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Friends — wide */}
             <div
               className="gallery-cell gallery-cell-friends photo-placeholder"
-              onClick={() => setLightboxPhoto(photos[3])}
+              onClick={() => setLightboxIndex(3)}
               style={{
                 gridColumn: 'span 2',
                 width: '100%',
@@ -233,72 +223,17 @@ export default function HumanIsrael({ isVisible }) {
           </div>
 
           <div data-animate style={{ marginTop: 'auto', borderTop: '0.5px solid #d4cfc5', paddingTop: 16 }}>
-            <span className="eyebrow" style={{ color: '#bbbbbb', fontSize: 9 }}>All photos shot on Canon SL3. Placeholder images shown.</span>
+            <span className="eyebrow" style={{ color: '#bbbbbb', fontSize: 9 }}>All photos shot on Canon SL3.</span>
           </div>
         </div>
       </div>
 
-      <AnimatePresence>
-        {lightboxPhoto && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            onClick={() => setLightboxPhoto(null)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 1000,
-              background: 'rgba(13,13,13,0.92)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'auto',
-            }}
-          >
-            <button
-              onClick={() => setLightboxPhoto(null)}
-              aria-label="Close"
-              style={{
-                position: 'fixed',
-                top: 24,
-                right: 32,
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                border: '0.5px solid rgba(255,255,255,0.3)',
-                background: 'rgba(255,255,255,0.06)',
-                color: '#f5f2ec',
-                fontSize: 18,
-                lineHeight: 1,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              ×
-            </button>
-            <motion.img
-              key={lightboxPhoto.src}
-              src={lightboxPhoto.src}
-              alt={lightboxPhoto.alt}
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              style={{
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                objectFit: 'contain',
-                cursor: 'default',
-              }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Lightbox
+        photos={photos}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
     </section>
   )
 }

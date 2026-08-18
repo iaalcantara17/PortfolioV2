@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
+import { quotes } from '../../data/quotes'
 
 const interestTiers = [
   { pills: ['Music', 'Fashion', 'Photography', 'Basketball'], type: 'purple' },
@@ -15,28 +16,23 @@ const bodyParagraphs = [
   "I'm still growing. But I know who I am, and I show up as exactly that.",
 ]
 
-// Fix 9 — stats with separate num/suffix
-const stats = [
-  { num: '2', suffix: '×', label: 'Languages' },
-  { num: '10', suffix: 'K', label: 'Race finished' },
-]
-
 export default function About({ isVisible }) {
   const sectionRef = useRef(null)
   const onceTlRef = useRef(null)
   const tlRef = useRef(null)
+  const [quote, setQuote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)])
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
     gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.pull-quote'), { y: 30, opacity: 0 })
+    gsap.set(section.querySelectorAll('.pull-quote, .about-quote'), { y: 30, opacity: 0 })
     gsap.set(section.querySelectorAll('.body-para'), { y: 20, opacity: 0 })
     gsap.set(section.querySelectorAll('.interest-pill'), { y: 12, opacity: 0, scale: 0.9 })
   }, [])
 
-  // Fix 2 — headings animate once; pull quote, paragraphs, and pills reverse on scroll back up
+  // Animate in once, on first entrance — never reverses or re-triggers
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -48,14 +44,12 @@ export default function About({ isVisible }) {
     }
 
     if (isVisible && !tlRef.current) {
+      setQuote(quotes[Math.floor(Math.random() * quotes.length)])
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('.pull-quote'), { y: 0, opacity: 1, duration: 0.7 })
+      tl.to(section.querySelectorAll('.pull-quote, .about-quote'), { y: 0, opacity: 1, duration: 0.7 })
         .to(section.querySelectorAll('.body-para'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.3')
         .to(section.querySelectorAll('.interest-pill'), { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 }, '-=0.2')
       tlRef.current = tl
-    } else if (tlRef.current) {
-      if (isVisible) tlRef.current.play()
-      else tlRef.current.reverse()
     }
   }, [isVisible])
 
@@ -175,31 +169,30 @@ export default function About({ isVisible }) {
             </div>
           </div>
 
-          {/* Fix 9 — Stats with gold suffixes */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
-            {stats.map((item, i) => (
-              <div
-                key={item.label}
-                style={{
-                  padding: '14px 20px',
-                  borderRight: i === 0 ? '0.5px solid #d4cfc5' : 'none',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'DM Serif Display', Georgia, serif",
-                    fontSize: 26,
-                    letterSpacing: '-0.02em',
-                    color: '#0d0d0d',
-                    lineHeight: 1,
-                    marginBottom: 4,
-                  }}
-                >
-                  {item.num}<span style={{ color: '#D4AF37', fontWeight: 600 }}>{item.suffix}</span>
-                </div>
-                <div className="eyebrow">{item.label}</div>
-              </div>
-            ))}
+          {/* Rotating quote */}
+          <div className="about-quote" style={{ padding: '14px 20px', border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
+            <p
+              style={{
+                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontStyle: 'italic',
+                fontSize: 19,
+                lineHeight: 1.4,
+                color: '#666',
+              }}
+            >
+              "{quote.text}"
+            </p>
+            <div
+              style={{
+                marginTop: 8,
+                fontSize: 11,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: '#999',
+              }}
+            >
+              — {quote.author}
+            </div>
           </div>
         </div>
       </div>
