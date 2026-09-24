@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -21,6 +19,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
   cursor: none;
   overflow-x: hidden;
+}
+
+/* Buttons inherit type and color from their context (previously supplied by Tailwind's Preflight) */
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+/* Links inherit color from their context (previously supplied by Tailwind's Preflight) */
+a {
+  color: inherit;
 }
 
 /* Scroll snap container */
