@@ -107,7 +107,7 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {links.map((l, i) => (
+            {links.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
