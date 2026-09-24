@@ -3,7 +3,6 @@ import { gsap } from 'gsap'
 
 export default function Cursor() {
   const cursorRef = useRef(null)
-  const trailsRef = useRef([])
   const pos = useRef({ x: 0, y: 0 })
 
   useEffect(() => {

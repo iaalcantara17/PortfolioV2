@@ -114,7 +114,7 @@ export default function Hero({ isVisible }) {
   const word2Ref = useRef(null)
   const word3Ref = useRef(null)
   const subtextBodyRef = useRef(null)
-  const siepreRef = useRef(null)
+  const siempreRef = useRef(null)
   const eyebrowRef = useRef(null)
   const bottomRef = useRef(null)
   const rightColRef = useRef(null)
@@ -132,12 +132,18 @@ export default function Hero({ isVisible }) {
   useEffect(() => {
     if (!isVisible) return
 
+    // Always-rendered nodes, captured so the cleanup below acts on the same elements
+    const eyebrow = eyebrowRef.current
+    const rightCol = rightColRef.current
+    const status = statusRef.current
+    const bottom = bottomRef.current
+
     // If already resolved (naturally or via a snap), restore visibility and exit
     if (completedRef.current) {
-      gsap.to(eyebrowRef.current, { opacity: 1, duration: 0.3 })
-      gsap.to(rightColRef.current, { opacity: 1, x: 0, duration: 0.4 })
-      gsap.to(statusRef.current, { opacity: 1, y: 0, duration: 0.3 })
-      gsap.to(bottomRef.current, { opacity: 1, duration: 0.3 })
+      gsap.to(eyebrow, { opacity: 1, duration: 0.3 })
+      gsap.to(rightCol, { opacity: 1, x: 0, duration: 0.4 })
+      gsap.to(status, { opacity: 1, y: 0, duration: 0.3 })
+      gsap.to(bottom, { opacity: 1, duration: 0.3 })
       return
     }
 
@@ -146,19 +152,19 @@ export default function Hero({ isVisible }) {
     const resolvers = []
 
     // Eyebrow fades in before typing starts
-    gsap.to(eyebrowRef.current, { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.15 })
+    gsap.to(eyebrow, { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.15 })
 
     // Schedule name lines back-to-back
     let offset = 0
-    const line1End = scheduleChars(NAME_LINE1, word1Ref, offset, timers, intervals, resolvers)
+    scheduleChars(NAME_LINE1, word1Ref, offset, timers, intervals, resolvers)
     offset = NAME_LINE1.length * CHAR_STAGGER
-    const line2End = scheduleChars(NAME_LINE2, word2Ref, offset, timers, intervals, resolvers)
+    scheduleChars(NAME_LINE2, word2Ref, offset, timers, intervals, resolvers)
     offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
     const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
 
     // Right column fades in right after name resolves — not gated on full animation
     const rightFadeT = setTimeout(() => {
-      gsap.to(rightColRef.current, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
+      gsap.to(rightCol, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
     }, nameDoneAt + 150)
     timers.push(rightFadeT)
 
@@ -171,7 +177,7 @@ export default function Hero({ isVisible }) {
 
     // Siempre after 300ms pause from subtext end
     const siempreDoneAt = scheduleChars(
-      SIEMPRE_CHARS, siepreRef,
+      SIEMPRE_CHARS, siempreRef,
       subtextDoneAt + 300,
       timers, intervals, resolvers
     )
@@ -179,8 +185,8 @@ export default function Hero({ isVisible }) {
     // Status bar and bottom fade in after full animation
     const finalFadeT = setTimeout(() => {
       completedRef.current = true
-      gsap.to(statusRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
-      gsap.to(bottomRef.current, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
+      gsap.to(status, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
+      gsap.to(bottom, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
     }, siempreDoneAt + 150)
     timers.push(finalFadeT)
 
@@ -192,10 +198,10 @@ export default function Hero({ isVisible }) {
       // snap every character to its final text instead of leaving it stuck.
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
-        gsap.set(eyebrowRef.current, { opacity: 1 })
-        gsap.set(rightColRef.current, { opacity: 1, x: 0 })
-        gsap.set(statusRef.current, { opacity: 1, y: 0 })
-        gsap.set(bottomRef.current, { opacity: 1 })
+        gsap.set(eyebrow, { opacity: 1 })
+        gsap.set(rightCol, { opacity: 1, x: 0 })
+        gsap.set(status, { opacity: 1, y: 0 })
+        gsap.set(bottom, { opacity: 1 })
         completedRef.current = true
       }
     }
@@ -256,7 +262,7 @@ export default function Hero({ isVisible }) {
             <div style={{ color: '#666666', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
               <span ref={subtextBodyRef} />
               <br />
-              <em ref={siepreRef} style={{ color: '#7F77DD', fontStyle: 'italic' }} />
+              <em ref={siempreRef} style={{ color: '#7F77DD', fontStyle: 'italic' }} />
             </div>
           </div>
 
