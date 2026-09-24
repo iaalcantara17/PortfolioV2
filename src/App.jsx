@@ -5,18 +5,7 @@ import Nav from './components/Nav'
 import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
-
-import Hero from './components/sections/Hero'
-import About from './components/sections/About'
-import Skills from './components/sections/Skills'
-import Experience from './components/sections/Experience'
-import Projects from './components/sections/Projects'
-import HumanIsrael from './components/sections/HumanIsrael'
-import Gallery from './components/sections/Gallery'
-import Contact from './components/sections/Contact'
-
-const SECTION_COMPONENTS = [Hero, About, Skills, Experience, Projects, HumanIsrael, Gallery, Contact]
-const SECTION_KEYS = ['hero', 'about', 'skills', 'experience', 'projects', 'human', 'gallery', 'contact']
+import { sections } from './data/sections'
 
 export default function App() {
   const containerRef = useRef(null)
@@ -63,9 +52,9 @@ export default function App() {
       <SectionCounter containerRef={containerRef} />
 
       <div ref={containerRef} className="snap-container">
-        {SECTION_COMPONENTS.map((Component, i) => (
+        {sections.map(({ key, Component }, i) => (
           <div
-            key={SECTION_KEYS[i]}
+            key={key}
             ref={setRef(i)}
             data-section-index={i}
             className="section-wrapper"
