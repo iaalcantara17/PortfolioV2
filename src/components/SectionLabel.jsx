@@ -1,3 +1,5 @@
+import { SECTION_TOTAL } from '../data/sections'
+
 export default function SectionLabel({ index }) {
   const num = String(index).padStart(2, '0')
   return (
@@ -22,7 +24,7 @@ export default function SectionLabel({ index }) {
           display: 'block',
         }}
       >
-        {num} / 08
+        {num} / {SECTION_TOTAL}
       </span>
     </div>
   )
