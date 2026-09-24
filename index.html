@@ -9,6 +9,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+    <!-- Hero portrait (LCP). imagesizes must match HERO_PHOTO_SIZES in Hero.jsx -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/src/assets/photos/portrait-1200.avif"
+      imagesrcset="/src/assets/photos/portrait-400.avif 400w, /src/assets/photos/portrait-1200.avif 1200w, /src/assets/photos/portrait-2400.avif 2400w"
+      imagesizes="(max-width: 420px) 150vw, 630px"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <div id="root"></div>

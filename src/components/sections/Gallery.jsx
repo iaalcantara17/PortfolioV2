@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { preload } from 'react-dom'
 import { gsap } from 'gsap'
-
-const modules = import.meta.glob('/src/assets/gallery/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' })
-
-const galleryPhotos = Object.keys(modules)
-  .sort()
-  .map((path) => ({ src: modules[path], caption: undefined }))
+import Photo from '../Photo'
+import { galleryPhotos, srcSet } from '../../data/photos'
 
 const WINDOW = 15
+const STAGE_SIZES = '100vw'
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
@@ -45,16 +43,20 @@ export default function Gallery({ isVisible }) {
     gsap.fromTo(heroImgRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' })
   }, [activeIndex])
 
-  // Preload the neighboring photos at full quality
+  // Preload the neighboring photos at full quality, only while the section is in view
   useEffect(() => {
-    if (total === 0) return
+    if (total === 0 || !isVisible) return
     const next = galleryPhotos[(activeIndex + 1) % total]
     const prev = galleryPhotos[(activeIndex - 1 + total) % total]
     ;[next, prev].forEach((p) => {
-      const img = new Image()
-      img.src = p.src
+      preload(p.variants[1200].avif, {
+        as: 'image',
+        type: 'image/avif',
+        imageSrcSet: srcSet(p, 'avif'),
+        imageSizes: STAGE_SIZES,
+      })
     })
-  }, [activeIndex, total])
+  }, [activeIndex, total, isVisible])
 
   // Keyboard navigation, only while this section is visible
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function Gallery({ isVisible }) {
   const windowed = useMemo(() => {
     const start = Math.max(0, activeIndex - WINDOW)
     const end = Math.min(total, activeIndex + WINDOW + 1)
-    return galleryPhotos.slice(start, end).map((p, i) => ({ ...p, index: start + i }))
+    return galleryPhotos.slice(start, end).map((photo, i) => ({ photo, index: start + i }))
   }, [activeIndex, total])
 
   if (total === 0) return null
@@ -132,12 +134,14 @@ export default function Gallery({ isVisible }) {
               background: '#efece5',
             }}
           >
-            <img
+            <Photo
               key={activeIndex}
               ref={heroImgRef}
-              src={galleryPhotos[activeIndex].src}
+              photo={galleryPhotos[activeIndex]}
+              sizes={STAGE_SIZES}
+              loading="lazy"
               alt=""
-              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+              style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
             />
             {total > 1 && (
               <>
@@ -170,7 +174,7 @@ export default function Gallery({ isVisible }) {
                 onClick={() => setActiveIndex(p.index)}
                 aria-label={`View photo ${p.index + 1}`}
               >
-                <img src={p.src} alt="" loading="lazy" />
+                <Photo photo={p.photo} thumb alt="" loading="lazy" />
               </button>
             ))}
           </div>

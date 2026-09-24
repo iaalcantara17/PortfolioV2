@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
+import Photo from '../Photo'
+import { photoByName } from '../../data/photos'
+
+// Drawn width of the 3:2 portrait under object-fit: cover in the square box.
+// Must match imagesizes on the portrait preload in index.html
+const HERO_PHOTO_SIZES = '(max-width: 420px) 150vw, 630px'
 
 const POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚáéíóúàèâêñüç0123456789!.,'
 const SCRAMBLE_MS = 340
@@ -291,8 +297,10 @@ export default function Hero({ isVisible }) {
               overflow: 'hidden',
             }}
           >
-            <img
-              src="/photos/portrait.jpg"
+            <Photo
+              photo={photoByName.portrait}
+              sizes={HERO_PHOTO_SIZES}
+              fetchPriority="high"
               alt="Israel Alcántara"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }}
             />

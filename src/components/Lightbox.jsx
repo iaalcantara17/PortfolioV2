@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import Photo from './Photo'
 
 export default function Lightbox({ photos, index, onClose, onNavigate }) {
   const isOpen = index != null
@@ -60,9 +61,11 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
           >
             ×
           </button>
-          <motion.img
-            key={photo.src}
-            src={photo.src}
+          <Photo
+            key={photo.image.name}
+            as={motion.img}
+            photo={photo.image}
+            sizes="90vw"
             alt={photo.alt}
             onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.96 }}
@@ -70,6 +73,8 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{
+              width: 'auto',
+              height: 'auto',
               maxWidth: '90vw',
               maxHeight: '90vh',
               objectFit: 'contain',

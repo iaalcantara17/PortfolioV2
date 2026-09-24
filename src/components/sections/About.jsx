@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import { quotes } from '../../data/quotes'
+import Photo from '../Photo'
+import { photoByName } from '../../data/photos'
 
 const interestTiers = [
   { pills: ['Music', 'Fashion', 'Photography', 'Basketball'], type: 'purple' },
@@ -147,8 +149,10 @@ export default function About({ isVisible }) {
               cursor: 'none',
             }}
           >
-            <img
-              src="/photos/streetwear.jpg"
+            <Photo
+              photo={photoByName.streetwear}
+              sizes="(max-width: 1023px) 100vw, 45vw"
+              loading="lazy"
               alt="Israel Alcántara"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />

@@ -2,13 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Lightbox from '../Lightbox'
+import Photo from '../Photo'
+import { photoByName } from '../../data/photos'
 
 const photos = [
-  { src: '/photos/streetwear.jpg', alt: 'Israel — streetwear', label: 'Streetwear' },
-  { src: '/photos/city.jpg', alt: 'Israel — city', label: 'NYC' },
-  { src: '/photos/nature.jpg', alt: 'Israel — nature', label: 'Outdoors' },
-  { src: '/photos/friends.jpg', alt: 'Israel — friends', label: 'People' },
+  { image: photoByName.streetwear, alt: 'Israel — streetwear', label: 'Streetwear' },
+  { image: photoByName.city, alt: 'Israel — city', label: 'NYC' },
+  { image: photoByName.nature, alt: 'Israel — nature', label: 'Outdoors' },
+  { image: photoByName.friends, alt: 'Israel — friends', label: 'People' },
 ]
+
+const CELL_SIZES = '(max-width: 1023px) 50vw, 35vw'
+const WIDE_CELL_SIZES = '(max-width: 1023px) 100vw, 70vw'
 
 const pills = ['Music', 'Fashion', 'Photography', 'Basketball', 'Gym', 'Running', 'Hiking', 'Drawing', 'Piano']
 
@@ -106,8 +111,10 @@ export default function HumanIsrael({ isVisible }) {
                 cursor: 'none',
               }}
             >
-              <img
-                src="/photos/streetwear.jpg"
+              <Photo
+                photo={photoByName.streetwear}
+                sizes={CELL_SIZES}
+                loading="lazy"
                 alt="Israel — streetwear"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
               />
@@ -132,8 +139,10 @@ export default function HumanIsrael({ isVisible }) {
                   cursor: 'none',
                 }}
               >
-                <img
-                  src="/photos/city.jpg"
+                <Photo
+                  photo={photoByName.city}
+                  sizes={CELL_SIZES}
+                  loading="lazy"
                   alt="Israel — city"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
                 />
@@ -157,8 +166,10 @@ export default function HumanIsrael({ isVisible }) {
                   background: '#e8e4dc',
                 }}
               >
-                <img
-                  src="/photos/nature.jpg"
+                <Photo
+                  photo={photoByName.nature}
+                  sizes={CELL_SIZES}
+                  loading="lazy"
                   alt="Israel — nature"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
                 />
@@ -183,8 +194,10 @@ export default function HumanIsrael({ isVisible }) {
                 cursor: 'none',
               }}
             >
-              <img
-                src="/photos/friends.jpg"
+              <Photo
+                photo={photoByName.friends}
+                sizes={WIDE_CELL_SIZES}
+                loading="lazy"
                 alt="Israel — friends"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%', display: 'block' }}
               />
