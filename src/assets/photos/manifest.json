@@ -1,0 +1,22 @@
+{
+  "city": {
+    "width": 6000,
+    "height": 4000
+  },
+  "friends": {
+    "width": 4000,
+    "height": 6000
+  },
+  "nature": {
+    "width": 4000,
+    "height": 6000
+  },
+  "portrait": {
+    "width": 6024,
+    "height": 4020
+  },
+  "streetwear": {
+    "width": 4012,
+    "height": 4012
+  }
+}
