@@ -84,6 +84,7 @@ export default function HumanIsrael({ isVisible }) {
 
           {/* Photo grid */}
           <div
+            className="human-photo-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -116,7 +117,7 @@ export default function HumanIsrael({ isVisible }) {
             </div>
 
             {/* City + Nature wrapper */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div className="human-photo-stack" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {/* City */}
               <div
                 className="gallery-cell gallery-cell-city photo-placeholder"

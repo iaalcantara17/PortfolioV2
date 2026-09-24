@@ -350,7 +350,7 @@ export default function Hero({ isVisible }) {
         }}
       >
         {[
-          'Available May 2026',
+          'Available now',
           'Open to relocation',
           'Bilingual EN / ES',
         ].map((text, i) => (

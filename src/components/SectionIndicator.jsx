@@ -1,4 +1,4 @@
-const SECTIONS = ['Hero', 'About', 'Skills', 'Experience', 'Projects', 'Life', 'Contact']
+const SECTIONS = ['Hero', 'About', 'Skills', 'Experience', 'Projects', 'Life', 'Gallery', 'Contact']
 
 export default function SectionIndicator({ current, onNavigate }) {
   return (

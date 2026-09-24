@@ -494,6 +494,7 @@ nav.site-nav.scrolled {
   .snap-section > div[style*="grid-template-columns: 1fr 1fr"],
   .snap-section > div[style*="grid-template-columns: 200px"],
   .snap-section > div[style*="grid-template-columns: 1fr 340px"],
+  .snap-section div:has(> .grid-card),
   .hero-grid {
     display: flex !important;
     flex-direction: column !important;
@@ -622,6 +623,36 @@ nav.site-nav.scrolled {
   .gallery-hero {
     aspect-ratio: 4 / 3;
     flex: none !important;
+  }
+}
+
+/* HumanIsrael — desktop: the photo grid's fixed pixel heights stacked to 1248px,
+   overflowing the 100vh section (overflow: hidden) and clipping the People photo.
+   Fit the grid to the space under the header, keeping the same 676:560 row and
+   284:380 city/nature proportions. */
+@media (min-width: 1024px) {
+  .human-photo-grid {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 676fr) minmax(0, 560fr);
+  }
+  .gallery-cell-streetwear,
+  .gallery-cell-friends {
+    height: 100% !important;
+  }
+  .human-photo-stack {
+    height: 100%;
+    min-height: 0;
+  }
+  .gallery-cell-city {
+    flex: 284 1 0;
+    min-height: 0;
+    height: auto !important;
+  }
+  .gallery-cell-nature {
+    flex: 380 1 0;
+    min-height: 0;
+    height: auto !important;
   }
 }
 
