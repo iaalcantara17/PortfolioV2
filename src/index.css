@@ -2,23 +2,6 @@
 
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #f5f2ec;
-  --color-near-black: #0d0d0d;
-  --color-surface: #efece5;
-  --color-border: #d4cfc5;
-  --color-purple: #7F77DD;
-  --color-purple-dark: #534AB7;
-  --color-gold: #D4AF37;
-  --color-green: #1D9E75;
-  --color-text-primary: #0d0d0d;
-  --color-text-muted: #666666;
-  --color-text-hint: #bbbbbb;
-
-  --font-serif: 'DM Serif Display', Georgia, serif;
-  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -59,15 +42,6 @@ body {
   overflow: hidden;
 }
 
-/* Typography helpers */
-.font-serif {
-  font-family: 'DM Serif Display', Georgia, serif;
-}
-
-.font-sans {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 /* Eyebrow label */
 .eyebrow {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -75,11 +49,6 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #666666;
-}
-
-/* Thin border utility */
-.border-thin {
-  border: 0.5px solid #d4cfc5;
 }
 
 /* Cursor */
@@ -297,33 +266,6 @@ nav.site-nav.scrolled {
   transform-style: preserve-3d;
 }
 
-/* Magnetic button */
-.magnetic-btn {
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-/* Duality section */
-.duality-half {
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.duality-left {
-  left: 0;
-  background: #0d0d0d;
-}
-
-.duality-right {
-  right: 0;
-  background: #f5f2ec;
-}
-
 /* About pull quote */
 .pull-quote {
   font-family: 'DM Serif Display', Georgia, serif;
@@ -360,27 +302,6 @@ nav.site-nav.scrolled {
   grid-template-columns: 1fr 1fr;
   gap: 0;
   justify-content: normal;
-}
-
-/* Gallery hover — springy scale + caption reveal */
-.gallery-cell .gallery-img {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.gallery-cell:hover .gallery-img {
-  transform: scale(1.04);
-}
-.gallery-cell .gallery-caption {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.gallery-cell:hover .gallery-caption {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Photo placeholder */
