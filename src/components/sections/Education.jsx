@@ -1,12 +1,15 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
+import Lightbox from '../Lightbox'
+import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
+import { handleTilt, resetTilt } from '../../utils/tilt'
 import njitLogo from '../../assets/logos/njit.png'
 import montclairLogo from '../../assets/logos/montclair.png'
 
 // Logos show in their official colors, a deliberate exception to the token palette.
-// Dates are static text, updated by hand.
+// Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox.
 const schools = [
   {
     degree: 'Bachelor of Science in Computer Science',
@@ -15,6 +18,7 @@ const schools = [
     status: 'earned',
     period: 'Sep 2022 — May 2026',
     logo: { src: njitLogo, width: 192, height: 192 },
+    diploma: { image: photoByName['njit-diploma'], alt: 'NJIT diploma, Bachelor of Science in Computer Science' },
   },
   {
     degree: 'Master of Business Administration',
@@ -26,9 +30,36 @@ const schools = [
   },
 ]
 
+const diplomas = schools.filter((s) => s.diploma).map((s) => s.diploma)
+
+// Makes a card open its diploma. Same hover tilt as the Projects cards;
+// data-cursor grows the custom cursor like any other clickable.
+const diplomaTriggerProps = (s, open) => {
+  const openFrom = (el) => {
+    // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
+    resetTilt(el)
+    open()
+  }
+  return {
+    role: 'button',
+    tabIndex: 0,
+    'aria-label': `View diploma: ${s.degree}, ${s.school}`,
+    'data-cursor': '',
+    onClick: (e) => openFrom(e.currentTarget),
+    onKeyDown: (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return
+      e.preventDefault()
+      openFrom(e.currentTarget)
+    },
+    onMouseMove: (e) => handleTilt(e, e.currentTarget),
+    onMouseLeave: (e) => resetTilt(e.currentTarget),
+  }
+}
+
 export default function Education({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -103,7 +134,8 @@ export default function Education({ isVisible }) {
           {schools.map((s) => (
             <div
               key={s.school}
-              className="edu-card"
+              className={s.diploma ? 'edu-card tilt-card' : 'edu-card'}
+              {...(s.diploma && diplomaTriggerProps(s, () => setLightboxIndex(diplomas.indexOf(s.diploma))))}
               style={{
                 display: 'grid',
                 gridTemplateColumns: '96px 1fr auto',
@@ -153,6 +185,13 @@ export default function Education({ isVisible }) {
           ))}
         </div>
       </div>
+
+      <Lightbox
+        photos={diplomas}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
     </section>
   )
 }
