@@ -1,12 +1,12 @@
-const SECTIONS = ['Hero', 'About', 'Skills', 'Experience', 'Projects', 'Life', 'Gallery', 'Contact']
+import { sections } from '../data/sections'
 
 export default function SectionIndicator({ current, onNavigate }) {
   return (
     <div id="section-indicator">
-      {SECTIONS.map((s, i) => (
+      {sections.map((s, i) => (
         <button
-          key={s}
-          title={s}
+          key={s.key}
+          title={s.label}
           onClick={() => onNavigate(i)}
           className={`section-dot ${current === i ? 'active' : ''}`}
           style={{ background: current === i ? '#7F77DD' : 'transparent', cursor: 'none', border: 'none', padding: 0 }}

@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
+import { sections } from '../data/sections'
 
-const links = [
-  { label: 'About', section: 1 },
-  { label: 'Experience', section: 3 },
-  { label: 'Projects', section: 4 },
-  { label: 'Life', section: 5 },
-  { label: 'Gallery', section: 6 },
-  { label: 'Contact', section: 7 },
-]
+// section = index in the full registry, so links stay correct if sections reorder
+const links = sections
+  .map(({ key, label, inNav }, section) => ({ key, label, inNav, section }))
+  .filter((l) => l.inNav)
 
 export default function Nav({ containerRef, onNavigate }) {
   const [scrolled, setScrolled] = useState(false)
@@ -49,7 +46,7 @@ export default function Nav({ containerRef, onNavigate }) {
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {links.map((l) => (
             <button
-              key={l.label}
+              key={l.key}
               onClick={() => onNavigate(l.section)}
               style={{ background: 'none', border: 'none', cursor: 'none', color: '#666666', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
             >
@@ -96,7 +93,7 @@ export default function Nav({ containerRef, onNavigate }) {
         <div className="mobile-menu-overlay">
           <div className="mobile-menu-links">
             {links.map((l) => (
-              <button key={l.label} onClick={() => handleNavigate(l.section)}>
+              <button key={l.key} onClick={() => handleNavigate(l.section)}>
                 {l.label}
               </button>
             ))}
