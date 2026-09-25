@@ -22,3 +22,12 @@ export const sections = [
 
 // Zero-padded total for "NN / TT" counters.
 export const SECTION_TOTAL = String(sections.length).padStart(2, '0')
+
+// Counter geometry. Each section's own label (SectionLabel) sits LABEL_TOP below
+// the section's top edge; the floating counter (SectionCounter) sits COUNTER_TOP
+// below the viewport's top, padded by COUNTER_PAD_Y. Both use the same type, so
+// a label lines up with the counter when its section's top reaches HANDOFF_LINE.
+export const LABEL_TOP = 32
+export const COUNTER_TOP = 46
+export const COUNTER_PAD_Y = 1
+export const HANDOFF_LINE = COUNTER_TOP + COUNTER_PAD_Y - LABEL_TOP

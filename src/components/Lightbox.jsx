@@ -1,9 +1,18 @@
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Photo from './Photo'
+import { useScrollLock } from '../hooks/useScrollLock'
 
 export default function Lightbox({ photos, index, onClose, onNavigate }) {
   const isOpen = index != null
+  useScrollLock(isOpen)
+
+  // Lets the custom cursor switch to a blend mode that shows on the dark backdrop
+  useEffect(() => {
+    if (!isOpen) return
+    document.documentElement.classList.add('lightbox-open')
+    return () => document.documentElement.classList.remove('lightbox-open')
+  }, [isOpen])
 
   useEffect(() => {
     if (!isOpen) return
@@ -35,7 +44,6 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: 'auto',
           }}
         >
           <button
@@ -53,7 +61,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
               color: 'var(--color-paper)',
               fontSize: 18,
               lineHeight: 1,
-              cursor: 'pointer',
+              cursor: 'inherit',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -78,7 +86,6 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
               maxWidth: '90vw',
               maxHeight: '90vh',
               objectFit: 'contain',
-              cursor: 'default',
             }}
           />
         </motion.div>

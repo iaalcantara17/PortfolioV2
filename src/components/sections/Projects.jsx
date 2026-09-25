@@ -49,7 +49,7 @@ export default function Projects({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div

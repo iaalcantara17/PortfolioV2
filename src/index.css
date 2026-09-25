@@ -17,6 +17,7 @@
   /* Accents */
   --color-purple: #7F77DD;
   --color-purple-deep: #534AB7;
+  --color-purple-ink: #403B6E;
   --color-gold: #D4AF37;
   --color-gold-deep: #9a7d1a;
   --color-green: #1D9E75;
@@ -80,17 +81,21 @@ a {
   color: inherit;
 }
 
-/* Scroll snap container */
-.snap-container {
+/* Page scroller — the page scrolls inside this container, not on body */
+.page-scroller {
   height: 100vh;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  /* Keeps the scrollbar's space reserved while scroll is locked, so nothing shifts */
+  scrollbar-gutter: stable;
 }
 
-.snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+/* Modal scroll lock, toggled by useScrollLock (Lightbox, mobile menu) */
+.scroll-locked .page-scroller {
+  overflow-y: hidden;
+}
+
+.page-section {
   height: 100vh;
   min-height: 100vh;
   position: relative;
@@ -123,6 +128,11 @@ a {
 #custom-cursor.hovering {
   width: 20px;
   height: 20px;
+}
+
+/* multiply blends the dot into the Lightbox's near-black backdrop */
+.lightbox-open #custom-cursor {
+  mix-blend-mode: normal;
 }
 
 /* Section indicator dots */
@@ -318,7 +328,7 @@ nav.site-nav.scrolled {
 }
 
 /* Global content wrapper — section backgrounds stay full-bleed, inner content centers and caps at 1440px */
-.snap-section > div:first-child {
+.page-section > div:first-child {
   max-width: 1440px;
   margin: 0 auto;
   width: 100%;
@@ -398,7 +408,7 @@ nav.site-nav.scrolled {
   transform: scale(1.08);
 }
 
-/* Availability dot */
+/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify signal */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -408,22 +418,19 @@ nav.site-nav.scrolled {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--color-green);
+  background: var(--color-gold);
   flex-shrink: 0;
   animation: pulse 2s ease-in-out infinite;
 }
 
 /* Tablet + mobile — structural stacking. Desktop (1024px+) is untouched. */
 @media (max-width: 1023px) {
-  .snap-container {
-    scroll-snap-type: none;
-  }
-  .snap-section {
+  .page-section {
     height: auto !important;
     overflow: visible !important;
   }
   /* The per-section wrapper in App.jsx is fixed at 100vh/overflow:hidden for the
-     desktop snap layout — without this override, stacked content taller than one
+     desktop full-height layout — without this override, stacked content taller than one
      viewport (e.g. Hero's Spotify widget) gets silently clipped. */
   .section-wrapper {
     height: auto !important;
@@ -439,10 +446,10 @@ nav.site-nav.scrolled {
     display: none;
   }
   /* Stack two-column layouts */
-  .snap-section > div[style*="grid-template-columns: 1fr 1fr"],
-  .snap-section > div[style*="grid-template-columns: 200px"],
-  .snap-section > div[style*="grid-template-columns: 1fr 340px"],
-  .snap-section div:has(> .grid-card),
+  .page-section > div[style*="grid-template-columns: 1fr 1fr"],
+  .page-section > div[style*="grid-template-columns: 200px"],
+  .page-section > div[style*="grid-template-columns: 1fr 340px"],
+  .page-section div:has(> .grid-card),
   .hero-grid {
     display: flex !important;
     flex-direction: column !important;
@@ -464,7 +471,7 @@ nav.site-nav.scrolled {
     margin-top: 40px;
   }
   /* Extra breathing room between stacked sections */
-  .snap-section:not(:last-child) {
+  .page-section:not(:last-child) {
     margin-bottom: 56px;
   }
   /* About — space between left content block and photo, and photo-to-stats gap */

@@ -33,6 +33,11 @@ const SUBTEXT_CHARS = [
 
 const SIEMPRE_CHARS = 'Siempre aprendiendo.'.split('').map(ch => ({ ch }))
 
+// Static render of a char list, matching what scheduleChars types out
+function renderChars(charDefs) {
+  return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
@@ -122,7 +127,7 @@ export default function Hero({ isVisible }) {
   const completedRef = useRef(false)
 
   // Set initial hidden state on mount. Skipped once resolved, so a StrictMode
-  // (dev-only) remount doesn't re-hide elements the snap already revealed.
+  // (dev-only) remount doesn't re-hide elements the early resolve already revealed.
   useEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
@@ -132,7 +137,7 @@ export default function Hero({ isVisible }) {
   }, [])
 
   useEffect(() => {
-    // Already resolved (naturally or via a snap) — everything is visible, nothing to replay
+    // Already resolved (naturally or early, on scroll-away) — everything is visible, nothing to replay
     if (!isVisible || completedRef.current) return
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
@@ -189,7 +194,7 @@ export default function Hero({ isVisible }) {
       intervals.forEach(clearInterval)
 
       // If we're tearing down mid-scramble (scrolled away before it finished),
-      // snap every character to its final text instead of leaving it stuck.
+      // resolve every character to its final text at once instead of leaving it stuck.
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
         gsap.set(eyebrow, { opacity: 1 })
@@ -213,7 +218,7 @@ export default function Hero({ isVisible }) {
 
   return (
     <section
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -252,11 +257,20 @@ export default function Hero({ isVisible }) {
               <div ref={word3Ref} style={wordStyle} />
             </div>
 
-            {/* Subtext — empty on mount, chars appended by typewriter */}
-            <div style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
-              <span ref={subtextBodyRef} />
-              <br />
-              <em ref={siempreRef} style={{ color: 'var(--color-purple)', fontStyle: 'italic' }} />
+            {/* Subtext — the typewriter appends chars to the overlay. The hidden copy
+                underneath reserves the final text's height from the start, so the
+                stacked mobile layout doesn't shift down when the text resolves. */}
+            <div style={{ position: 'relative', color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
+              <div aria-hidden="true" style={{ visibility: 'hidden' }}>
+                <span>{renderChars(SUBTEXT_CHARS)}</span>
+                <br />
+                <em>{renderChars(SIEMPRE_CHARS)}</em>
+              </div>
+              <div style={{ position: 'absolute', inset: 0 }}>
+                <span ref={subtextBodyRef} />
+                <br />
+                <em ref={siempreRef} style={{ color: 'var(--color-purple)', fontStyle: 'italic' }} />
+              </div>
             </div>
           </div>
 
@@ -372,7 +386,9 @@ export default function Hero({ isVisible }) {
               gap: 8,
             }}
           >
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />
+            {text === 'Available now'
+              ? <div className="availability-dot" />
+              : <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />}
             <span className="eyebrow">{text}</span>
           </div>
         ))}

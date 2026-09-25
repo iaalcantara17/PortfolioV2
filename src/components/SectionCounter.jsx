@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { sections, SECTION_TOTAL } from '../data/sections'
+import { sections, SECTION_TOTAL, COUNTER_TOP, COUNTER_PAD_Y } from '../data/sections'
 
 const TOTAL = sections.length
 const TICK_MS = 40
@@ -19,79 +19,46 @@ function scrambleNum(el, target) {
   return iv
 }
 
-export default function SectionCounter({ containerRef }) {
-  const floatRef = useRef(null)
+// active: index of the current section, from useActiveSection (shared with the dots)
+export default function SectionCounter({ active }) {
   const numRef = useRef(null)
-  const activeRef = useRef(1)
-  const ivRef = useRef(null)
 
+  // Scramble to the new number whenever the active section changes
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const numEl = numRef.current
+    const target = String(active + 1).padStart(2, '0')
+    if (!numEl || numEl.textContent === target) return
+    const iv = scrambleNum(numEl, target)
+    return () => clearInterval(iv)
+  }, [active])
 
+  // Fade each section's own label while it passes under this floating counter
+  useEffect(() => {
     let rafId = null
-    let prevScrollTop = container.scrollTop
 
     const tick = () => {
-      const float = floatRef.current
-      const numEl = numRef.current
-      if (!float || !numEl) {
-        rafId = requestAnimationFrame(tick)
-        return
-      }
-
-      const currentScrollTop = container.scrollTop
-      const scrollingDown = currentScrollTop >= prevScrollTop
-      prevScrollTop = currentScrollTop
-
-      const floatRect = float.getBoundingClientRect()
-      const floatingCenterY = floatRect.top + floatRect.height / 2
-
-      let newActive = activeRef.current
-
       for (let i = 1; i <= TOTAL; i++) {
         const fixedEl = document.querySelector(`[data-fixed-counter="${i}"]`)
         if (!fixedEl) continue
 
         const rect = fixedEl.getBoundingClientRect()
-        const centerY = rect.top + rect.height / 2
-
-        if (scrollingDown && centerY <= floatingCenterY) {
-          // Keep updating to highest i whose center has crossed floating center
-          newActive = i
-        } else if (!scrollingDown && i === activeRef.current && centerY > floatingCenterY) {
-          // Active section's counter has receded above the floating center while scrolling up
-          newActive = Math.max(1, i - 1)
-        }
-
         const isOverlapping = rect.top >= 24 && rect.top <= 40
         fixedEl.style.transition = 'opacity 100ms ease'
         fixedEl.style.opacity = isOverlapping ? '0' : '1'
-      }
-
-      if (newActive !== activeRef.current) {
-        activeRef.current = newActive
-        if (ivRef.current) clearInterval(ivRef.current)
-        ivRef.current = scrambleNum(numEl, String(newActive).padStart(2, '0'))
       }
 
       rafId = requestAnimationFrame(tick)
     }
 
     rafId = requestAnimationFrame(tick)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      if (ivRef.current) clearInterval(ivRef.current)
-    }
-  }, [containerRef])
+    return () => cancelAnimationFrame(rafId)
+  }, [])
 
   return (
     <div
-      ref={floatRef}
       style={{
         position: 'fixed',
-        top: 46,
+        top: COUNTER_TOP,
         left: 28,
         zIndex: 9999,
         pointerEvents: 'none',
@@ -99,7 +66,7 @@ export default function SectionCounter({ containerRef }) {
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         borderRadius: 3,
-        padding: '1px 4px',
+        padding: `${COUNTER_PAD_Y}px 4px`,
       }}
     >
       <span

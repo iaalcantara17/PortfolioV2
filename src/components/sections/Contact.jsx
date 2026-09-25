@@ -7,6 +7,13 @@ const links = [
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
 
+// Hover dim for mouse pointers only. A touch tap fires an emulated mouseenter
+// with no matching mouseleave, which left the element dimmed after the tap.
+const dimOnMouseHover = (opacity) => ({
+  onPointerEnter: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = opacity },
+  onPointerLeave: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = '1' },
+})
+
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
@@ -37,7 +44,7 @@ export default function Contact({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', display: 'flex', flexDirection: 'column' }}
     >
       <div
@@ -93,7 +100,7 @@ export default function Contact({ isVisible }) {
           {/* Availability */}
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div className="availability-dot" />
-            <span className="eyebrow" style={{ color: 'var(--color-green)' }}>Available now</span>
+            <span className="eyebrow" style={{ color: 'var(--color-purple-ink)' }}>Available now</span>
           </div>
         </div>
 
@@ -124,8 +131,7 @@ export default function Contact({ isVisible }) {
                   cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.6')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                {...dimOnMouseHover('0.6')}
               >
                 <div>
                   <div className="eyebrow" style={{ marginBottom: 3 }}>{l.label}</div>
@@ -152,8 +158,7 @@ export default function Contact({ isVisible }) {
                   cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                {...dimOnMouseHover('0.8')}
               >
                 <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
                   Download Resume

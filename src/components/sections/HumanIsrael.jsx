@@ -44,7 +44,7 @@ export default function HumanIsrael({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -209,7 +209,6 @@ export default function HumanIsrael({ isVisible }) {
         {/* Right sidebar */}
         <div className="human-sidebar" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', gap: 32 }}>
           <div data-animate>
-            <span className="eyebrow" style={{ marginBottom: 12, display: 'block' }}>Now playing</span>
             <SpotifyWidget />
           </div>
 

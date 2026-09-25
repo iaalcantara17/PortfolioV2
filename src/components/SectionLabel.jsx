@@ -1,4 +1,4 @@
-import { SECTION_TOTAL } from '../data/sections'
+import { SECTION_TOTAL, LABEL_TOP } from '../data/sections'
 
 export default function SectionLabel({ index }) {
   const num = String(index).padStart(2, '0')
@@ -7,7 +7,7 @@ export default function SectionLabel({ index }) {
       data-fixed-counter={index}
       style={{
         position: 'absolute',
-        top: 32,
+        top: LABEL_TOP,
         left: 32,
         pointerEvents: 'none',
         zIndex: 10,
