@@ -125,18 +125,6 @@ a {
   height: 20px;
 }
 
-/* Scroll progress bar */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background: var(--color-gold);
-  z-index: 9998;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
 /* Section indicator dots */
 #section-indicator {
   position: fixed;
