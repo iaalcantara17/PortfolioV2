@@ -80,7 +80,7 @@ export default function Skills({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -95,7 +95,7 @@ export default function Skills({ isVisible }) {
           className="section-left-col"
           style={{
             padding: '48px 32px 40px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -106,11 +106,11 @@ export default function Skills({ isVisible }) {
               data-animate
               className="section-intro-title"
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(28px, 3vw, 36px)',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.05,
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 marginBottom: 16,
               }}
             >
@@ -118,10 +118,10 @@ export default function Skills({ isVisible }) {
               <br />
               work{' '}
               <br />
-              with<span style={{ color: '#7F77DD' }}>.</span>
+              with<span style={{ color: 'var(--color-purple)' }}>.</span>
             </div>
 
-            <p data-animate style={{ color: '#666', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
+            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Tools I've used in production, in class, and on projects I actually care about.
             </p>
           </div>
@@ -130,14 +130,14 @@ export default function Skills({ isVisible }) {
           <div data-animate className="section-stat">
             <div
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 42,
                 letterSpacing: '-0.03em',
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 lineHeight: 1,
               }}
             >
-              25<span style={{ color: '#D4AF37', fontWeight: 600 }}>+</span>
+              25<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Technologies</div>
           </div>
@@ -153,7 +153,7 @@ export default function Skills({ isVisible }) {
               style={{
                 flex: 1,
                 padding: '0 48px',
-                borderBottom: ci < categories.length - 1 ? '0.5px solid #d4cfc5' : 'none',
+                borderBottom: ci < categories.length - 1 ? '0.5px solid var(--color-line)' : 'none',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -161,7 +161,7 @@ export default function Skills({ isVisible }) {
             >
               <div className="skill-cat-header" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                 <span className="eyebrow category-line" style={{ display: 'block' }}>{cat.name}</span>
-                <div className="category-line" style={{ flex: 1, height: '0.5px', background: '#d4cfc5' }} />
+                <div className="category-line" style={{ flex: 1, height: '0.5px', background: 'var(--color-line)' }} />
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {cat.items.map((item) => (
@@ -179,7 +179,7 @@ export default function Skills({ isVisible }) {
             className="skills-legend"
             style={{
               padding: '16px 48px',
-              borderTop: '0.5px solid #d4cfc5',
+              borderTop: '0.5px solid var(--color-line)',
               display: 'flex',
               gap: 24,
               alignItems: 'center',
@@ -187,9 +187,9 @@ export default function Skills({ isVisible }) {
             }}
           >
             {[
-              { color: '#7F77DD', label: 'Strong' },
-              { color: '#D4AF37', label: 'Cloud/DevOps' },
-              { color: '#1D9E75', label: 'Databases' },
+              { color: 'var(--color-purple)', label: 'Strong' },
+              { color: 'var(--color-gold)', label: 'Cloud/DevOps' },
+              { color: 'var(--color-green)', label: 'Databases' },
             ].map((l) => (
               <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color, flexShrink: 0 }} />
