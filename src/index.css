@@ -56,9 +56,9 @@ html {
 }
 
 body {
-  background-color: #f5f2ec;
-  color: #0d0d0d;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
   font-size: 13px;
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
@@ -99,11 +99,11 @@ a {
 
 /* Eyebrow label */
 .eyebrow {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #666666;
+  color: var(--color-muted);
 }
 
 /* Cursor */
@@ -111,7 +111,7 @@ a {
   position: fixed;
   width: 10px;
   height: 10px;
-  background: #7F77DD;
+  background: var(--color-purple);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -131,7 +131,7 @@ a {
   top: 0;
   left: 0;
   height: 2px;
-  background: #D4AF37;
+  background: var(--color-gold);
   z-index: 9998;
   width: 0%;
   transition: width 0.1s linear;
@@ -153,13 +153,13 @@ a {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: 1px solid #7F77DD;
+  border: 1px solid var(--color-purple);
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .section-dot.active {
-  background: #7F77DD;
+  background: var(--color-purple);
   transform: scale(1.3);
 }
 
@@ -186,8 +186,8 @@ nav.site-nav {
 }
 
 nav.site-nav.scrolled {
-  background: #f5f2ec;
-  border-bottom: 0.5px solid #d4cfc5;
+  background: var(--color-paper);
+  border-bottom: 0.5px solid var(--color-line);
 }
 
 /* Hamburger toggle — hidden by default, shown only at phone widths */
@@ -210,7 +210,7 @@ nav.site-nav.scrolled {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f5f2ec;
+  background: var(--color-paper);
   z-index: 450;
   display: flex;
   flex-direction: column;
@@ -226,10 +226,10 @@ nav.site-nav.scrolled {
 }
 
 .mobile-menu-links button {
-  font-family: 'DM Serif Display', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 34px;
   letter-spacing: -0.02em;
-  color: #0d0d0d;
+  color: var(--color-ink);
   background: none;
   border: none;
   text-align: left;
@@ -244,35 +244,35 @@ nav.site-nav.scrolled {
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 11px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: 0.04em;
-  border: 0.5px solid #d4cfc5;
+  border: 0.5px solid var(--color-line);
   background: transparent;
-  color: #0d0d0d;
+  color: var(--color-ink);
 }
 
 .pill-purple {
-  background: rgba(127, 119, 221, 0.12);
-  border-color: rgba(127, 119, 221, 0.3);
-  color: #534AB7;
+  background: var(--color-purple-a12);
+  border-color: var(--color-purple-a30);
+  color: var(--color-purple-deep);
 }
 
 .pill-gold {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.4);
-  color: #9a7d1a;
+  background: var(--color-gold-a12);
+  border-color: var(--color-gold-a40);
+  color: var(--color-gold-deep);
 }
 
 .pill-green {
-  background: rgba(29, 158, 117, 0.12);
-  border-color: rgba(29, 158, 117, 0.3);
-  color: #1D9E75;
+  background: var(--color-green-a12);
+  border-color: var(--color-green-a30);
+  color: var(--color-green);
 }
 
 .pill-dark {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.15);
-  color: #f5f2ec;
+  background: var(--color-white-a08);
+  border-color: var(--color-white-a15);
+  color: var(--color-paper);
 }
 
 /* Spotify bars animation */
@@ -310,7 +310,7 @@ nav.site-nav.scrolled {
 }
 
 .resume-btn:hover {
-  background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.3) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--color-gold-a30) 50%, transparent 100%);
   background-size: 200% auto;
   animation: shimmer 1.2s linear infinite;
 }
@@ -323,13 +323,13 @@ nav.site-nav.scrolled {
 
 /* About pull quote */
 .pull-quote {
-  font-family: 'DM Serif Display', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 32px;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  border-left: 2px solid #7F77DD;
+  border-left: 2px solid var(--color-purple);
   padding-left: 20px;
-  color: #0d0d0d;
+  color: var(--color-ink);
 }
 
 /* Timeline dot */
@@ -337,12 +337,12 @@ nav.site-nav.scrolled {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d4cfc5;
+  background: var(--color-line);
   flex-shrink: 0;
 }
 
 .timeline-dot.active {
-  background: #7F77DD;
+  background: var(--color-purple);
 }
 
 /* Global content wrapper — section backgrounds stay full-bleed, inner content centers and caps at 1440px */
@@ -361,15 +361,15 @@ nav.site-nav.scrolled {
 
 /* Photo placeholder */
 .photo-placeholder {
-  background: #e8e4dc;
+  background: var(--color-placeholder);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #bbbbbb;
+  color: var(--color-faint);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Gallery — hero stage + filmstrip */
@@ -380,9 +380,9 @@ nav.site-nav.scrolled {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 0.5px solid #d4cfc5;
-  background: rgba(245, 242, 236, 0.85);
-  color: #0d0d0d;
+  border: 0.5px solid var(--color-line);
+  background: var(--color-paper-a85);
+  color: var(--color-ink);
   font-size: 18px;
   line-height: 1;
   display: flex;
@@ -408,7 +408,7 @@ nav.site-nav.scrolled {
   width: 64px;
   height: 64px;
   border-radius: 4px;
-  border: 0.5px solid #d4cfc5;
+  border: 0.5px solid var(--color-line);
   overflow: hidden;
   padding: 0;
   cursor: none;
@@ -422,7 +422,7 @@ nav.site-nav.scrolled {
   display: block;
 }
 .filmstrip-thumb.active {
-  border: 2px solid #7F77DD;
+  border: 2px solid var(--color-purple);
   transform: scale(1.08);
 }
 
@@ -436,7 +436,7 @@ nav.site-nav.scrolled {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #1D9E75;
+  background: var(--color-green);
   flex-shrink: 0;
   animation: pulse 2s ease-in-out infinite;
 }
