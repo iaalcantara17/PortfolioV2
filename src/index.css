@@ -129,6 +129,11 @@ a {
   height: 20px;
 }
 
+/* multiply blends the dot into the Lightbox's near-black backdrop */
+.lightbox-open #custom-cursor {
+  mix-blend-mode: normal;
+}
+
 /* Section indicator dots */
 #section-indicator {
   position: fixed;
