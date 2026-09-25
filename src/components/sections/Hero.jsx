@@ -38,6 +38,15 @@ function renderChars(charDefs) {
   return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
 }
 
+// Appends a char's final node: a <br>, or a span with its resolved text and style
+function appendFinalChar(container, charDef) {
+  if (charDef.isBR) return container.appendChild(document.createElement('br'))
+  const span = document.createElement('span')
+  if (charDef.style) Object.assign(span.style, charDef.style)
+  span.textContent = charDef.ch
+  return container.appendChild(span)
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
@@ -50,19 +59,9 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
       if (state.iv) clearInterval(state.iv)
       if (state.resolveT) clearTimeout(state.resolveT)
       const container = containerRef.current
-      if (charDef.isBR) {
-        if (!state.span && container) container.appendChild(document.createElement('br'))
-        state.span = true
-        return
-      }
       if (!state.span) {
-        if (!container) return
-        const span = document.createElement('span')
-        if (charDef.style) Object.assign(span.style, charDef.style)
-        span.textContent = charDef.ch
-        container.appendChild(span)
-        state.span = span
-      } else {
+        if (container) state.span = appendFinalChar(container, charDef)
+      } else if (!charDef.isBR) {
         state.span.textContent = charDef.ch
       }
     }
