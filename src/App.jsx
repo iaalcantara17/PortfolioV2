@@ -49,7 +49,7 @@ export default function App() {
       <SectionIndicator current={currentSection} onNavigate={navigateTo} />
       <SectionCounter containerRef={containerRef} />
 
-      <div ref={containerRef} className="snap-container">
+      <div ref={containerRef} className="page-scroller">
         {sections.map(({ key, Component }, i) => (
           <div
             key={key}

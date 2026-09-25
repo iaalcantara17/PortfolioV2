@@ -122,7 +122,7 @@ export default function Hero({ isVisible }) {
   const completedRef = useRef(false)
 
   // Set initial hidden state on mount. Skipped once resolved, so a StrictMode
-  // (dev-only) remount doesn't re-hide elements the snap already revealed.
+  // (dev-only) remount doesn't re-hide elements the early resolve already revealed.
   useEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
@@ -132,7 +132,7 @@ export default function Hero({ isVisible }) {
   }, [])
 
   useEffect(() => {
-    // Already resolved (naturally or via a snap) — everything is visible, nothing to replay
+    // Already resolved (naturally or early, on scroll-away) — everything is visible, nothing to replay
     if (!isVisible || completedRef.current) return
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
@@ -189,7 +189,7 @@ export default function Hero({ isVisible }) {
       intervals.forEach(clearInterval)
 
       // If we're tearing down mid-scramble (scrolled away before it finished),
-      // snap every character to its final text instead of leaving it stuck.
+      // resolve every character to its final text at once instead of leaving it stuck.
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
         gsap.set(eyebrow, { opacity: 1 })
@@ -213,7 +213,7 @@ export default function Hero({ isVisible }) {
 
   return (
     <section
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div

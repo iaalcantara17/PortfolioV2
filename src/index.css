@@ -81,13 +81,13 @@ a {
 }
 
 /* Page scroller — the page scrolls inside this container, not on body */
-.snap-container {
+.page-scroller {
   height: 100vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
 
-.snap-section {
+.page-section {
   height: 100vh;
   min-height: 100vh;
   position: relative;
@@ -315,7 +315,7 @@ nav.site-nav.scrolled {
 }
 
 /* Global content wrapper — section backgrounds stay full-bleed, inner content centers and caps at 1440px */
-.snap-section > div:first-child {
+.page-section > div:first-child {
   max-width: 1440px;
   margin: 0 auto;
   width: 100%;
@@ -412,7 +412,7 @@ nav.site-nav.scrolled {
 
 /* Tablet + mobile — structural stacking. Desktop (1024px+) is untouched. */
 @media (max-width: 1023px) {
-  .snap-section {
+  .page-section {
     height: auto !important;
     overflow: visible !important;
   }
@@ -433,10 +433,10 @@ nav.site-nav.scrolled {
     display: none;
   }
   /* Stack two-column layouts */
-  .snap-section > div[style*="grid-template-columns: 1fr 1fr"],
-  .snap-section > div[style*="grid-template-columns: 200px"],
-  .snap-section > div[style*="grid-template-columns: 1fr 340px"],
-  .snap-section div:has(> .grid-card),
+  .page-section > div[style*="grid-template-columns: 1fr 1fr"],
+  .page-section > div[style*="grid-template-columns: 200px"],
+  .page-section > div[style*="grid-template-columns: 1fr 340px"],
+  .page-section div:has(> .grid-card),
   .hero-grid {
     display: flex !important;
     flex-direction: column !important;
@@ -458,7 +458,7 @@ nav.site-nav.scrolled {
     margin-top: 40px;
   }
   /* Extra breathing room between stacked sections */
-  .snap-section:not(:last-child) {
+  .page-section:not(:last-child) {
     margin-bottom: 56px;
   }
   /* About — space between left content block and photo, and photo-to-stats gap */

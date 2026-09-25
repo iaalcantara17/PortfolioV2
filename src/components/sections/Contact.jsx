@@ -37,7 +37,7 @@ export default function Contact({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="snap-section"
+      className="page-section"
       style={{ background: 'var(--color-paper)', display: 'flex', flexDirection: 'column' }}
     >
       <div
