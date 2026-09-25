@@ -13,7 +13,7 @@ const schools = [
     college: 'Ying Wu College of Computing',
     status: 'earned',
     period: 'Sep 2022 — May 2026',
-    logo: { src: njitLogo, width: 283, height: 192 },
+    logo: { src: njitLogo, width: 192, height: 192 },
   },
   {
     degree: 'Master of Business Administration',
