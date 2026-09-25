@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 
+// copyOnTouch: on touch devices, tapping copies the value instead of following href
 const links = [
-  { label: 'Email', value: 'iaa48@njit.edu', href: 'mailto:iaa48@njit.edu' },
+  { label: 'Email', value: 'ialcantara2003@gmail.com', href: 'mailto:ialcantara2003@gmail.com', copyOnTouch: true },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
@@ -14,9 +15,30 @@ const dimOnMouseHover = (opacity) => ({
   onPointerLeave: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = '1' },
 })
 
+const COPIED_MS = 1500
+
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
+  const [copied, setCopied] = useState(false)
+  const copiedTimerRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
+
+  // Touch only: a mail app is rarely what someone wants from a tap on their phone.
+  // If the clipboard isn't available or refuses, fall back to the mailto link.
+  const handleCopyTap = (e, link) => {
+    if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches || !navigator.clipboard) return
+    e.preventDefault()
+    navigator.clipboard.writeText(link.value).then(
+      () => {
+        setCopied(true)
+        clearTimeout(copiedTimerRef.current)
+        copiedTimerRef.current = setTimeout(() => setCopied(false), COPIED_MS)
+      },
+      () => { window.location.href = link.href }
+    )
+  }
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -132,9 +154,12 @@ export default function Contact({ isVisible }) {
                   transition: 'opacity 0.2s ease',
                 }}
                 {...dimOnMouseHover('0.6')}
+                onClick={l.copyOnTouch ? (e) => handleCopyTap(e, l) : undefined}
               >
                 <div>
-                  <div className="eyebrow" style={{ marginBottom: 3 }}>{l.label}</div>
+                  <div className="eyebrow" style={{ marginBottom: 3 }} aria-live={l.copyOnTouch ? 'polite' : undefined}>
+                    {l.copyOnTouch && copied ? 'Copied' : l.label}
+                  </div>
                   <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
                 </div>
                 <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
