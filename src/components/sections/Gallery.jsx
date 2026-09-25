@@ -84,7 +84,7 @@ export default function Gallery({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -98,22 +98,22 @@ export default function Gallery({ isVisible }) {
         {/* Header */}
         <div data-animate>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 4 }}>
-            <span className="eyebrow" style={{ color: '#bbbbbb', fontSize: 9 }}>Full Gallery</span>
+            <span className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</span>
           </div>
           <div
             style={{
-              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontFamily: 'var(--font-serif)',
               fontSize: 'clamp(36px, 4.5vw, 56px)',
               letterSpacing: '-0.03em',
               lineHeight: 0.92,
-              color: '#0d0d0d',
+              color: 'var(--color-ink)',
             }}
           >
             Through
             <br />
             the
             <br />
-            lens<span style={{ color: '#7F77DD' }}>.</span>
+            lens<span style={{ color: 'var(--color-purple)' }}>.</span>
           </div>
         </div>
 
@@ -126,12 +126,12 @@ export default function Gallery({ isVisible }) {
               minHeight: 0,
               position: 'relative',
               borderRadius: 8,
-              border: '0.5px solid #d4cfc5',
+              border: '0.5px solid var(--color-line)',
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: '#efece5',
+              background: 'var(--color-surface)',
             }}
           >
             <Photo

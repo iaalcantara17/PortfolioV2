@@ -47,7 +47,7 @@ export default function HumanIsrael({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -58,13 +58,13 @@ export default function HumanIsrael({ isVisible }) {
         }}
       >
         {/* Left — gallery */}
-        <div style={{ padding: '40px 48px', borderRight: '0.5px solid #d4cfc5', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
+        <div style={{ padding: '40px 48px', borderRight: '0.5px solid var(--color-line)', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
           {/* Header */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 4 }}>
               <span
                 className="eyebrow"
-                style={{ color: '#bbbbbb', fontSize: 9 }}
+                style={{ color: 'var(--color-faint)', fontSize: 9 }}
               >
                 Shot on Canon SL3
               </span>
@@ -72,18 +72,18 @@ export default function HumanIsrael({ isVisible }) {
             <div
               data-animate
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(36px, 4.5vw, 56px)',
                 letterSpacing: '-0.03em',
                 lineHeight: 0.92,
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
               }}
             >
               Beyond
               <br />
               the
               <br />
-              code<span style={{ color: '#7F77DD' }}>.</span>
+              code<span style={{ color: 'var(--color-purple)' }}>.</span>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export default function HumanIsrael({ isVisible }) {
                 width: '100%',
                 height: 676,
                 borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
+                border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'none',
@@ -118,7 +118,7 @@ export default function HumanIsrael({ isVisible }) {
                 alt="Israel — streetwear"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
               />
-              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
                 Streetwear
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function HumanIsrael({ isVisible }) {
                   width: '100%',
                   height: 284,
                   borderRadius: 4,
-                  border: '0.5px solid #d4cfc5',
+                  border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
                   cursor: 'none',
@@ -146,7 +146,7 @@ export default function HumanIsrael({ isVisible }) {
                   alt="Israel — city"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
                 />
-                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
                   NYC
                 </div>
               </div>
@@ -159,11 +159,11 @@ export default function HumanIsrael({ isVisible }) {
                   width: '100%',
                   height: 380,
                   borderRadius: 4,
-                  border: '0.5px solid #d4cfc5',
+                  border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
                   cursor: 'none',
-                  background: '#e8e4dc',
+                  background: 'var(--color-placeholder)',
                 }}
               >
                 <Photo
@@ -173,7 +173,7 @@ export default function HumanIsrael({ isVisible }) {
                   alt="Israel — nature"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
                 />
-                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+                <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
                   Outdoors
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function HumanIsrael({ isVisible }) {
                 width: '100%',
                 height: 560,
                 borderRadius: 4,
-                border: '0.5px solid #d4cfc5',
+                border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'none',
@@ -201,7 +201,7 @@ export default function HumanIsrael({ isVisible }) {
                 alt="Israel — friends"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%', display: 'block' }}
               />
-              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: '#f5f2ec', padding: '2px 6px', borderRadius: 20, border: '0.5px solid #d4cfc5', color: '#666', fontSize: 8 }}>
+              <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
                 People
               </div>
             </div>
@@ -225,19 +225,19 @@ export default function HumanIsrael({ isVisible }) {
             </div>
           </div>
 
-          <div data-animate style={{ borderTop: '0.5px solid #d4cfc5', paddingTop: 24 }}>
+          <div data-animate style={{ borderTop: '0.5px solid var(--color-line)', paddingTop: 24 }}>
             <span className="eyebrow" style={{ marginBottom: 12, display: 'block' }}>Now playing</span>
             <SpotifyWidget />
           </div>
 
-          <div data-animate style={{ borderTop: '0.5px solid #d4cfc5', paddingTop: 24 }}>
-            <p style={{ color: '#666', fontSize: 12, lineHeight: 1.85, fontStyle: 'italic' }}>
+          <div data-animate style={{ borderTop: '0.5px solid var(--color-line)', paddingTop: 24 }}>
+            <p style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, fontStyle: 'italic' }}>
               "I'm still growing. But I know who I am, and I show up as exactly that."
             </p>
           </div>
 
-          <div data-animate style={{ marginTop: 'auto', borderTop: '0.5px solid #d4cfc5', paddingTop: 16 }}>
-            <span className="eyebrow" style={{ color: '#bbbbbb', fontSize: 9 }}>All photos shot on Canon SL3.</span>
+          <div data-animate style={{ marginTop: 'auto', borderTop: '0.5px solid var(--color-line)', paddingTop: 16 }}>
+            <span className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>All photos shot on Canon SL3.</span>
           </div>
         </div>
       </div>

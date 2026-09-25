@@ -95,7 +95,7 @@ export default function SectionCounter({ containerRef }) {
         left: 28,
         zIndex: 9999,
         pointerEvents: 'none',
-        background: 'rgba(245, 242, 236, 0.72)',
+        background: 'var(--color-paper-a72)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         borderRadius: 3,
@@ -108,7 +108,7 @@ export default function SectionCounter({ containerRef }) {
           fontWeight: 400,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: '#0d0d0d',
+          color: 'var(--color-ink)',
           display: 'block',
         }}
       >

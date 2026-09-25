@@ -13,7 +13,7 @@ const roles = [
     desc: (
       <>
         Built a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, reducing payloads by up to{' '}
-        <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>60 GB/day</strong>. Instrumented 13 custom metrics, published a cross-region dashboard, and authored 30+ JUnit tests covering round-trip correctness and edge cases.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB/day</strong>. Instrumented 13 custom metrics, published a cross-region dashboard, and authored 30+ JUnit tests covering round-trip correctness and edge cases.
       </>
     ),
   },
@@ -27,7 +27,7 @@ const roles = [
     tagColor: 'gold',
     desc: (
       <>
-        Supervise a <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>400-resident</strong> Greek Village complex. Enforce housing policy, conduct regular rounds, author formal incident reports, and design monthly community events on a sub-$1k semester budget.
+        Supervise a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. Enforce housing policy, conduct regular rounds, author formal incident reports, and design monthly community events on a sub-$1k semester budget.
       </>
     ),
   },
@@ -42,7 +42,7 @@ const roles = [
     desc: (
       <>
         Planned and executed{' '}
-        <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>12+ networking and professional development events</strong>, coordinating ~10 volunteers. Increased event participation by 50% and cut per-event prep time by 20% through reusable planning templates.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>12+ networking and professional development events</strong>, coordinating ~10 volunteers. Increased event participation by 50% and cut per-event prep time by 20% through reusable planning templates.
       </>
     ),
   },
@@ -57,7 +57,7 @@ const roles = [
     desc: (
       <>
         Troubleshot AV systems end-to-end across{' '}
-        <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>100+ lectures annually</strong>. Standardized equipment setup procedures with a team of 5, improving reliability by 40% and cutting repeat call rate by 30%.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. Standardized equipment setup procedures with a team of 5, improving reliability by 40% and cutting repeat call rate by 30%.
       </>
     ),
   },
@@ -72,16 +72,16 @@ const roles = [
     desc: (
       <>
         Monitored three pools, ran daily chemical checks, and delivered CPR/first aid when needed, safeguarding{' '}
-        <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>~80 swimmers per shift</strong>. Closed the season with zero accidents.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong>. Closed the season with zero accidents.
       </>
     ),
   },
 ]
 
 const tagColors = {
-  purple: { bg: 'rgba(127,119,221,0.12)', border: 'rgba(127,119,221,0.3)', text: '#534AB7' },
-  gold: { bg: 'rgba(212,175,55,0.12)', border: 'rgba(212,175,55,0.4)', text: '#9a7d1a' },
-  green: { bg: 'rgba(29,158,117,0.12)', border: 'rgba(29,158,117,0.3)', text: '#1D9E75' },
+  purple: { bg: 'var(--color-purple-a12)', border: 'var(--color-purple-a30)', text: 'var(--color-purple-deep)' },
+  gold: { bg: 'var(--color-gold-a12)', border: 'var(--color-gold-a40)', text: 'var(--color-gold-deep)' },
+  green: { bg: 'var(--color-green-a12)', border: 'var(--color-green-a30)', text: 'var(--color-green)' },
 }
 
 export default function Experience({ isVisible }) {
@@ -115,7 +115,7 @@ export default function Experience({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -130,7 +130,7 @@ export default function Experience({ isVisible }) {
           className="section-left-col"
           style={{
             padding: '48px 32px 40px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -141,11 +141,11 @@ export default function Experience({ isVisible }) {
               data-animate
               className="section-intro-title"
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(26px, 2.8vw, 36px)',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.05,
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 marginBottom: 16,
               }}
             >
@@ -153,23 +153,23 @@ export default function Experience({ isVisible }) {
               <br />
               shown
               <br />
-              up<span style={{ color: '#7F77DD' }}>.</span>
+              up<span style={{ color: 'var(--color-purple)' }}>.</span>
             </div>
-            <p data-animate style={{ color: '#666', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
+            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Not just what I built, but where I was, what I did, and how I carried myself doing it.
             </p>
           </div>
           <div data-animate className="section-stat">
             <div
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 42,
                 letterSpacing: '-0.03em',
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 lineHeight: 1,
               }}
             >
-              4<span style={{ color: '#D4AF37', fontWeight: 600 }}>+</span>
+              4<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Years of experience</div>
           </div>
@@ -186,7 +186,7 @@ export default function Experience({ isVisible }) {
                 style={{
                   flex: 1,
                   padding: '0 48px',
-                  borderBottom: i < roles.length - 1 ? '0.5px solid #d4cfc5' : 'none',
+                  borderBottom: i < roles.length - 1 ? '0.5px solid var(--color-line)' : 'none',
                   display: 'flex',
                   gap: 16,
                   alignItems: 'center',
@@ -200,10 +200,10 @@ export default function Experience({ isVisible }) {
                   {/* Header row */}
                   <div className="exp-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
                     <div>
-                      <div className="exp-title" style={{ fontSize: 13, fontWeight: 500, color: '#0d0d0d', lineHeight: 1.3, marginBottom: 2 }}>
+                      <div className="exp-title" style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-ink)', lineHeight: 1.3, marginBottom: 2 }}>
                         {role.title}
                       </div>
-                      <div className="eyebrow" style={{ color: '#666' }}>
+                      <div className="eyebrow" style={{ color: 'var(--color-muted)' }}>
                         {role.company}{role.location ? `, ${role.location}` : ''}
                       </div>
                     </div>
@@ -218,7 +218,7 @@ export default function Experience({ isVisible }) {
                           fontSize: 9,
                           letterSpacing: '0.1em',
                           textTransform: 'uppercase',
-                          fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                          fontFamily: 'var(--font-sans)',
                           background: tc.bg,
                           border: `0.5px solid ${tc.border}`,
                           color: tc.text,
@@ -226,10 +226,10 @@ export default function Experience({ isVisible }) {
                       >
                         {role.tag}
                       </span>
-                      <span className="eyebrow" style={{ color: '#bbbbbb' }}>{role.period}</span>
+                      <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>{role.period}</span>
                     </div>
                   </div>
-                  <p className="exp-desc" style={{ color: '#666', fontSize: 12, lineHeight: 1.85, marginTop: 8 }}>{role.desc}</p>
+                  <p className="exp-desc" style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginTop: 8 }}>{role.desc}</p>
                 </div>
               </div>
             )
@@ -240,16 +240,16 @@ export default function Experience({ isVisible }) {
             className="exp-legend"
             style={{
               padding: '14px 48px',
-              borderTop: '0.5px solid #d4cfc5',
+              borderTop: '0.5px solid var(--color-line)',
               display: 'flex',
               gap: 24,
               alignItems: 'center',
             }}
           >
             {[
-              { color: '#7F77DD', label: 'Tech' },
-              { color: '#D4AF37', label: 'Leadership' },
-              { color: '#1D9E75', label: 'Operations' },
+              { color: 'var(--color-purple)', label: 'Tech' },
+              { color: 'var(--color-gold)', label: 'Leadership' },
+              { color: 'var(--color-green)', label: 'Operations' },
             ].map((l) => (
               <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color, flexShrink: 0 }} />

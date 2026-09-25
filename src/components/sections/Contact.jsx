@@ -38,7 +38,7 @@ export default function Contact({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', display: 'flex', flexDirection: 'column' }}
+      style={{ background: 'var(--color-paper)', display: 'flex', flexDirection: 'column' }}
     >
       <div
         style={{
@@ -52,7 +52,7 @@ export default function Contact({ isVisible }) {
         <div
           style={{
             padding: '60px 48px 40px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -62,11 +62,11 @@ export default function Contact({ isVisible }) {
             {/* Headline with letter reveal */}
             <div
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(40px, 5vw, 52px)',
                 letterSpacing: '-0.03em',
                 lineHeight: 0.95,
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 marginBottom: 32,
               }}
               aria-label="Let's talk."
@@ -76,15 +76,15 @@ export default function Contact({ isVisible }) {
               ))}
               <br />
               {'talk.'.split('').map((c, i) => (
-                <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? '#7F77DD' : '#0d0d0d' }}>{c}</span>
+                <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
               ))}
             </div>
 
             <div data-animate style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
-              <p style={{ color: '#666', fontSize: 13, lineHeight: 1.9 }}>
+              <p style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9 }}>
                 I'm still growing. But I know who I am, and I show up as exactly that. If that's someone you want on your team, I'd like to hear from you.
               </p>
-              <p style={{ color: '#666', fontSize: 13, lineHeight: 1.9 }}>
+              <p style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9 }}>
                 Whether it's a role, a conversation, or just something worth talking about, my inbox is open.
               </p>
             </div>
@@ -93,7 +93,7 @@ export default function Contact({ isVisible }) {
           {/* Availability */}
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div className="availability-dot" />
-            <span className="eyebrow" style={{ color: '#1D9E75' }}>Available now</span>
+            <span className="eyebrow" style={{ color: 'var(--color-green)' }}>Available now</span>
           </div>
         </div>
 
@@ -119,7 +119,7 @@ export default function Contact({ isVisible }) {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '20px 0',
-                  borderBottom: '0.5px solid #d4cfc5',
+                  borderBottom: '0.5px solid var(--color-line)',
                   textDecoration: 'none',
                   cursor: 'none',
                   transition: 'opacity 0.2s ease',
@@ -129,9 +129,9 @@ export default function Contact({ isVisible }) {
               >
                 <div>
                   <div className="eyebrow" style={{ marginBottom: 3 }}>{l.label}</div>
-                  <div style={{ fontSize: 13, color: '#0d0d0d', fontFamily: "'Helvetica Neue', Helvetica, sans-serif" }}>{l.value}</div>
+                  <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
                 </div>
-                <span style={{ color: '#7F77DD', fontSize: 18, lineHeight: 1 }}>↗</span>
+                <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
               </a>
             ))}
 
@@ -147,7 +147,7 @@ export default function Contact({ isVisible }) {
                   alignItems: 'center',
                   gap: 10,
                   padding: '12px 24px',
-                  background: '#0d0d0d',
+                  background: 'var(--color-ink)',
                   borderRadius: 4,
                   textDecoration: 'none',
                   cursor: 'none',
@@ -156,7 +156,7 @@ export default function Contact({ isVisible }) {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
               >
-                <span style={{ fontSize: 12, color: '#f5f2ec', fontFamily: "'Helvetica Neue', Helvetica, sans-serif", letterSpacing: '0.06em' }}>
+                <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
                   Download Resume
                 </span>
                 <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
@@ -169,15 +169,15 @@ export default function Contact({ isVisible }) {
       {/* Footer */}
       <div
         style={{
-          borderTop: '0.5px solid #d4cfc5',
+          borderTop: '0.5px solid var(--color-line)',
           padding: '16px 48px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <span className="eyebrow" style={{ color: '#bbbbbb' }}>Israel Alcántara, 2026</span>
-        <span className="eyebrow" style={{ color: '#bbbbbb' }}>Built with craft.</span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, 2026</span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Built with craft.</span>
       </div>
     </section>
   )

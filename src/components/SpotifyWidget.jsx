@@ -3,10 +3,10 @@ import { useSpotify } from '../hooks/useSpotify'
 export default function SpotifyWidget({ dark = false }) {
   const { track, artist, isPlaying, loading } = useSpotify()
 
-  const bg = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
-  const border = dark ? 'rgba(255,255,255,0.1)' : '#d4cfc5'
-  const textColor = dark ? '#f5f2ec' : '#0d0d0d'
-  const mutedColor = dark ? 'rgba(245,242,236,0.5)' : '#666666'
+  const bg = dark ? 'var(--color-white-a06)' : 'var(--color-black-a04)'
+  const border = dark ? 'var(--color-white-a10)' : 'var(--color-line)'
+  const textColor = dark ? 'var(--color-paper)' : 'var(--color-ink)'
+  const mutedColor = dark ? 'var(--color-paper-a50)' : 'var(--color-muted)'
 
   return (
     <div
@@ -27,7 +27,7 @@ export default function SpotifyWidget({ dark = false }) {
           width: 7,
           height: 7,
           borderRadius: '50%',
-          background: '#1D9E75',
+          background: 'var(--color-green)',
           flexShrink: 0,
         }}
       />
@@ -41,7 +41,7 @@ export default function SpotifyWidget({ dark = false }) {
               className="spotify-bar"
               style={{
                 width: 3,
-                background: '#1D9E75',
+                background: 'var(--color-green)',
                 borderRadius: 1,
                 height: 8,
               }}
@@ -50,7 +50,7 @@ export default function SpotifyWidget({ dark = false }) {
         </div>
       ) : (
         <div style={{ width: 14, height: 14, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="10" height="10" viewBox="0 0 10 10" fill={mutedColor}>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style={{ color: mutedColor }}>
             <path d="M5 0a5 5 0 100 10A5 5 0 005 0zm-1 7V3l3 2-3 2z"/>
           </svg>
         </div>
@@ -59,13 +59,13 @@ export default function SpotifyWidget({ dark = false }) {
       {/* Text */}
       <div style={{ overflow: 'hidden', minWidth: 0 }}>
         {loading ? (
-          <span style={{ fontSize: 10, color: mutedColor, fontFamily: "'Helvetica Neue', Helvetica, sans-serif" }}>Loading...</span>
+          <span style={{ fontSize: 10, color: mutedColor, fontFamily: 'var(--font-sans)' }}>Loading...</span>
         ) : (
           <>
-            <div style={{ fontSize: 9, color: mutedColor, fontFamily: "'Helvetica Neue', Helvetica, sans-serif", letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 1 }}>
+            <div style={{ fontSize: 9, color: mutedColor, fontFamily: 'var(--font-sans)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 1 }}>
               {isPlaying ? 'Now playing' : 'Last played'}
             </div>
-            <div style={{ fontSize: 11, color: textColor, fontFamily: "'Helvetica Neue', Helvetica, sans-serif", fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontSize: 11, color: textColor, fontFamily: 'var(--font-sans)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {track || 'Nothing playing'}
               {artist && <span style={{ fontWeight: 400, color: mutedColor }}> · {artist}</span>}
             </div>

@@ -38,7 +38,7 @@ export default function Nav({ containerRef, onNavigate }) {
       <div className="site-nav-inner">
         <button
           onClick={() => handleNavigate(0)}
-          style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: 15, letterSpacing: '-0.01em', color: '#0d0d0d', background: 'none', border: 'none', cursor: 'none' }}
+          style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', background: 'none', border: 'none', cursor: 'none' }}
         >
           I.A
         </button>
@@ -48,7 +48,7 @@ export default function Nav({ containerRef, onNavigate }) {
             <button
               key={l.key}
               onClick={() => onNavigate(l.section)}
-              style={{ background: 'none', border: 'none', cursor: 'none', color: '#666666', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+              style={{ background: 'none', border: 'none', cursor: 'none', color: 'var(--color-muted)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
             >
               {l.label}
             </button>
@@ -59,7 +59,7 @@ export default function Nav({ containerRef, onNavigate }) {
           <button
             onClick={() => window.open('/resume.pdf', '_blank')}
             className="resume-btn"
-            style={{ border: '0.5px solid #d4cfc5', borderRadius: 2, padding: '6px 14px', background: 'none', cursor: 'none', color: '#0d0d0d', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+            style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', cursor: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
           >
             Resume
           </button>
@@ -71,17 +71,17 @@ export default function Nav({ containerRef, onNavigate }) {
             aria-expanded={isMenuOpen}
             style={{ background: 'none', border: 'none', padding: 4 }}
           >
-            <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
+            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" style={{ color: 'var(--color-ink)' }}>
               {isMenuOpen ? (
                 <>
-                  <line x1="1" y1="1" x2="19" y2="13" stroke="#0d0d0d" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="19" y1="1" x2="1" y2="13" stroke="#0d0d0d" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="1" y1="1" x2="19" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="19" y1="1" x2="1" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
                 </>
               ) : (
                 <>
-                  <line x1="0" y1="1" x2="20" y2="1" stroke="#0d0d0d" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="0" y1="7" x2="20" y2="7" stroke="#0d0d0d" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="0" y1="13" x2="20" y2="13" stroke="#0d0d0d" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
                 </>
               )}
             </svg>

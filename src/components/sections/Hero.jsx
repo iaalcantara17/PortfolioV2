@@ -19,13 +19,13 @@ const NAME_LINE2 = [
   { ch: 'á' },
   { ch: 'n' },
   { ch: ' ', noScramble: true },
-  { ch: '—', style: { color: '#7F77DD', fontSize: '0.8em', fontWeight: '700' } },
+  { ch: '—', style: { color: 'var(--color-purple)', fontSize: '0.8em', fontWeight: '700' } },
 ]
 const NAME_LINE3 = 'tara.'.split('').map(ch => ({ ch }))
 
 const SUBTEXT_CHARS = [
   ...'Builder. '.split('').map(ch => ({ ch })),
-  ...'AWS alum.'.split('').map(ch => ({ ch, style: { fontWeight: '500', color: '#0d0d0d' } })),
+  ...'AWS alum.'.split('').map(ch => ({ ch, style: { fontWeight: '500', color: 'var(--color-ink)' } })),
   ...' NJIT Computer Science.'.split('').map(ch => ({ ch })),
   { ch: '', isBR: true },
   ...'Bilingual.'.split('').map(ch => ({ ch })),
@@ -208,11 +208,11 @@ export default function Hero({ isVisible }) {
   }, [isVisible])
 
   const wordStyle = {
-    fontFamily: "'DM Serif Display', Georgia, serif",
+    fontFamily: 'var(--font-serif)',
     fontSize: 'clamp(52px, 6vw, 72px)',
     lineHeight: 0.92,
     letterSpacing: '-0.03em',
-    color: '#0d0d0d',
+    color: 'var(--color-ink)',
     display: 'block',
     minHeight: '0.92em',
   }
@@ -220,7 +220,7 @@ export default function Hero({ isVisible }) {
   return (
     <section
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         className="hero-grid"
@@ -234,7 +234,7 @@ export default function Hero({ isVisible }) {
         <div
           style={{
             padding: '60px 48px 64px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -247,7 +247,7 @@ export default function Hero({ isVisible }) {
               ref={eyebrowRef}
               style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}
             >
-              <div style={{ width: 32, height: 1, background: '#7F77DD', flexShrink: 0 }} />
+              <div style={{ width: 32, height: 1, background: 'var(--color-purple)', flexShrink: 0 }} />
               <span className="eyebrow">Software Engineer · Class of '26</span>
             </div>
 
@@ -259,10 +259,10 @@ export default function Hero({ isVisible }) {
             </div>
 
             {/* Subtext — empty on mount, chars appended by typewriter */}
-            <div style={{ color: '#666666', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
+            <div style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
               <span ref={subtextBodyRef} />
               <br />
-              <em ref={siempreRef} style={{ color: '#7F77DD', fontStyle: 'italic' }} />
+              <em ref={siempreRef} style={{ color: 'var(--color-purple)', fontStyle: 'italic' }} />
             </div>
           </div>
 
@@ -270,10 +270,10 @@ export default function Hero({ isVisible }) {
           <div ref={bottomRef} className="hero-bottom">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-                <div style={{ width: 1, height: 32, background: '#D4AF37' }} />
-                <div style={{ width: 0, height: 0, borderLeft: '3px solid transparent', borderRight: '3px solid transparent', borderTop: '5px solid #D4AF37' }} />
+                <div style={{ width: 1, height: 32, background: 'var(--color-gold)' }} />
+                <div style={{ width: 0, height: 0, borderLeft: '3px solid transparent', borderRight: '3px solid transparent', borderTop: '5px solid var(--color-gold)' }} />
               </div>
-              <span className="eyebrow" style={{ color: '#D4AF37' }}>Scroll</span>
+              <span className="eyebrow" style={{ color: 'var(--color-gold)' }}>Scroll</span>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function Hero({ isVisible }) {
               maxWidth: 420,
               aspectRatio: '1 / 1',
               borderRadius: 4,
-              border: '0.5px solid #d4cfc5',
+              border: '0.5px solid var(--color-line)',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -313,7 +313,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Stats with gold suffixes */}
-          <div style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
+          <div style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
             {[
               { num: '12', suffix: 'W', label: 'AWS Internship' },
               { num: '6', suffix: '+', label: 'Projects shipped' },
@@ -322,20 +322,20 @@ export default function Hero({ isVisible }) {
                 key={item.label}
                 style={{
                   padding: '16px 20px',
-                  borderRight: i === 0 ? '0.5px solid #d4cfc5' : 'none',
+                  borderRight: i === 0 ? '0.5px solid var(--color-line)' : 'none',
                 }}
               >
                 <div
                   style={{
-                    fontFamily: "'DM Serif Display', Georgia, serif",
+                    fontFamily: 'var(--font-serif)',
                     fontSize: 28,
                     letterSpacing: '-0.02em',
-                    color: '#0d0d0d',
+                    color: 'var(--color-ink)',
                     lineHeight: 1,
                     marginBottom: 4,
                   }}
                 >
-                  {item.num}<span style={{ color: '#D4AF37', fontWeight: 600 }}>{item.suffix}</span>
+                  {item.num}<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{item.suffix}</span>
                 </div>
                 <div className="eyebrow">{item.label}</div>
               </div>
@@ -358,7 +358,7 @@ export default function Hero({ isVisible }) {
           bottom: 0,
           left: 0,
           right: 0,
-          borderTop: '0.5px solid #d4cfc5',
+          borderTop: '0.5px solid var(--color-line)',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
         }}
@@ -372,13 +372,13 @@ export default function Hero({ isVisible }) {
             key={text}
             style={{
               padding: '12px 48px',
-              borderRight: i < 2 ? '0.5px solid #d4cfc5' : 'none',
+              borderRight: i < 2 ? '0.5px solid var(--color-line)' : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: 8,
             }}
           >
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#D4AF37', flexShrink: 0 }} />
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />
             <span className="eyebrow">{text}</span>
           </div>
         ))}

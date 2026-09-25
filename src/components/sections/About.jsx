@@ -59,7 +59,7 @@ export default function About({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -73,7 +73,7 @@ export default function About({ isVisible }) {
         <div
           style={{
             padding: '48px 48px 40px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             gap: 28,
@@ -87,7 +87,7 @@ export default function About({ isVisible }) {
             I'm not just someone who builds things.
             <br />
             I'm someone who{' '}
-            <em style={{ color: '#7F77DD' }}>notices</em> things.
+            <em style={{ color: 'var(--color-purple)' }}>notices</em> things.
           </div>
 
           {/* Body paragraphs */}
@@ -96,7 +96,7 @@ export default function About({ isVisible }) {
               <p
                 key={i}
                 className="body-para"
-                style={{ color: '#666', fontSize: 13, lineHeight: 1.9 }}
+                style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9 }}
               >
                 {p}
               </p>
@@ -104,7 +104,7 @@ export default function About({ isVisible }) {
           </div>
 
           {/* Gold divider */}
-          <div data-animate style={{ width: 32, height: 1, background: '#D4AF37' }} />
+          <div data-animate style={{ width: 32, height: 1, background: 'var(--color-gold)' }} />
 
           {/* Interests */}
           <div>
@@ -143,7 +143,7 @@ export default function About({ isVisible }) {
               height: 380,
               maxHeight: 380,
               borderRadius: 4,
-              border: '0.5px solid #d4cfc5',
+              border: '0.5px solid var(--color-line)',
               position: 'relative',
               overflow: 'hidden',
               cursor: 'none',
@@ -162,11 +162,11 @@ export default function About({ isVisible }) {
                 position: 'absolute',
                 bottom: 10,
                 left: 10,
-                background: '#f5f2ec',
+                background: 'var(--color-paper)',
                 padding: '3px 8px',
                 borderRadius: 20,
-                border: '0.5px solid #d4cfc5',
-                color: '#666',
+                border: '0.5px solid var(--color-line)',
+                color: 'var(--color-muted)',
               }}
             >
               Canon SL3
@@ -174,14 +174,14 @@ export default function About({ isVisible }) {
           </div>
 
           {/* Rotating quote */}
-          <div className="about-quote" style={{ padding: '14px 20px', border: '0.5px solid #d4cfc5', borderRadius: 4 }}>
+          <div className="about-quote" style={{ padding: '14px 20px', border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
             <p
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: 19,
                 lineHeight: 1.4,
-                color: '#666',
+                color: 'var(--color-muted)',
               }}
             >
               "{quote.text}"
@@ -192,7 +192,7 @@ export default function About({ isVisible }) {
                 fontSize: 11,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: '#999',
+                color: '#999', /* one-off: review */
               }}
             >
               — {quote.author}
