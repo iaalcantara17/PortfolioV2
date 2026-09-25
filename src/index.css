@@ -249,6 +249,23 @@ nav.site-nav.scrolled {
   color: var(--color-ink);
 }
 
+/* Tags — small uppercase chips (Experience role categories, status pills).
+   Colored with the .pill-* variants below. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border-width: 0.5px;
+  border-style: solid;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .pill-purple {
   background: var(--color-purple-a12);
   border-color: var(--color-purple-a30);
@@ -548,6 +565,26 @@ nav.site-nav.scrolled {
   .exp-legend {
     margin-top: 12px;
   }
+  /* Education — cards stack logo, text and status/dates vertically; the right
+     column keeps the 48px side padding the other stacked sections' rows use */
+  .edu-right-col {
+    padding: 0 48px 32px !important;
+  }
+  .edu-card {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 24px !important;
+  }
+  .edu-logo {
+    justify-content: flex-start !important;
+    height: 56px !important;
+  }
+  .edu-meta {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    gap: 8px 12px !important;
+  }
   /* HumanIsrael — sidebar spacing once stacked below the gallery, and photo cells
      scale by aspect-ratio instead of the desktop-tuned fixed pixel heights */
   .human-sidebar {
@@ -611,9 +648,10 @@ nav.site-nav.scrolled {
   }
 }
 
-/* Phone — nav links don't fit alongside logo + resume button below this width,
-   swap them for the hamburger toggle instead */
-@media (max-width: 768px) {
+/* Tablet + mobile — the eight nav links crowd the logo and resume button below
+   about 930px, so they swap for the hamburger toggle at the same breakpoint the
+   layout stacks at */
+@media (max-width: 1023px) {
   .nav-links {
     display: none !important;
   }

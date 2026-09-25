@@ -247,7 +247,7 @@ export default function Hero({ isVisible }) {
               style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}
             >
               <div style={{ width: 32, height: 1, background: 'var(--color-purple)', flexShrink: 0 }} />
-              <span className="eyebrow">Software Engineer · Class of '26</span>
+              <span className="eyebrow">Software Engineer · MBA Candidate</span>
             </div>
 
             {/* Name — empty on mount, chars appended by typewriter */}
