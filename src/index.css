@@ -80,17 +80,14 @@ a {
   color: inherit;
 }
 
-/* Scroll snap container */
+/* Page scroller — the page scrolls inside this container, not on body */
 .snap-container {
   height: 100vh;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
 .snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   height: 100vh;
   min-height: 100vh;
   position: relative;
@@ -415,15 +412,12 @@ nav.site-nav.scrolled {
 
 /* Tablet + mobile — structural stacking. Desktop (1024px+) is untouched. */
 @media (max-width: 1023px) {
-  .snap-container {
-    scroll-snap-type: none;
-  }
   .snap-section {
     height: auto !important;
     overflow: visible !important;
   }
   /* The per-section wrapper in App.jsx is fixed at 100vh/overflow:hidden for the
-     desktop snap layout — without this override, stacked content taller than one
+     desktop full-height layout — without this override, stacked content taller than one
      viewport (e.g. Hero's Spotify widget) gets silently clipped. */
   .section-wrapper {
     height: auto !important;
