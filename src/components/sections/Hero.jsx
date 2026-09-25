@@ -372,7 +372,9 @@ export default function Hero({ isVisible }) {
               gap: 8,
             }}
           >
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />
+            {text === 'Available now'
+              ? <div className="availability-dot" />
+              : <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />}
             <span className="eyebrow">{text}</span>
           </div>
         ))}

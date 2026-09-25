@@ -93,7 +93,7 @@ export default function Contact({ isVisible }) {
           {/* Availability */}
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div className="availability-dot" />
-            <span className="eyebrow" style={{ color: 'var(--color-green)' }}>Available now</span>
+            <span className="eyebrow" style={{ color: 'var(--color-purple-ink)' }}>Available now</span>
           </div>
         </div>
 
