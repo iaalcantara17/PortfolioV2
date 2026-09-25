@@ -1,12 +1,9 @@
 import { useSpotify } from '../hooks/useSpotify'
 
-export default function SpotifyWidget({ dark = false }) {
+export default function SpotifyWidget() {
   const { track, artist, isPlaying, loading } = useSpotify()
 
-  const bg = dark ? 'var(--color-white-a06)' : 'var(--color-black-a04)'
-  const border = dark ? 'var(--color-white-a10)' : 'var(--color-line)'
-  const textColor = dark ? 'var(--color-paper)' : 'var(--color-ink)'
-  const mutedColor = dark ? 'var(--color-paper-a50)' : 'var(--color-muted)'
+  const mutedColor = 'var(--color-muted)'
 
   return (
     <div
@@ -14,8 +11,8 @@ export default function SpotifyWidget({ dark = false }) {
         display: 'inline-flex',
         alignItems: 'center',
         gap: 10,
-        background: bg,
-        border: `0.5px solid ${border}`,
+        background: 'var(--color-black-a04)',
+        border: '0.5px solid var(--color-line)',
         borderRadius: 20,
         padding: '6px 14px',
         maxWidth: 260,
@@ -65,7 +62,7 @@ export default function SpotifyWidget({ dark = false }) {
             <div style={{ fontSize: 9, color: mutedColor, fontFamily: 'var(--font-sans)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 1 }}>
               {isPlaying ? 'Now playing' : 'Last played'}
             </div>
-            <div style={{ fontSize: 11, color: textColor, fontFamily: 'var(--font-sans)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontSize: 11, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {track || 'Nothing playing'}
               {artist && <span style={{ fontWeight: 400, color: mutedColor }}> · {artist}</span>}
             </div>

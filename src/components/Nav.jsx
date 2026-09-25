@@ -58,7 +58,6 @@ export default function Nav({ containerRef, onNavigate }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
             onClick={() => window.open('/Resume_Israel_Alcantara.pdf', '_blank')}
-            className="resume-btn"
             style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', cursor: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
           >
             Resume

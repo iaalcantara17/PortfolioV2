@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import SpotifyWidget from '../SpotifyWidget'
 import { quotes } from '../../data/quotes'
 import Photo from '../Photo'
 import { photoByName } from '../../data/photos'
@@ -121,8 +120,6 @@ export default function About({ isVisible }) {
               ))}
             </div>
           </div>
-
-          <SpotifyWidget />
         </div>
 
         {/* Right column */}
@@ -137,7 +134,7 @@ export default function About({ isVisible }) {
         >
           {/* Main photo */}
           <div
-            className="photo-placeholder tilt-card"
+            className="photo-placeholder"
             style={{
               width: '100%',
               height: 380,

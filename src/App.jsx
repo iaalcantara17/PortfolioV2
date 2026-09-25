@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import Cursor from './components/Cursor'
-import ScrollProgress from './components/ScrollProgress'
 import Nav from './components/Nav'
 import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
@@ -46,7 +45,6 @@ export default function App() {
   return (
     <>
       <Cursor />
-      <ScrollProgress containerRef={containerRef} />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
       <SectionIndicator current={currentSection} onNavigate={navigateTo} />
       <SectionCounter containerRef={containerRef} />
