@@ -138,7 +138,7 @@ export default function Contact({ isVisible }) {
             {/* Resume download */}
             <div style={{ marginTop: 32 }}>
               <a
-                href="/resume.pdf"
+                href="/Resume_Israel_Alcantara.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="resume-btn"
