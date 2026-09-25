@@ -33,6 +33,11 @@ const SUBTEXT_CHARS = [
 
 const SIEMPRE_CHARS = 'Siempre aprendiendo.'.split('').map(ch => ({ ch }))
 
+// Static render of a char list, matching what scheduleChars types out
+function renderChars(charDefs) {
+  return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
@@ -252,11 +257,20 @@ export default function Hero({ isVisible }) {
               <div ref={word3Ref} style={wordStyle} />
             </div>
 
-            {/* Subtext — empty on mount, chars appended by typewriter */}
-            <div style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
-              <span ref={subtextBodyRef} />
-              <br />
-              <em ref={siempreRef} style={{ color: 'var(--color-purple)', fontStyle: 'italic' }} />
+            {/* Subtext — the typewriter appends chars to the overlay. The hidden copy
+                underneath reserves the final text's height from the start, so the
+                stacked mobile layout doesn't shift down when the text resolves. */}
+            <div style={{ position: 'relative', color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
+              <div aria-hidden="true" style={{ visibility: 'hidden' }}>
+                <span>{renderChars(SUBTEXT_CHARS)}</span>
+                <br />
+                <em>{renderChars(SIEMPRE_CHARS)}</em>
+              </div>
+              <div style={{ position: 'absolute', inset: 0 }}>
+                <span ref={subtextBodyRef} />
+                <br />
+                <em ref={siempreRef} style={{ color: 'var(--color-purple)', fontStyle: 'italic' }} />
+              </div>
             </div>
           </div>
 

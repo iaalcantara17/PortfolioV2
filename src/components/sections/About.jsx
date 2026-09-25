@@ -21,7 +21,9 @@ export default function About({ isVisible }) {
   const sectionRef = useRef(null)
   const onceTlRef = useRef(null)
   const tlRef = useRef(null)
-  const [quote, setQuote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)])
+  // Picked once per page load. Not re-picked on entrance: a different-length quote
+  // would change the section's height mid-scroll on the stacked mobile layout.
+  const [quote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)])
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -45,7 +47,6 @@ export default function About({ isVisible }) {
     }
 
     if (isVisible && !tlRef.current) {
-      setQuote(quotes[Math.floor(Math.random() * quotes.length)])
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
       tl.to(section.querySelectorAll('.pull-quote, .about-quote'), { y: 0, opacity: 1, duration: 0.7 })
         .to(section.querySelectorAll('.body-para'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.3')
