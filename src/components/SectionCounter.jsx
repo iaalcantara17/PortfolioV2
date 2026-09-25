@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { sections, SECTION_TOTAL } from '../data/sections'
+import { sections, SECTION_TOTAL, COUNTER_TOP, COUNTER_PAD_Y } from '../data/sections'
 
 const TOTAL = sections.length
 const TICK_MS = 40
@@ -91,7 +91,7 @@ export default function SectionCounter({ containerRef }) {
       ref={floatRef}
       style={{
         position: 'fixed',
-        top: 46,
+        top: COUNTER_TOP,
         left: 28,
         zIndex: 9999,
         pointerEvents: 'none',
@@ -99,7 +99,7 @@ export default function SectionCounter({ containerRef }) {
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         borderRadius: 3,
-        padding: '1px 4px',
+        padding: `${COUNTER_PAD_Y}px 4px`,
       }}
     >
       <span
