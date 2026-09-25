@@ -648,9 +648,10 @@ nav.site-nav.scrolled {
   }
 }
 
-/* Phone — nav links don't fit alongside logo + resume button below this width,
-   swap them for the hamburger toggle instead */
-@media (max-width: 768px) {
+/* Tablet + mobile — the eight nav links crowd the logo and resume button below
+   about 930px, so they swap for the hamburger toggle at the same breakpoint the
+   layout stacks at */
+@media (max-width: 1023px) {
   .nav-links {
     display: none !important;
   }

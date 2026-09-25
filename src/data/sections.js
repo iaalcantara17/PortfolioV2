@@ -13,9 +13,9 @@ import Contact from '../components/sections/Contact'
 export const sections = [
   { key: 'hero', label: 'Hero', Component: Hero, inNav: false },
   { key: 'about', label: 'About', Component: About, inNav: true },
-  { key: 'skills', label: 'Skills', Component: Skills, inNav: false },
+  { key: 'skills', label: 'Skills', Component: Skills, inNav: true },
   { key: 'experience', label: 'Experience', Component: Experience, inNav: true },
-  { key: 'education', label: 'Education', Component: Education, inNav: false },
+  { key: 'education', label: 'Education', Component: Education, inNav: true },
   { key: 'projects', label: 'Projects', Component: Projects, inNav: true },
   { key: 'human', label: 'Life', Component: HumanIsrael, inNav: true },
   { key: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
