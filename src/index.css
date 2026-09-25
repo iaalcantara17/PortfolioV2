@@ -1,3 +1,49 @@
+/* Design tokens */
+:root {
+  /* Type */
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Neutrals */
+  --color-paper: #f5f2ec;
+  --color-surface: #efece5;
+  --color-placeholder: #e8e4dc;
+  --color-line: #d4cfc5;
+  --color-ink: #0d0d0d;
+  --color-muted: #666666;
+  --color-faint: #bbbbbb;
+  --color-white: #fff;
+
+  /* Accents */
+  --color-purple: #7F77DD;
+  --color-purple-deep: #534AB7;
+  --color-gold: #D4AF37;
+  --color-gold-deep: #9a7d1a;
+  --color-green: #1D9E75;
+
+  /* Translucent — suffix is the alpha, e.g. a12 = 0.12 */
+  --color-purple-a12: rgba(127, 119, 221, 0.12);
+  --color-purple-a30: rgba(127, 119, 221, 0.3);
+  --color-purple-a40: rgba(127, 119, 221, 0.4);
+  --color-gold-a12: rgba(212, 175, 55, 0.12);
+  --color-gold-a30: rgba(212, 175, 55, 0.3);
+  --color-gold-a40: rgba(212, 175, 55, 0.4);
+  --color-green-a12: rgba(29, 158, 117, 0.12);
+  --color-green-a30: rgba(29, 158, 117, 0.3);
+  --color-paper-a30: rgba(245, 242, 236, 0.3);
+  --color-paper-a50: rgba(245, 242, 236, 0.5);
+  --color-paper-a70: rgba(245, 242, 236, 0.7);
+  --color-paper-a72: rgba(245, 242, 236, 0.72);
+  --color-paper-a85: rgba(245, 242, 236, 0.85);
+  --color-white-a06: rgba(255, 255, 255, 0.06);
+  --color-white-a08: rgba(255, 255, 255, 0.08);
+  --color-white-a10: rgba(255, 255, 255, 0.1);
+  --color-white-a15: rgba(255, 255, 255, 0.15);
+  --color-white-a30: rgba(255, 255, 255, 0.3);
+  --color-ink-a92: rgba(13, 13, 13, 0.92);
+  --color-black-a04: rgba(0, 0, 0, 0.04);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
