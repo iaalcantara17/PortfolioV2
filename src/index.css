@@ -249,6 +249,22 @@ nav.site-nav.scrolled {
   color: var(--color-ink);
 }
 
+/* Tags — small uppercase chips (Experience role categories, status pills).
+   Colored with the .pill-* variants below. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border-width: 0.5px;
+  border-style: solid;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .pill-purple {
   background: var(--color-purple-a12);
   border-color: var(--color-purple-a30);

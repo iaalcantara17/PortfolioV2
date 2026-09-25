@@ -73,12 +73,6 @@ const roles = [
   },
 ]
 
-const tagColors = {
-  purple: { bg: 'var(--color-purple-a12)', border: 'var(--color-purple-a30)', text: 'var(--color-purple-deep)' },
-  gold: { bg: 'var(--color-gold-a12)', border: 'var(--color-gold-a40)', text: 'var(--color-gold-deep)' },
-  green: { bg: 'var(--color-green-a12)', border: 'var(--color-green-a30)', text: 'var(--color-green)' },
-}
-
 export default function Experience({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
@@ -173,7 +167,6 @@ export default function Experience({ isVisible }) {
         {/* Right column */}
         <div className="section-right-col exp-right-col" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
           {roles.map((role, i) => {
-            const tc = tagColors[role.tagColor]
             return (
               <div
                 key={role.title}
@@ -203,24 +196,7 @@ export default function Experience({ isVisible }) {
                       </div>
                     </div>
                     <div className="exp-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-                      <span
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 5,
-                          padding: '2px 8px',
-                          borderRadius: 20,
-                          fontSize: 9,
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          fontFamily: 'var(--font-sans)',
-                          background: tc.bg,
-                          border: `0.5px solid ${tc.border}`,
-                          color: tc.text,
-                        }}
-                      >
-                        {role.tag}
-                      </span>
+                      <span className={`tag pill-${role.tagColor}`}>{role.tag}</span>
                       <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>{role.period}</span>
                     </div>
                   </div>
