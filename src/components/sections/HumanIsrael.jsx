@@ -15,8 +15,6 @@ const photos = [
 const CELL_SIZES = '(max-width: 1023px) 50vw, 35vw'
 const WIDE_CELL_SIZES = '(max-width: 1023px) 100vw, 70vw'
 
-const pills = ['Music', 'Fashion', 'Photography', 'Basketball', 'Gym', 'Running', 'Hiking', 'Drawing', 'Piano']
-
 export default function HumanIsrael({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
@@ -211,21 +209,6 @@ export default function HumanIsrael({ isVisible }) {
         {/* Right sidebar */}
         <div className="human-sidebar" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', gap: 32 }}>
           <div data-animate>
-            <span className="eyebrow" style={{ marginBottom: 12, display: 'block' }}>Interests</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {pills.map((p, i) => (
-                <span
-                  key={p}
-                  className={`pill ${i < 4 ? 'pill-purple' : i < 7 ? 'pill-gold' : ''}`}
-                  style={{ fontSize: 10 }}
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div data-animate style={{ borderTop: '0.5px solid var(--color-line)', paddingTop: 24 }}>
             <span className="eyebrow" style={{ marginBottom: 12, display: 'block' }}>Now playing</span>
             <SpotifyWidget />
           </div>
