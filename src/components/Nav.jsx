@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { sections } from '../data/sections'
+import { useScrollLock } from '../hooks/useScrollLock'
 
 // section = index in the full registry, so links stay correct if sections reorder
 const links = sections
@@ -19,14 +20,7 @@ export default function Nav({ containerRef, onNavigate }) {
   }, [containerRef])
 
   // Lock background scroll while the mobile menu is open
-  useEffect(() => {
-    if (!isMenuOpen) return
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prevOverflow
-    }
-  }, [isMenuOpen])
+  useScrollLock(isMenuOpen)
 
   const handleNavigate = (section) => {
     setIsMenuOpen(false)

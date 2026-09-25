@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Photo from './Photo'
+import { useScrollLock } from '../hooks/useScrollLock'
 
 export default function Lightbox({ photos, index, onClose, onNavigate }) {
   const isOpen = index != null
+  useScrollLock(isOpen)
 
   useEffect(() => {
     if (!isOpen) return
