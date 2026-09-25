@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/resume.pdf", "destination": "/Resume_Israel_Alcantara.pdf", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ],
