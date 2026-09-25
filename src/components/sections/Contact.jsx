@@ -141,7 +141,6 @@ export default function Contact({ isVisible }) {
                 href="/Resume_Israel_Alcantara.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="resume-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

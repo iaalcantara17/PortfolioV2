@@ -303,18 +303,6 @@ nav.site-nav.scrolled {
 .spotify-bar:nth-child(4) { animation: spotifyBar4 1s ease-in-out infinite 0.05s; }
 .spotify-bar:nth-child(5) { animation: spotifyBar5 0.85s ease-in-out infinite 0.15s; }
 
-/* Gold shimmer on resume button */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.resume-btn:hover {
-  background: linear-gradient(90deg, transparent 0%, var(--color-gold-a30) 50%, transparent 100%);
-  background-size: 200% auto;
-  animation: shimmer 1.2s linear infinite;
-}
-
 /* 3D tilt card */
 .tilt-card {
   transition: transform 0.15s ease;
@@ -339,10 +327,6 @@ nav.site-nav.scrolled {
   border-radius: 50%;
   background: var(--color-line);
   flex-shrink: 0;
-}
-
-.timeline-dot.active {
-  background: var(--color-purple);
 }
 
 /* Global content wrapper — section backgrounds stay full-bleed, inner content centers and caps at 1440px */

@@ -121,8 +121,10 @@ export default function Hero({ isVisible }) {
   const statusRef = useRef(null)
   const completedRef = useRef(false)
 
-  // Set initial hidden state on mount
+  // Set initial hidden state on mount. Skipped once resolved, so a StrictMode
+  // (dev-only) remount doesn't re-hide elements the snap already revealed.
   useEffect(() => {
+    if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
     gsap.set(rightColRef.current, { opacity: 0, x: 20 })
     gsap.set(statusRef.current, { opacity: 0, y: 10 })
@@ -130,22 +132,14 @@ export default function Hero({ isVisible }) {
   }, [])
 
   useEffect(() => {
-    if (!isVisible) return
+    // Already resolved (naturally or via a snap) — everything is visible, nothing to replay
+    if (!isVisible || completedRef.current) return
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
     const eyebrow = eyebrowRef.current
     const rightCol = rightColRef.current
     const status = statusRef.current
     const bottom = bottomRef.current
-
-    // If already resolved (naturally or via a snap), restore visibility and exit
-    if (completedRef.current) {
-      gsap.to(eyebrow, { opacity: 1, duration: 0.3 })
-      gsap.to(rightCol, { opacity: 1, x: 0, duration: 0.4 })
-      gsap.to(status, { opacity: 1, y: 0, duration: 0.3 })
-      gsap.to(bottom, { opacity: 1, duration: 0.3 })
-      return
-    }
 
     const timers = []
     const intervals = []

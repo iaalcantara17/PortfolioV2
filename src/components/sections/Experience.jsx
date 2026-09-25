@@ -7,7 +7,6 @@ const roles = [
     company: 'Amazon Web Services, ADC BlackMirror',
     location: 'Arlington, VA',
     period: 'May 2025 — Aug 2025',
-    active: false,
     tag: 'Tech',
     tagColor: 'purple',
     desc: (
@@ -22,7 +21,6 @@ const roles = [
     company: 'Office of Residential Life, NJIT',
     location: 'Newark, NJ',
     period: 'Jun 2025 — May 2026',
-    active: false,
     tag: 'Leadership',
     tagColor: 'gold',
     desc: (
@@ -36,7 +34,6 @@ const roles = [
     company: 'Society of Hispanic Professional Engineers, NJIT Chapter',
     location: '',
     period: 'Mar 2024 — May 2025',
-    active: false,
     tag: 'Leadership',
     tagColor: 'gold',
     desc: (
@@ -51,7 +48,6 @@ const roles = [
     company: 'Media and Technology Support Services, NJIT',
     location: '',
     period: 'Oct 2022 — May 2026',
-    active: false,
     tag: 'Operations',
     tagColor: 'green',
     desc: (
@@ -66,7 +62,6 @@ const roles = [
     company: 'Adamas Building Services',
     location: 'Long Branch, NJ',
     period: 'Jul 2023 — Sep 2023',
-    active: false,
     tag: 'Operations',
     tagColor: 'green',
     desc: (
@@ -193,7 +188,7 @@ export default function Experience({ isVisible }) {
                 }}
               >
                 <div style={{ paddingTop: 5 }}>
-                  <div className={`timeline-dot${role.active ? ' active' : ''}`} />
+                  <div className="timeline-dot" />
                 </div>
 
                 <div style={{ flex: 1 }}>

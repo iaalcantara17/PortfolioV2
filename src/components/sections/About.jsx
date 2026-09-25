@@ -137,7 +137,7 @@ export default function About({ isVisible }) {
         >
           {/* Main photo */}
           <div
-            className="photo-placeholder tilt-card"
+            className="photo-placeholder"
             style={{
               width: '100%',
               height: 380,
