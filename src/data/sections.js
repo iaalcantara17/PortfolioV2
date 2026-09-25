@@ -4,6 +4,7 @@ import Hero from '../components/sections/Hero'
 import About from '../components/sections/About'
 import Skills from '../components/sections/Skills'
 import Experience from '../components/sections/Experience'
+import Education from '../components/sections/Education'
 import Projects from '../components/sections/Projects'
 import HumanIsrael from '../components/sections/HumanIsrael'
 import Gallery from '../components/sections/Gallery'
@@ -14,6 +15,7 @@ export const sections = [
   { key: 'about', label: 'About', Component: About, inNav: true },
   { key: 'skills', label: 'Skills', Component: Skills, inNav: false },
   { key: 'experience', label: 'Experience', Component: Experience, inNav: true },
+  { key: 'education', label: 'Education', Component: Education, inNav: false },
   { key: 'projects', label: 'Projects', Component: Projects, inNav: true },
   { key: 'human', label: 'Life', Component: HumanIsrael, inNav: true },
   { key: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
