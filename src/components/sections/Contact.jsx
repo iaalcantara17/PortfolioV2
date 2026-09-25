@@ -129,7 +129,7 @@ export default function Contact({ isVisible }) {
               >
                 <div>
                   <div className="eyebrow" style={{ marginBottom: 3 }}>{l.label}</div>
-                  <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: "'Helvetica Neue', Helvetica, sans-serif" }}>{l.value}</div>
+                  <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
                 </div>
                 <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
               </a>
@@ -156,7 +156,7 @@ export default function Contact({ isVisible }) {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
               >
-                <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: "'Helvetica Neue', Helvetica, sans-serif", letterSpacing: '0.06em' }}>
+                <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
                   Download Resume
                 </span>
                 <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>

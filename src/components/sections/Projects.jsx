@@ -176,7 +176,7 @@ export default function Projects({ isVisible }) {
                   color: 'var(--color-white)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
-                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                  fontFamily: 'var(--font-sans)',
                   cursor: 'none',
                 }}
               >
@@ -197,7 +197,7 @@ export default function Projects({ isVisible }) {
                   color: 'var(--color-paper-a70)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
-                  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                  fontFamily: 'var(--font-sans)',
                   cursor: 'none',
                 }}
               >
@@ -264,7 +264,7 @@ export default function Projects({ isVisible }) {
                       color: 'var(--color-purple-deep)',
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
-                      fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                      fontFamily: 'var(--font-sans)',
                       cursor: 'none',
                     }}
                   >
@@ -329,7 +329,7 @@ export default function Projects({ isVisible }) {
                       color: 'var(--color-purple-deep)',
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
-                      fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                      fontFamily: 'var(--font-sans)',
                       cursor: 'none',
                     }}
                   >

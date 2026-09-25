@@ -218,7 +218,7 @@ export default function Experience({ isVisible }) {
                           fontSize: 9,
                           letterSpacing: '0.1em',
                           textTransform: 'uppercase',
-                          fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
+                          fontFamily: 'var(--font-sans)',
                           background: tc.bg,
                           border: `0.5px solid ${tc.border}`,
                           color: tc.text,
