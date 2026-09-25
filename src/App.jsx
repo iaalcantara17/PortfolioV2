@@ -5,11 +5,16 @@ import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
 import { sections } from './data/sections'
+import { useActiveSection } from './hooks/useActiveSection'
 
 export default function App() {
   const containerRef = useRef(null)
   const sectionRefs = useRef([])
-  const [currentSection, setCurrentSection] = useState(0)
+  // Most recent section to enter the viewport. Gates each section's one-shot
+  // entrance (isVisible), so it deliberately fires early.
+  const [visibleSection, setVisibleSection] = useState(0)
+  // The section the page is on, shown by the dots and the counter.
+  const activeSection = useActiveSection(containerRef, sectionRefs)
 
   const navigateTo = useCallback((index) => {
     const section = sectionRefs.current[index]
@@ -25,7 +30,7 @@ export default function App() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const idx = parseInt(entry.target.dataset.sectionIndex, 10)
-            setCurrentSection(idx)
+            setVisibleSection(idx)
           }
         })
       },
@@ -46,8 +51,8 @@ export default function App() {
     <>
       <Cursor />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
-      <SectionIndicator current={currentSection} onNavigate={navigateTo} />
-      <SectionCounter containerRef={containerRef} />
+      <SectionIndicator current={activeSection} onNavigate={navigateTo} />
+      <SectionCounter active={activeSection} />
 
       <div ref={containerRef} className="page-scroller">
         {sections.map(({ key, Component }, i) => (
@@ -58,7 +63,7 @@ export default function App() {
             className="section-wrapper"
             style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
           >
-            <Component isVisible={currentSection === i} />
+            <Component isVisible={visibleSection === i} />
             <SectionLabel index={i + 1} />
           </div>
         ))}
