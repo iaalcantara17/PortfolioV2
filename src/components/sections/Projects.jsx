@@ -50,7 +50,7 @@ export default function Projects({ isVisible }) {
     <section
       ref={sectionRef}
       className="snap-section"
-      style={{ background: '#f5f2ec', borderBottom: '0.5px solid #d4cfc5' }}
+      style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
         style={{
@@ -64,7 +64,7 @@ export default function Projects({ isVisible }) {
         <div
           style={{
             padding: '48px 32px 40px',
-            borderRight: '0.5px solid #d4cfc5',
+            borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -74,11 +74,11 @@ export default function Projects({ isVisible }) {
             <div
               data-animate
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(26px, 2.8vw, 36px)',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.05,
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 marginBottom: 16,
               }}
             >
@@ -86,19 +86,19 @@ export default function Projects({ isVisible }) {
               <br />
               actually
               <br />
-              built<span style={{ color: '#7F77DD' }}>.</span>
+              built<span style={{ color: 'var(--color-purple)' }}>.</span>
             </div>
-            <p data-animate style={{ color: '#666', fontSize: 12, lineHeight: 1.85 }}>
+            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
               Projects I can speak to in full, start to finish.
             </p>
           </div>
           <div data-animate>
             <div
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 42,
                 letterSpacing: '-0.03em',
-                color: '#0d0d0d',
+                color: 'var(--color-ink)',
                 lineHeight: 1,
               }}
             >
@@ -117,10 +117,10 @@ export default function Projects({ isVisible }) {
             onMouseMove={(e) => handleTilt(e, e.currentTarget)}
             onMouseLeave={(e) => resetTilt(e.currentTarget)}
             style={{
-              background: '#0d0d0d',
+              background: 'var(--color-ink)',
               borderRadius: 4,
               padding: '28px 32px',
-              border: '0.5px solid #2a2a2a',
+              border: '0.5px solid #2a2a2a', /* one-off: review */
               cursor: 'none',
             }}
           >
@@ -133,25 +133,25 @@ export default function Projects({ isVisible }) {
 
             <div
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: 26,
-                color: '#f5f2ec',
+                color: 'var(--color-paper)',
                 letterSpacing: '-0.02em',
                 marginBottom: 4,
               }}
             >
               LinkdUp
             </div>
-            <div style={{ fontSize: 12, color: 'rgba(245,242,236,0.5)', marginBottom: 12 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-paper-a50)', marginBottom: 12 }}>
               Mobile-first web app for group meetup coordination
             </div>
 
-            <p style={{ fontSize: 12, color: 'rgba(245,242,236,0.7)', lineHeight: 1.85, marginBottom: 16 }}>
+            <p style={{ fontSize: 12, color: 'var(--color-paper-a70)', lineHeight: 1.85, marginBottom: 16 }}>
               Lead developer on a{' '}
-              <strong style={{ color: '#f5f2ec', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
-              <strong style={{ color: '#f5f2ec', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery,{' '}
-              <strong style={{ color: '#f5f2ec', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export, and{' '}
-              <strong style={{ color: '#f5f2ec', fontWeight: 500 }}>Gemini 2.5</strong> for AI-generated venue pitches. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
+              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
+              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery,{' '}
+              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export, and{' '}
+              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Gemini 2.5</strong> for AI-generated venue pitches. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
@@ -170,10 +170,10 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: '#7F77DD',
+                  background: 'var(--color-purple)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: '#fff',
+                  color: 'var(--color-white)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
@@ -191,10 +191,10 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  border: '0.5px solid rgba(245,242,236,0.3)',
+                  border: '0.5px solid var(--color-paper-a30)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: 'rgba(245,242,236,0.7)',
+                  color: 'var(--color-paper-a70)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
@@ -215,29 +215,29 @@ export default function Projects({ isVisible }) {
               onMouseMove={(e) => handleTilt(e, e.currentTarget)}
               onMouseLeave={(e) => resetTilt(e.currentTarget)}
               style={{
-                background: '#efece5',
+                background: 'var(--color-surface)',
                 borderRadius: 4,
                 padding: '22px 24px',
-                border: '0.5px solid #d4cfc5',
+                border: '0.5px solid var(--color-line)',
                 cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
-                <span className="eyebrow" style={{ color: '#666' }}>Systems — Compiler</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems — Compiler</span>
               </div>
               <div
                 style={{
-                  fontFamily: "'DM Serif Display', Georgia, serif",
+                  fontFamily: 'var(--font-serif)',
                   fontSize: 18,
-                  color: '#0d0d0d',
+                  color: 'var(--color-ink)',
                   letterSpacing: '-0.02em',
                   marginBottom: 8,
                 }}
               >
                 SFort95 Compiler
               </div>
-              <p style={{ fontSize: 11.5, color: '#666', lineHeight: 1.85, marginBottom: 12 }}>
-                A full three-stage compiler in <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
+              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+                A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
                 {['C++', 'Git', 'Lexer', 'Parser', 'AST'].map((s) => (
@@ -258,10 +258,10 @@ export default function Projects({ isVisible }) {
                     style={{
                       display: 'inline-flex',
                       padding: '4px 10px',
-                      border: '0.5px solid rgba(127,119,221,0.4)',
+                      border: '0.5px solid var(--color-purple-a40)',
                       borderRadius: 4,
                       fontSize: 10,
-                      color: '#534AB7',
+                      color: 'var(--color-purple-deep)',
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
@@ -280,30 +280,30 @@ export default function Projects({ isVisible }) {
               onMouseMove={(e) => handleTilt(e, e.currentTarget)}
               onMouseLeave={(e) => resetTilt(e.currentTarget)}
               style={{
-                background: '#efece5',
+                background: 'var(--color-surface)',
                 borderRadius: 4,
                 padding: '22px 24px',
-                border: '0.5px solid #d4cfc5',
+                border: '0.5px solid var(--color-line)',
                 cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
-                <span className="eyebrow" style={{ color: '#666' }}>Machine Learning — Python</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning — Python</span>
               </div>
               <div
                 style={{
-                  fontFamily: "'DM Serif Display', Georgia, serif",
+                  fontFamily: 'var(--font-serif)',
                   fontSize: 18,
-                  color: '#0d0d0d',
+                  color: 'var(--color-ink)',
                   letterSpacing: '-0.02em',
                   marginBottom: 8,
                 }}
               >
                 Data Analysis App
               </div>
-              <p style={{ fontSize: 11.5, color: '#666', lineHeight: 1.85, marginBottom: 12 }}>
+              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
-                <strong style={{ color: '#0d0d0d', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
+                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
                 {['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NumPy'].map((s) => (
@@ -323,10 +323,10 @@ export default function Projects({ isVisible }) {
                     style={{
                       display: 'inline-flex',
                       padding: '4px 10px',
-                      border: '0.5px solid rgba(127,119,221,0.4)',
+                      border: '0.5px solid var(--color-purple-a40)',
                       borderRadius: 4,
                       fontSize: 10,
-                      color: '#534AB7',
+                      color: 'var(--color-purple-deep)',
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
@@ -341,8 +341,8 @@ export default function Projects({ isVisible }) {
           </div>
 
           {/* Bottom note */}
-          <div style={{ borderTop: '0.5px solid #d4cfc5', paddingTop: 14 }}>
-            <span className="eyebrow" style={{ color: '#bbbbbb' }}>Only projects I built and can fully speak to.</span>
+          <div style={{ borderTop: '0.5px solid var(--color-line)', paddingTop: 14 }}>
+            <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Only projects I built and can fully speak to.</span>
           </div>
         </div>
       </div>
