@@ -20,7 +20,7 @@ export default function SectionLabel({ index }) {
           fontWeight: 400,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: '#bbb',
+          color: 'var(--color-faint)',
           display: 'block',
         }}
       >
