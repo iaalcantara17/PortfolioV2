@@ -10,9 +10,10 @@ to Vercel at israelalcantara.vercel.app. Currently mid-way through a
 structured hardening pass before a full relaunch. Phases 0 through 4 
 are complete (read-only audit, architecture refactor, restraint-audit 
 and content decisions, and accessibility/motion safety). Phase 5 
-(performance and resilience) is complete and merged to main (PR #10); 
-follow-up fixes since then (tap-to-copy, the Education hover floaters) 
-are on phase5-performance, not yet merged to main.
+(performance and resilience) is complete and on main: the main work in 
+PR #10, and the follow-up fixes in PR #11 (the contact email copies on 
+click instead of opening a mail app, and the Education hover floaters 
+work with trackpads).
 
 ## Locked — do not change without explicit approval
 
