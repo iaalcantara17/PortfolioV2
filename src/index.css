@@ -713,6 +713,27 @@ nav.site-nav.scrolled {
   }
 }
 
+/* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
+   their content is taller than one screen. The section grows to fit instead of
+   scrolling inside a column, which only a mouse wheel could reach. Where it fits
+   (1440×900) it stays exactly one screen tall. */
+@media (min-width: 1024px) {
+  .section-wrapper:has(> .page-section.fit-content) {
+    height: auto !important;
+    min-height: 100vh;
+  }
+  /* .page-section's min-height: 100vh still applies (border included); the grid
+     fills whatever height the section ends up with */
+  .page-section.fit-content {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-section.fit-content > div:first-child {
+    flex: 1 0 auto;
+  }
+}
+
 /* Tablet + mobile — the eight nav links crowd the logo and resume button below
    about 930px, so they swap for the hamburger toggle at the same breakpoint the
    layout stacks at */

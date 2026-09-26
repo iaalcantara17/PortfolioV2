@@ -59,7 +59,7 @@ export default function About({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -78,7 +78,6 @@ export default function About({ isVisible }) {
             display: 'flex',
             flexDirection: 'column',
             gap: 28,
-            overflowY: 'auto',
           }}
         >
           <h2 className="eyebrow" data-animate>Who I Am</h2>
