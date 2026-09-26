@@ -1,12 +1,30 @@
+import { useEffect, useRef, useState } from 'react'
 import { useSpotify } from '../hooks/useSpotify'
 
 export default function SpotifyWidget() {
   const { track, artist, isPlaying, loading } = useSpotify()
+  const rootRef = useRef(null)
+  // The bars run a capped number of cycles (see index.css), so they wait until the
+  // widget is first on screen. Latched: it never goes back to false.
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      setInView(true)
+      observer.disconnect()
+    })
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
 
   const mutedColor = 'var(--color-muted)'
 
   return (
     <div
+      ref={rootRef}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -31,7 +49,7 @@ export default function SpotifyWidget() {
 
       {/* Bars or pause indicator */}
       {isPlaying ? (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 16, flexShrink: 0 }}>
+        <div className={`spotify-bars${inView ? ' in-view' : ''}`} style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 16, flexShrink: 0 }}>
           {[1, 2, 3, 4, 5].map((n) => (
             <div
               key={n}

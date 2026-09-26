@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 import njitLogo from '../../assets/logos/njit.png'
 import montclairLogo from '../../assets/logos/montclair.png'
 
@@ -33,8 +34,8 @@ export default function Education({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.edu-card'), { y: 40, opacity: 0 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.edu-card'), entranceStart({ y: 40, opacity: 0 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -44,8 +45,8 @@ export default function Education({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelectorAll('.edu-card'), { y: 0, opacity: 1, stagger: 0.12, duration: 0.7 }, '-=0.4')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelectorAll('.edu-card'), entranceEnd({ y: 0, opacity: 1, stagger: 0.12, duration: 0.7 }), '-=0.4')
       tlRef.current = tl
     }
   }, [isVisible])

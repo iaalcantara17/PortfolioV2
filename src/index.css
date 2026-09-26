@@ -312,11 +312,15 @@ nav.site-nav.scrolled {
   50% { height: 12px; }
 }
 
-.spotify-bar:nth-child(1) { animation: spotifyBar1 0.8s ease-in-out infinite; }
-.spotify-bar:nth-child(2) { animation: spotifyBar2 0.9s ease-in-out infinite 0.1s; }
-.spotify-bar:nth-child(3) { animation: spotifyBar3 0.7s ease-in-out infinite 0.2s; }
-.spotify-bar:nth-child(4) { animation: spotifyBar4 1s ease-in-out infinite 0.05s; }
-.spotify-bar:nth-child(5) { animation: spotifyBar5 0.85s ease-in-out infinite 0.15s; }
+/* Four cycles once the widget is on screen (.in-view, set by SpotifyWidget), then
+   each bar holds its last frame. Done in about 4s, inside WCAG 2.2.2's five-second
+   limit, so it needs no pause control */
+.spotify-bar:nth-child(1) { animation: spotifyBar1 0.8s ease-in-out 0s 4 both; }
+.spotify-bar:nth-child(2) { animation: spotifyBar2 0.9s ease-in-out 0.1s 4 both; }
+.spotify-bar:nth-child(3) { animation: spotifyBar3 0.7s ease-in-out 0.2s 4 both; }
+.spotify-bar:nth-child(4) { animation: spotifyBar4 1s ease-in-out 0.05s 4 both; }
+.spotify-bar:nth-child(5) { animation: spotifyBar5 0.85s ease-in-out 0.15s 4 both; }
+.spotify-bars:not(.in-view) .spotify-bar { animation-play-state: paused; }
 
 /* 3D tilt card */
 .tilt-card {
@@ -425,19 +429,14 @@ nav.site-nav.scrolled {
   transform: scale(1.08);
 }
 
-/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify signal */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
+/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
+   signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
 .availability-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--color-gold);
   flex-shrink: 0;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 /* Tablet + mobile — structural stacking. Desktop (1024px+) is untouched. */
@@ -664,5 +663,36 @@ nav.site-nav.scrolled {
 @media (max-width: 600px) {
   .site-nav-inner {
     padding: 0 16px;
+  }
+}
+
+/* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
+   no smooth scrolling, the mobile menu only fades, no hover tilt, and the scaled
+   active states (section dot, filmstrip thumb) switch without animating */
+@keyframes menuFadeOnly {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  .page-scroller {
+    scroll-behavior: auto;
+  }
+  .mobile-menu-overlay {
+    animation-name: menuFadeOnly;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+  .section-dot {
+    transition: background 0.3s ease;
+  }
+  .filmstrip-thumb {
+    transition: border-color 0.2s ease;
+  }
+  /* The Spotify bars hold still at their first frame */
+  .spotify-bars .spotify-bar {
+    animation-play-state: paused;
   }
 }

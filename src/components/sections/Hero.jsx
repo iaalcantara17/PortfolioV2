@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
 import { photoByName } from '../../data/photos'
+import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
 // Must match imagesizes on the portrait preload in index.html
@@ -38,6 +39,15 @@ function renderChars(charDefs) {
   return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
 }
 
+// Appends a char's final node: a <br>, or a span with its resolved text and style
+function appendFinalChar(container, charDef) {
+  if (charDef.isBR) return container.appendChild(document.createElement('br'))
+  const span = document.createElement('span')
+  if (charDef.style) Object.assign(span.style, charDef.style)
+  span.textContent = charDef.ch
+  return container.appendChild(span)
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
@@ -50,19 +60,9 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
       if (state.iv) clearInterval(state.iv)
       if (state.resolveT) clearTimeout(state.resolveT)
       const container = containerRef.current
-      if (charDef.isBR) {
-        if (!state.span && container) container.appendChild(document.createElement('br'))
-        state.span = true
-        return
-      }
       if (!state.span) {
-        if (!container) return
-        const span = document.createElement('span')
-        if (charDef.style) Object.assign(span.style, charDef.style)
-        span.textContent = charDef.ch
-        container.appendChild(span)
-        state.span = span
-      } else {
+        if (container) state.span = appendFinalChar(container, charDef)
+      } else if (!charDef.isBR) {
         state.span.textContent = charDef.ch
       }
     }
@@ -131,8 +131,8 @@ export default function Hero({ isVisible }) {
   useEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
-    gsap.set(rightColRef.current, { opacity: 0, x: 20 })
-    gsap.set(statusRef.current, { opacity: 0, y: 10 })
+    gsap.set(rightColRef.current, entranceStart({ opacity: 0, x: 20 }))
+    gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
     gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
 
@@ -145,6 +145,23 @@ export default function Hero({ isVisible }) {
     const rightCol = rightColRef.current
     const status = statusRef.current
     const bottom = bottomRef.current
+
+    // Reduced motion: no typewriter or scramble. The final text goes in at once and
+    // the whole Hero fades in together.
+    if (prefersReducedMotion) {
+      const typed = [
+        [NAME_LINE1, word1Ref], [NAME_LINE2, word2Ref], [NAME_LINE3, word3Ref],
+        [SUBTEXT_CHARS, subtextBodyRef], [SIEMPRE_CHARS, siempreRef],
+      ]
+      typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
+      completedRef.current = true
+      gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
+      gsap.to([eyebrow, rightCol, status, bottom], {
+        opacity: 1, duration: 0.6, ease: 'power2.out',
+        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
+      })
+      return
+    }
 
     const timers = []
     const intervals = []
@@ -184,7 +201,10 @@ export default function Hero({ isVisible }) {
     // Status bar and bottom fade in after full animation
     const finalFadeT = setTimeout(() => {
       completedRef.current = true
-      gsap.to(status, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
+      gsap.to(status, {
+        opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
+        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
+      })
       gsap.to(bottom, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
     }, siempreDoneAt + 150)
     timers.push(finalFadeT)

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { sections, SECTION_TOTAL, COUNTER_TOP, COUNTER_PAD_Y } from '../data/sections'
+import { prefersReducedMotion } from '../utils/motion'
 
 const TOTAL = sections.length
 const TICK_MS = 40
@@ -28,6 +29,11 @@ export default function SectionCounter({ active }) {
     const numEl = numRef.current
     const target = String(active + 1).padStart(2, '0')
     if (!numEl || numEl.textContent === target) return
+    // Reduced motion: the new number, no scramble
+    if (prefersReducedMotion) {
+      numEl.textContent = target
+      return
+    }
     const iv = scrambleNum(numEl, target)
     return () => clearInterval(iv)
   }, [active])
