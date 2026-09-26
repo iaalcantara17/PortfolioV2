@@ -107,6 +107,51 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
 }
 
+/* No-JavaScript fallback (the <noscript> in index.html): name, bio, contact and
+   resume, in the Hero's type. The custom cursor needs JavaScript, so the system
+   cursor comes back here. */
+.noscript {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.noscript,
+.noscript * {
+  cursor: auto;
+}
+
+.noscript a {
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.noscript h1 {
+  font-family: var(--font-serif);
+  font-size: 52px;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+.noscript p:not(.eyebrow) {
+  color: var(--color-muted);
+}
+
+.noscript ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.noscript li {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Page scroller — the page scrolls inside this container, not on body */
 .page-scroller {
   height: 100vh;
