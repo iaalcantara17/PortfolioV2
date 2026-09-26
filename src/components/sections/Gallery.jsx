@@ -2,11 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { preload } from 'react-dom'
 import { gsap } from 'gsap'
 import Photo from '../Photo'
-import { galleryPhotos, photoAlt, srcSet } from '../../data/photos'
+import { galleryPhotos, photoAlt, srcSet, containSizes } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
+import { useElementSize } from '../../hooks/useElementSize'
 
 const WINDOW = 15
-const STAGE_SIZES = '100vw'
+// Only for the one render before the stage is measured; never used to load an image,
+// since the stage photo is lazy and the section starts far off screen
+const UNMEASURED_SIZES = '100vw'
 
 // Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
 // are the same files Hero, About and Life show, so they borrow those descriptions.
@@ -16,9 +19,16 @@ export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
   const heroImgRef = useRef(null)
+  const stageRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
   const total = galleryPhotos.length
+
+  // The stage photo is fitted inside the stage box, so it's drawn at whichever of the
+  // box's width or height limits it first
+  const stage = useElementSize(stageRef)
+  const stageSizes = (photo) =>
+    stage?.width && stage?.height ? containSizes(photo, stage.width, stage.height) : UNMEASURED_SIZES
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -48,9 +58,10 @@ export default function Gallery({ isVisible }) {
     gsap.fromTo(heroImgRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' })
   }, [activeIndex])
 
-  // Preload the neighboring photos at full quality, only while the section is in view
+  // Preload the neighboring photos at the size the stage will draw them, only while
+  // the section is in view
   useEffect(() => {
-    if (total === 0 || !isVisible) return
+    if (total === 0 || !isVisible || !stage?.width || !stage?.height) return
     const next = galleryPhotos[(activeIndex + 1) % total]
     const prev = galleryPhotos[(activeIndex - 1 + total) % total]
     ;[next, prev].forEach((p) => {
@@ -58,10 +69,10 @@ export default function Gallery({ isVisible }) {
         as: 'image',
         type: 'image/avif',
         imageSrcSet: srcSet(p, 'avif'),
-        imageSizes: STAGE_SIZES,
+        imageSizes: containSizes(p, stage.width, stage.height),
       })
     })
-  }, [activeIndex, total, isVisible])
+  }, [activeIndex, total, isVisible, stage])
 
   // Keyboard navigation, only while this section is visible
   useEffect(() => {
@@ -125,6 +136,7 @@ export default function Gallery({ isVisible }) {
         {/* Fixed-height stage — does not grow with photo count */}
         <div className="gallery-stage" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div
+            ref={stageRef}
             className="gallery-hero"
             style={{
               flex: 1,
@@ -143,7 +155,7 @@ export default function Gallery({ isVisible }) {
               key={activeIndex}
               ref={heroImgRef}
               photo={galleryPhotos[activeIndex]}
-              sizes={STAGE_SIZES}
+              sizes={stageSizes(galleryPhotos[activeIndex])}
               loading="lazy"
               alt={stopgapAlt(galleryPhotos[activeIndex], activeIndex, total)}
               style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}

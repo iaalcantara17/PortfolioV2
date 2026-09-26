@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import Photo from './Photo'
+import { containSizes } from '../data/photos'
 import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
 
@@ -116,7 +117,8 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
               key={photo.image.name}
               as={motion.img}
               photo={photo.image}
-              sizes="90vw"
+              // Fitted inside 90vw × 90vh (maxWidth/maxHeight below)
+              sizes={containSizes(photo.image, window.innerWidth * 0.9, window.innerHeight * 0.9)}
               alt={photo.alt}
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.96 }}
