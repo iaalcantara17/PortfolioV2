@@ -167,7 +167,7 @@ export default function Contact({ isVisible }) {
                 <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
                   Download Resume
                 </span>
-                <span className="pill pill-gold on-ink" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
+                <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>

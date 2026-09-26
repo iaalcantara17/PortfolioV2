@@ -139,7 +139,7 @@ export default function Skills({ isVisible }) {
                 lineHeight: 1,
               }}
             >
-              25<span style={{ color: 'var(--color-gold-text-large)', fontWeight: 600 }}>+</span>
+              25<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Technologies</div>
           </div>

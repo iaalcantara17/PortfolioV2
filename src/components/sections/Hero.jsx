@@ -315,7 +315,7 @@ export default function Hero({ isVisible }) {
                 <div style={{ width: 1, height: 32, background: 'var(--color-gold)' }} />
                 <div style={{ width: 0, height: 0, borderLeft: '3px solid transparent', borderRight: '3px solid transparent', borderTop: '5px solid var(--color-gold)' }} />
               </div>
-              <span className="eyebrow" style={{ color: 'var(--color-gold-text)' }}>Scroll</span>
+              <span className="eyebrow" style={{ color: 'var(--color-gold)' }}>Scroll</span>
             </div>
           </div>
         </div>
@@ -377,7 +377,7 @@ export default function Hero({ isVisible }) {
                     marginBottom: 4,
                   }}
                 >
-                  {item.num}<span style={{ color: 'var(--color-gold-text-large)', fontWeight: 600 }}>{item.suffix}</span>
+                  {item.num}<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{item.suffix}</span>
                 </div>
                 <div className="eyebrow">{item.label}</div>
               </div>

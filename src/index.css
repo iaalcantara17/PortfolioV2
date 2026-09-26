@@ -14,16 +14,14 @@
   --color-faint: #6e6e6e;
   --color-white: #fff;
 
-  /* Accents. Brand gold and green are for lines, dots and fills; text uses the
-     darker variants below, which meet WCAG AA against the paper */
+  /* Accents. Green pill text uses the darker green-deep, which meets WCAG AA on
+     its tint. Gold text (stat suffixes, "Scroll", gold pills) keeps the lighter
+     brand golds by choice, below AA contrast. */
   --color-purple: #7F77DD;
   --color-purple-deep: #534AB7;
   --color-purple-ink: #403B6E;
   --color-gold: #D4AF37;
-  --color-gold-text: #836c22;       /* gold text under 24px on paper, 4.5:1 */
-  --color-gold-text-large: #a6892b; /* gold text 24px and up on paper, 3:1 */
-  --color-gold-deep: #7f6715;       /* gold pill text on its tint */
-  --color-gold-deep-on-ink: #9a7d1a; /* gold pill text on the ink cards */
+  --color-gold-deep: #9a7d1a;
   --color-green: #1D9E75;
   --color-green-deep: #157456;      /* green pill text on its tint */
 
@@ -344,12 +342,6 @@ nav.site-nav.scrolled {
   background: var(--color-gold-a12);
   border-color: var(--color-gold-a40);
   color: var(--color-gold-deep);
-}
-
-/* Gold pills on the ink cards (Contact's PDF tag, the featured project's award) keep
-   the lighter gold: the paper pills' darker text would drop to 2.98:1 on ink */
-.pill-gold.on-ink {
-  color: var(--color-gold-deep-on-ink);
 }
 
 .pill-green {
