@@ -62,7 +62,7 @@ export default function App() {
       <Cursor />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
       <SectionIndicator current={activeSection} onNavigate={navigateTo} />
-      <SectionCounter active={activeSection} />
+      <SectionCounter active={activeSection} containerRef={containerRef} />
 
       <div ref={containerRef} className="page-scroller">
         {sections.map(({ key, Component }, i) => (

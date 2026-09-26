@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { sections, SECTION_TOTAL, COUNTER_TOP, COUNTER_PAD_Y } from '../data/sections'
+import { SECTION_TOTAL, COUNTER_TOP, COUNTER_PAD_Y } from '../data/sections'
 import { prefersReducedMotion } from '../utils/motion'
 
-const TOTAL = sections.length
 const TICK_MS = 40
 const SCRAMBLE_MS = 200
 
@@ -21,7 +20,8 @@ function scrambleNum(el, target) {
 }
 
 // active: index of the current section, from useActiveSection (shared with the dots)
-export default function SectionCounter({ active }) {
+// containerRef: the page scroller
+export default function SectionCounter({ active, containerRef }) {
   const numRef = useRef(null)
 
   // Scramble to the new number whenever the active section changes
@@ -38,27 +38,41 @@ export default function SectionCounter({ active }) {
     return () => clearInterval(iv)
   }, [active])
 
-  // Fade each section's own label while it passes under this floating counter
+  // Fade each section's own label while it passes under this floating counter (the
+  // fade itself is SectionLabel's transition). A label only moves when the page
+  // scrolls, the window resizes or a section changes size, so it's checked then, at
+  // most once a frame, and nothing runs while the page sits still.
   useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+    const labels = [...document.querySelectorAll('[data-fixed-counter]')]
     let rafId = null
 
-    const tick = () => {
-      for (let i = 1; i <= TOTAL; i++) {
-        const fixedEl = document.querySelector(`[data-fixed-counter="${i}"]`)
-        if (!fixedEl) continue
-
-        const rect = fixedEl.getBoundingClientRect()
-        const isOverlapping = rect.top >= 24 && rect.top <= 40
-        fixedEl.style.transition = 'opacity 100ms ease'
-        fixedEl.style.opacity = isOverlapping ? '0' : '1'
-      }
-
-      rafId = requestAnimationFrame(tick)
+    const update = () => {
+      rafId = null
+      labels.forEach((label) => {
+        const { top } = label.getBoundingClientRect()
+        const isOverlapping = top >= 24 && top <= 40
+        label.style.opacity = isOverlapping ? '0' : '1'
+      })
+    }
+    const schedule = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update)
     }
 
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
-  }, [])
+    update()
+    container.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    // A section growing or shrinking moves the labels after it without a scroll
+    const observer = new ResizeObserver(schedule)
+    labels.forEach((label) => observer.observe(label.parentElement))
+    return () => {
+      container.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      observer.disconnect()
+      if (rafId !== null) cancelAnimationFrame(rafId)
+    }
+  }, [containerRef])
 
   return (
     <div
