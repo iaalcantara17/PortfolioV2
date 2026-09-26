@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
@@ -53,7 +53,68 @@ function appendFinalChar(container, charDef) {
   return container.appendChild(span)
 }
 
+// Fewest random glyphs a slot scrambles through, even for a narrow final character
+const MIN_SLOT_GLYPHS = 6
+
+// POOL's glyph widths per font (a canvas measures them once per font the Hero uses)
+const glyphWidthsByFont = new Map()
+function measureGlyphs(el) {
+  const cs = getComputedStyle(el)
+  const font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
+  if (!glyphWidthsByFont.has(font)) {
+    const ctx = document.createElement('canvas').getContext('2d')
+    ctx.font = font
+    const measure = (ch) => ctx.measureText(ch).width
+    glyphWidthsByFont.set(font, { measure, pool: [...POOL].map((ch) => ({ ch, width: measure(ch) })) })
+  }
+  return glyphWidthsByFont.get(font)
+}
+
+// Narrowest random glyph a slot uses, as a share of its final character's width
+const MIN_GLYPH_SHARE = 0.7
+
+// The random glyphs a slot scrambles through: close to its final character's width
+// but no wider, so a scrambling glyph never runs into the characters beside it and
+// leaves little gap. A narrow final character (".") falls back to the narrowest few.
+function slotGlyphs(span, finalCh) {
+  const { measure, pool } = measureGlyphs(span)
+  const target = measure(finalCh)
+  const fits = pool.filter((g) => g.width <= target + 0.5).sort((a, b) => b.width - a.width)
+  let glyphs = fits.filter((g) => g.width >= target * MIN_GLYPH_SHARE)
+  if (glyphs.length < MIN_SLOT_GLYPHS) glyphs = fits.slice(0, MIN_SLOT_GLYPHS)
+  if (glyphs.length < MIN_SLOT_GLYPHS) glyphs = [...pool].sort((a, b) => a.width - b.width).slice(0, MIN_SLOT_GLYPHS)
+  return glyphs.map((g) => g.ch)
+}
+
+// While a char scrambles, its final character holds its place in the line, invisible,
+// and the random glyphs are drawn over it. The characters after it then never move
+// (they were pushed along by each glyph's width, a layout shift). line-height normal
+// puts the drawn glyph on the same baseline as the text around it. The span must be
+// in the page, for its font. Returns a function that shows the next random glyph.
+function holdSlot(span, finalCh) {
+  const glyphs = slotGlyphs(span, finalCh)
+  span.style.position = 'relative'
+  const hold = document.createElement('span')
+  hold.style.visibility = 'hidden'
+  hold.textContent = finalCh
+  const glyph = document.createElement('span')
+  Object.assign(glyph.style, { position: 'absolute', left: '0', top: '0', lineHeight: 'normal' })
+  const scramble = () => { glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)] }
+  scramble()
+  span.append(hold, glyph)
+  return scramble
+}
+
+// Ends a scramble: the span holds only its final character, as if never scrambled
+function resolveSlot(span, finalCh) {
+  span.style.position = ''
+  span.textContent = finalCh
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
+  // Spaces waiting to go in with the next character
+  let waitingSpaces = []
+
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
     const startAt = startOffset + i * CHAR_STAGGER
@@ -68,14 +129,26 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
       if (!state.span) {
         if (container) state.span = appendFinalChar(container, charDef)
       } else if (!charDef.isBR) {
-        state.span.textContent = charDef.ch
+        resolveSlot(state.span, charDef.ch)
       }
     }
     resolvers.push(finishNow)
 
+    // A space goes in with the character after it, in the same task. Alone, it sat at
+    // the end of the line for a moment, where the browser collapses it, and it counted
+    // as a layout shift once the next character arrived. A space at the end of a line
+    // draws nothing, so this changes nothing on screen.
+    if (charDef.ch === ' ' && i < charDefs.length - 1) {
+      waitingSpaces.push(finishNow)
+      continue
+    }
+    const spacesBefore = waitingSpaces
+    waitingSpaces = []
+
     const t = setTimeout(() => {
       const container = containerRef.current
       if (!container) return
+      spacesBefore.forEach((appendSpace) => appendSpace())
 
       if (charDef.isBR) {
         container.appendChild(document.createElement('br'))
@@ -95,18 +168,16 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
         return
       }
 
-      span.textContent = POOL[Math.floor(Math.random() * POOL.length)]
       container.appendChild(span)
+      const scramble = holdSlot(span, charDef.ch)
 
-      const iv = setInterval(() => {
-        span.textContent = POOL[Math.floor(Math.random() * POOL.length)]
-      }, SCRAMBLE_TICK)
+      const iv = setInterval(scramble, SCRAMBLE_TICK)
       state.iv = iv
       intervals.push(iv)
 
       const resolveT = setTimeout(() => {
         clearInterval(iv)
-        span.textContent = charDef.ch
+        resolveSlot(span, charDef.ch)
         state.done = true
       }, SCRAMBLE_MS)
       state.resolveT = resolveT
@@ -127,16 +198,18 @@ export default function Hero({ isVisible }) {
   const siempreRef = useRef(null)
   const eyebrowRef = useRef(null)
   const bottomRef = useRef(null)
-  const rightColRef = useRef(null)
+  const statsRef = useRef(null)
+  const spotifyRef = useRef(null)
   const statusRef = useRef(null)
   const completedRef = useRef(false)
 
-  // Set initial hidden state on mount. Skipped once resolved, so a StrictMode
-  // (dev-only) remount doesn't re-hide elements the early resolve already revealed.
-  useEffect(() => {
+  // Set initial hidden state on mount, before the first paint, so nothing shows for
+  // a frame and then disappears. Skipped once resolved, so a StrictMode (dev-only)
+  // remount doesn't re-hide elements the early resolve already revealed.
+  useLayoutEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
-    gsap.set(rightColRef.current, entranceStart({ opacity: 0, x: 20 }))
+    gsap.set([statsRef.current, spotifyRef.current], entranceStart({ opacity: 0, x: 20 }))
     gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
     gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
@@ -147,7 +220,7 @@ export default function Hero({ isVisible }) {
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
     const eyebrow = eyebrowRef.current
-    const rightCol = rightColRef.current
+    const rightFade = [statsRef.current, spotifyRef.current]
     const status = statusRef.current
     const bottom = bottomRef.current
 
@@ -161,7 +234,7 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, rightCol, status, bottom], {
+      gsap.to([eyebrow, ...rightFade, status, bottom], {
         opacity: 1, duration: 0.6, ease: 'power2.out',
         onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
       })
@@ -183,9 +256,10 @@ export default function Hero({ isVisible }) {
     offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
     const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
 
-    // Right column fades in right after name resolves — not gated on full animation
+    // Right column's stats and Spotify fade in right after name resolves — not gated
+    // on full animation. The portrait above them is shown from the start.
     const rightFadeT = setTimeout(() => {
-      gsap.to(rightCol, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
+      gsap.to(rightFade, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
     }, nameDoneAt + 150)
     timers.push(rightFadeT)
 
@@ -223,7 +297,7 @@ export default function Hero({ isVisible }) {
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
         gsap.set(eyebrow, { opacity: 1 })
-        gsap.set(rightCol, { opacity: 1, x: 0 })
+        gsap.set(rightFade, { opacity: 1, x: 0 })
         gsap.set(status, { opacity: 1, y: 0 })
         gsap.set(bottom, { opacity: 1 })
         completedRef.current = true
@@ -320,9 +394,10 @@ export default function Hero({ isVisible }) {
           </div>
         </div>
 
-        {/* Right column — always rendered, fades in after name resolves */}
+        {/* Right column — always rendered. The portrait (the page's largest image, so
+            its LCP) shows from the first paint; the stats and Spotify fade in after
+            the name resolves. */}
         <div
-          ref={rightColRef}
           className="hero-right"
           style={{
             padding: '60px 0 48px',
@@ -355,7 +430,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Stats with gold suffixes */}
-          <div style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
+          <div ref={statsRef} style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
             {[
               { num: '12', suffix: 'W', label: 'AWS Internship' },
               { num: '6', suffix: '+', label: 'Projects shipped' },
@@ -385,7 +460,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Spotify */}
-          <div style={{ width: '100%', maxWidth: 420 }}>
+          <div ref={spotifyRef} style={{ width: '100%', maxWidth: 420 }}>
             <SpotifyWidget />
           </div>
         </div>
