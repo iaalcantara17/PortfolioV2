@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { sections } from '../data/sections'
 import { useScrollLock } from '../hooks/useScrollLock'
+import { trapFocus } from '../utils/focusTrap'
 
 // section = index in the full registry, so links stay correct if sections reorder
 const links = sections
@@ -10,6 +11,8 @@ const links = sections
 export default function Nav({ containerRef, onNavigate }) {
   const [scrolled, setScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const navRef = useRef(null)
+  const toggleRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef?.current
@@ -22,13 +25,28 @@ export default function Nav({ containerRef, onNavigate }) {
   // Lock background scroll while the mobile menu is open
   useScrollLock(isMenuOpen)
 
+  // While the mobile menu is open: Escape closes it and puts focus back on the
+  // toggle, and Tab stays inside the nav instead of reaching the page under the menu
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false)
+        toggleRef.current?.focus()
+      }
+      trapFocus(e, navRef.current)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isMenuOpen])
+
   const handleNavigate = (section) => {
     setIsMenuOpen(false)
     onNavigate(section)
   }
 
   return (
-    <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
+    <nav ref={navRef} className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="site-nav-inner">
         <button
           onClick={() => handleNavigate(0)}
@@ -58,6 +76,7 @@ export default function Nav({ containerRef, onNavigate }) {
           </button>
 
           <button
+            ref={toggleRef}
             className="hamburger-btn"
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

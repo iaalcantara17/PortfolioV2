@@ -114,6 +114,13 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-gutter: stable;
 }
 
+/* Each section takes focus when the nav, a dot or the mobile menu jumps to it
+   (App.jsx), so the next Tab starts inside it. A ring around a whole screen adds
+   nothing, so none is drawn; the section's own controls keep theirs. */
+.section-wrapper:focus {
+  outline: none;
+}
+
 /* Modal scroll lock, toggled by useScrollLock (Lightbox, mobile menu) */
 .scroll-locked .page-scroller {
   overflow-y: hidden;
