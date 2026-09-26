@@ -316,8 +316,11 @@ export default function Hero({ isVisible }) {
   }
 
   return (
+    // fit-content: on a desktop screen too short for the columns plus the status bar,
+    // the Hero grows past one screen (same as About and Projects) and the status bar
+    // ends up below the fold, instead of overlapping the columns
     <section
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -328,10 +331,12 @@ export default function Hero({ isVisible }) {
           paddingTop: 56,
         }}
       >
-        {/* Left column */}
+        {/* Left column. 20px bottom padding keeps the scroll hint 20px above the
+            status bar, which now sits below the columns rather than over them. */}
         <div
+          className="hero-left"
           style={{
-            padding: '60px 48px 64px',
+            padding: '60px 48px 20px',
             borderRight: '0.5px solid var(--color-line)',
             display: 'flex',
             flexDirection: 'column',
@@ -400,7 +405,7 @@ export default function Hero({ isVisible }) {
         <div
           className="hero-right"
           style={{
-            padding: '60px 0 48px',
+            padding: '60px 0 20px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -466,15 +471,12 @@ export default function Hero({ isVisible }) {
         </div>
       </div>
 
-      {/* Status bar — always rendered, fades in after full animation */}
+      {/* Status bar — always rendered, fades in after full animation. In the page
+          flow after the columns, so they can't run underneath it. */}
       <div
         ref={statusRef}
         className="hero-status"
         style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
           borderTop: '0.5px solid var(--color-line)',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
