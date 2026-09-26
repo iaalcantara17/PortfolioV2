@@ -1,26 +1,110 @@
 {
   "city": {
     "width": 6000,
-    "height": 4000
+    "height": 4000,
+    "variants": {
+      "400": {
+        "width": 400,
+        "height": 267
+      },
+      "1200": {
+        "width": 1200,
+        "height": 800
+      },
+      "2400": {
+        "width": 2400,
+        "height": 1600
+      }
+    }
   },
   "friends": {
     "width": 4000,
-    "height": 6000
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
   },
   "nature": {
     "width": 4000,
-    "height": 6000
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
   },
   "njit-diploma": {
     "width": 1584,
-    "height": 1224
+    "height": 1224,
+    "variants": {
+      "400": {
+        "width": 400,
+        "height": 309
+      },
+      "1200": {
+        "width": 1200,
+        "height": 927
+      },
+      "2400": {
+        "width": 1584,
+        "height": 1224
+      }
+    }
   },
   "portrait": {
     "width": 6024,
-    "height": 4020
+    "height": 4020,
+    "variants": {
+      "400": {
+        "width": 400,
+        "height": 267
+      },
+      "1200": {
+        "width": 1200,
+        "height": 801
+      },
+      "2400": {
+        "width": 2400,
+        "height": 1602
+      }
+    }
   },
   "streetwear": {
     "width": 4012,
-    "height": 4012
+    "height": 4012,
+    "variants": {
+      "400": {
+        "width": 400,
+        "height": 400
+      },
+      "1200": {
+        "width": 1200,
+        "height": 1200
+      },
+      "2400": {
+        "width": 2400,
+        "height": 2400
+      }
+    }
   }
 }

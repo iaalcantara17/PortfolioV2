@@ -6,18 +6,16 @@ const files = import.meta.glob('/src/assets/photos/*.{avif,webp}', { eager: true
 
 export const WIDTHS = [400, 1200, 2400]
 
-const variantSize = ({ width, height }, longEdge) => {
-  const scale = Math.min(1, longEdge / Math.max(width, height))
-  return { width: Math.round(width * scale), height: Math.round(height * scale) }
-}
-
+// Each variant's pixel size comes from the manifest, as written. A variant is named
+// for its long edge, but can be smaller if the script had to shrink it to fit its
+// size limit, and srcset needs the real width.
 export const photoByName = Object.fromEntries(
   Object.keys(manifest).map((name) => {
     const variants = Object.fromEntries(
       WIDTHS.map((w) => [
         w,
         {
-          ...variantSize(manifest[name], w),
+          ...manifest[name].variants[w],
           avif: files[`/src/assets/photos/${name}-${w}.avif`],
           webp: files[`/src/assets/photos/${name}-${w}.webp`],
         },

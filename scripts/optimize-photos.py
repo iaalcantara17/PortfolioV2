@@ -2,8 +2,9 @@
 
 Reads every JPG/PNG in photos-src/ (never served) and writes, per photo,
 AVIF + WebP at 400/1200/2400px long edge into src/assets/photos/, plus a
-manifest.json of intrinsic dimensions. All EXIF/XMP/ICC metadata is dropped
-(pixels are converted to sRGB first if the source profile isn't sRGB).
+manifest.json of each original's dimensions and each variant's actual
+dimensions. All EXIF/XMP/ICC metadata is dropped (pixels are converted to
+sRGB first if the source profile isn't sRGB).
 
 Requires Pillow >= 11.2 (native AVIF). Run from the repo root:
 
@@ -61,12 +62,14 @@ def main():
         name = path.stem.lower()
         with Image.open(path) as original:
             im = to_srgb(ImageOps.exif_transpose(original))
-        manifest[name] = {'width': im.width, 'height': im.height}
+        variants = {}
+        manifest[name] = {'width': im.width, 'height': im.height, 'variants': variants}
 
         for width in WIDTHS:
             scale = min(1, width / max(im.size))
             size = (round(im.width * scale), round(im.height * scale))
             resized = im.resize(size, Image.LANCZOS)
+            variants[str(width)] = {'width': size[0], 'height': size[1]}
 
             for fmt in ('avif', 'webp'):
                 quality = QUALITY[fmt]
