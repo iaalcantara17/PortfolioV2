@@ -145,6 +145,7 @@ export default function Education({ isVisible }) {
                 borderRadius: 4,
                 padding: '28px 32px',
                 border: '0.5px solid var(--color-line)',
+                position: 'relative',
               }}
             >
               <div className="edu-logo" style={{ height: 72, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -181,6 +182,14 @@ export default function Education({ isVisible }) {
                 <StatusPill status={s.status} />
                 <span className="eyebrow" style={{ color: 'var(--color-faint)', whiteSpace: 'nowrap' }}>{s.period}</span>
               </div>
+
+              {/* Expand icon, shown only where there's no hover tilt to say the card
+                  opens (see .tap-hint). Decorative: the card's label already says it. */}
+              {s.diploma && (
+                <svg className="tap-hint" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M8.5 1.5h4v4M12.5 1.5L8 6M5.5 12.5h-4v-4M1.5 12.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
             </div>
           ))}
         </div>

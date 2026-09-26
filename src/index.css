@@ -501,6 +501,25 @@ nav.site-nav.scrolled {
   transform: scale(1.08);
 }
 
+/* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
+   (the NJIT Education card). Mouse users get the hover tilt and the growing cursor
+   instead, so it only shows where the custom cursor is off (same query as above).
+   Stroke style matches the hamburger icon; purple is the site's "opens something"
+   accent, as on the ↗ arrows. */
+.tap-hint {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--color-purple);
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  .tap-hint {
+    display: block;
+  }
+}
+
 /* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
    signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
 .availability-dot {
