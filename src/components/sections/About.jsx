@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { quotes } from '../../data/quotes'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const interestTiers = [
@@ -152,7 +152,7 @@ export default function About({ isVisible }) {
               photo={photoByName.streetwear}
               sizes="(max-width: 1023px) 100vw, 45vw"
               loading="lazy"
-              alt="Portrait of Israel Alcántara."
+              alt={photoAlt.streetwear}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />
             <div

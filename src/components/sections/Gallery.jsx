@@ -9,9 +9,8 @@ const WINDOW = 15
 const STAGE_SIZES = '100vw'
 
 // Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
-// are the same files Life and About show, so they borrow those descriptions.
-const STOPGAP_ALT = { ...photoAlt, portrait: 'Portrait of Israel Alcántara.' }
-const stopgapAlt = (photo, index, total) => STOPGAP_ALT[photo.name] ?? `Photo ${index + 1} of ${total}`
+// are the same files Hero, About and Life show, so they borrow those descriptions.
+const stopgapAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)

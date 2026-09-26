@@ -32,7 +32,6 @@ export default function Nav({ containerRef, onNavigate }) {
       <div className="site-nav-inner">
         <button
           onClick={() => handleNavigate(0)}
-          aria-label="Israel Alcántara"
           style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', background: 'none', border: 'none', cursor: 'none' }}
         >
           I.A

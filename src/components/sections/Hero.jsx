@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
 import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
@@ -349,7 +349,7 @@ export default function Hero({ isVisible }) {
               photo={photoByName.portrait}
               sizes={HERO_PHOTO_SIZES}
               fetchPriority="high"
-              alt="Israel Alcántara"
+              alt={photoAlt.portrait}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }}
             />
           </div>
