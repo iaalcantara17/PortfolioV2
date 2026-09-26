@@ -616,7 +616,7 @@ nav.site-nav.scrolled {
 }
 
 /* Card follower — something that follows the pointer while a card is hovered,
-   placed by placeFollower (utils/follower.js). It fades in on hover with a fine
+   placed by placeFollower (utils/follower.js). It fades in for a mouse or trackpad
    pointer only, so a tap on a phone can't leave it showing. */
 .card-follower {
   position: absolute;
@@ -627,15 +627,16 @@ nav.site-nav.scrolled {
   pointer-events: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .edu-card:hover .card-follower {
-    opacity: 1;
-  }
-  /* A follower can overhang its card; lift the hovered card so the next card
-     doesn't cover it */
-  .edu-card:hover:has(> .card-follower) {
-    z-index: 1;
-  }
+/* Shown while a mouse or trackpad pointer is over the card (.follower-shown, set by
+   followPointer in utils/follower.js from the pointer's own type, not a media query,
+   so a trackpad on a touch-first iPad counts too). A touch or pen never sets it. */
+.edu-card.follower-shown .card-follower {
+  opacity: 1;
+}
+/* A follower can overhang its card; lift the card showing it so the next card
+   doesn't cover it */
+.edu-card.follower-shown {
+  z-index: 1;
 }
 
 /* Hover preview (HoverPreview.jsx): a small thumbnail follower, framed like the

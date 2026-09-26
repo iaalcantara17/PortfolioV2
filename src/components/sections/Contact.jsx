@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
+// copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
-  { label: 'Email', value: 'ialcantara2003@gmail.com', href: 'mailto:ialcantara2003@gmail.com' },
+  { label: 'Email', value: 'ialcantara2003@gmail.com', copy: true },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
@@ -15,9 +16,43 @@ const dimOnMouseHover = (opacity) => ({
   onPointerLeave: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = '1' },
 })
 
+const COPIED_MS = 1500
+
+// Selects an element's text, for copying by hand
+function selectText(el) {
+  const range = document.createRange()
+  range.selectNodeContents(el)
+  const selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+}
+
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
+  const [copied, setCopied] = useState(false)
+  // The copy button's aria-label replaces its text for screen readers, so the address
+  // on screen is attached as its description: "Copy email address, button, <address>"
+  const copyValueId = useId()
+  const copiedTimerRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
+
+  // Copies a row's value, from a mouse click, a tap or the keyboard alike; the label
+  // reads "Copied" for a moment. If the clipboard isn't available or refuses, the
+  // value is selected instead, ready to copy by hand.
+  const copyValue = (e, link) => {
+    const valueEl = e.currentTarget.querySelector('[data-copy-value]')
+    if (!navigator.clipboard) return selectText(valueEl)
+    navigator.clipboard.writeText(link.value).then(
+      () => {
+        setCopied(true)
+        clearTimeout(copiedTimerRef.current)
+        copiedTimerRef.current = setTimeout(() => setCopied(false), COPIED_MS)
+      },
+      () => selectText(valueEl)
+    )
+  }
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -120,31 +155,52 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target={l.href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                className="link-row"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '20px 0',
-                  borderBottom: '0.5px solid var(--color-line)',
-                  textDecoration: 'none',
-                  transition: 'opacity 0.2s ease',
-                }}
-                {...dimOnMouseHover('0.6')}
-              >
-                <div>
-                  <div className="eyebrow" style={{ marginBottom: 3 }}>{l.label}</div>
-                  <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
-                </div>
-                <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
-              </a>
-            ))}
+            {links.map((l) => {
+              // A copy row is a button (it acts, it doesn't go anywhere), styled to
+              // look exactly like the link rows: its button defaults are reset
+              const Row = l.copy ? 'button' : 'a'
+              const rowProps = l.copy
+                ? { type: 'button', 'aria-label': 'Copy email address', 'aria-describedby': copyValueId, onClick: (e) => copyValue(e, l) }
+                : { href: l.href, target: '_blank', rel: 'noopener noreferrer' }
+              return (
+                <Row
+                  key={l.label}
+                  {...rowProps}
+                  className="link-row"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '20px 0',
+                    border: 'none',
+                    borderBottom: '0.5px solid var(--color-line)',
+                    textAlign: 'left',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.2s ease',
+                  }}
+                  {...dimOnMouseHover('0.6')}
+                >
+                  <div>
+                    <div className="eyebrow" style={{ marginBottom: 3 }} aria-live={l.copy ? 'polite' : undefined}>
+                      {l.copy && copied ? 'Copied' : l.label}
+                    </div>
+                    <div data-copy-value={l.copy ? '' : undefined} id={l.copy ? copyValueId : undefined} style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
+                  </div>
+                  {l.copy ? (
+                    // Copy icon (two sheets), in the tap hint's style (14px, round caps,
+                    // the purple "does something" accent) but a lighter 1.1 stroke, so it
+                    // matches the thin ↗ arrows on the rows below it
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ color: 'var(--color-purple)', flexShrink: 0 }}>
+                      <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+                      <path d="M9.5 4.5V3A1.5 1.5 0 0 0 8 1.5H3A1.5 1.5 0 0 0 1.5 3v5A1.5 1.5 0 0 0 3 9.5h1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
+                  )}
+                </Row>
+              )
+            })}
 
             {/* Resume download */}
             <div style={{ marginTop: 32 }}>

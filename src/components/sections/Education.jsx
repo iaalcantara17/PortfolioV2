@@ -6,7 +6,7 @@ import HoverPreview from '../HoverPreview'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
-import { followPointer } from '../../utils/follower'
+import { followPointer, hideFollower } from '../../utils/follower'
 import njitLogo from '../../assets/logos/njit.webp'
 import montclairLogo from '../../assets/logos/montclair.webp'
 
@@ -60,6 +60,7 @@ const diplomaTriggerProps = (s, open) => {
     onMouseMove: (e) => handleTilt(e, e.currentTarget),
     onMouseLeave: (e) => resetTilt(e.currentTarget),
     onPointerMove: followPointer,
+    onPointerLeave: hideFollower,
   }
 }
 
@@ -73,7 +74,10 @@ const hoverOnlyProps = {
     handleTilt(e, e.currentTarget)
     followPointer(e)
   },
-  onPointerLeave: (e) => resetTilt(e.currentTarget),
+  onPointerLeave: (e) => {
+    resetTilt(e.currentTarget)
+    hideFollower(e)
+  },
 }
 
 export default function Education({ isVisible }) {
