@@ -3,6 +3,22 @@ import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import Photo from './Photo'
 import { useScrollLock } from '../hooks/useScrollLock'
 
+// Round control on the dark backdrop; each control adds its own position
+const CONTROL_STYLE = {
+  position: 'fixed',
+  width: 36,
+  height: 36,
+  borderRadius: '50%',
+  border: '0.5px solid var(--color-white-a30)',
+  background: 'var(--color-white-a06)',
+  color: 'var(--color-paper)',
+  fontSize: 18,
+  lineHeight: 1,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+
 export default function Lightbox({ photos, index, onClose, onNavigate }) {
   const isOpen = index != null
   useScrollLock(isOpen)
@@ -52,22 +68,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
             <button
               onClick={onClose}
               aria-label="Close"
-              style={{
-                position: 'fixed',
-                top: 24,
-                right: 32,
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                border: '0.5px solid var(--color-white-a30)',
-                background: 'var(--color-white-a06)',
-                color: 'var(--color-paper)',
-                fontSize: 18,
-                lineHeight: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={{ ...CONTROL_STYLE, top: 24, right: 32 }}
             >
               ×
             </button>
