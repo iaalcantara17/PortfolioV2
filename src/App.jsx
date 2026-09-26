@@ -6,6 +6,7 @@ import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
 import { sections } from './data/sections'
 import { useActiveSection } from './hooks/useActiveSection'
+import { useKeyboardScroll } from './hooks/useKeyboardScroll'
 
 export default function App() {
   const containerRef = useRef(null)
@@ -15,6 +16,7 @@ export default function App() {
   const [visibleSection, setVisibleSection] = useState(0)
   // The section the page is on, shown by the dots and the counter.
   const activeSection = useActiveSection(containerRef, sectionRefs)
+  useKeyboardScroll(containerRef)
 
   const navigateTo = useCallback((index) => {
     const section = sectionRefs.current[index]
