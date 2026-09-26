@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { entranceStart, entranceEnd } from '../../utils/motion'
+import { handleTilt, resetTilt } from '../../utils/tilt'
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
@@ -11,9 +13,9 @@ export default function Projects({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
     gsap.set(section.querySelector('.featured-card'), { opacity: 0 })
-    gsap.set(section.querySelectorAll('.grid-card'), { y: 30, opacity: 0, rotateX: 5 })
+    gsap.set(section.querySelectorAll('.grid-card'), entranceStart({ y: 30, opacity: 0, rotateX: 5 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -23,33 +25,17 @@ export default function Projects({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
         .to(section.querySelector('.featured-card'), { opacity: 1, duration: 0.8 }, '-=0.4')
-        .to(section.querySelectorAll('.grid-card'), { y: 0, opacity: 1, rotateX: 0, stagger: 0.12, duration: 0.7 }, '-=0.3')
+        .to(section.querySelectorAll('.grid-card'), entranceEnd({ y: 0, opacity: 1, rotateX: 0, stagger: 0.12, duration: 0.7 }), '-=0.3')
       tlRef.current = tl
     }
   }, [isVisible])
 
-  const handleTilt = (e, el) => {
-    const rect = el.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const cx = rect.width / 2
-    const cy = rect.height / 2
-    const rx = ((y - cy) / cy) * -6
-    const ry = ((x - cx) / cx) * 6
-    el.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(4px)`
-  }
-
-  const resetTilt = (el) => {
-    el.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateZ(0px)'
-  }
-
-
   return (
     <section
       ref={sectionRef}
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -71,6 +57,7 @@ export default function Projects({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Projects</h2>
             <div
               data-animate
               style={{
@@ -109,7 +96,7 @@ export default function Projects({ isVisible }) {
         </div>
 
         {/* Right column */}
-        <div style={{ overflowY: 'auto', padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Featured card */}
           <div
@@ -121,7 +108,6 @@ export default function Projects({ isVisible }) {
               borderRadius: 4,
               padding: '28px 32px',
               border: '0.5px solid #2a2a2a', /* one-off: review */
-              cursor: 'none',
             }}
           >
             {/* Award badge */}
@@ -170,14 +156,13 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: 'var(--color-purple)',
+                  background: 'var(--color-purple-deep)',
                   borderRadius: 4,
                   fontSize: 11,
                   color: 'var(--color-white)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
-                  cursor: 'none',
                 }}
               >
                 Live Demo ↗
@@ -198,7 +183,6 @@ export default function Projects({ isVisible }) {
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
-                  cursor: 'none',
                 }}
               >
                 GitHub ↗
@@ -219,7 +203,6 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
-                cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
@@ -265,7 +248,6 @@ export default function Projects({ isVisible }) {
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: 'var(--font-sans)',
-                      cursor: 'none',
                     }}
                   >
                     {l.label} ↗
@@ -284,7 +266,6 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
-                cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
@@ -330,7 +311,6 @@ export default function Projects({ isVisible }) {
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: 'var(--font-sans)',
-                      cursor: 'none',
                     }}
                   >
                     {l.label} ↗

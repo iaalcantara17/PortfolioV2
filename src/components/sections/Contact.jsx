@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
 const links = [
   { label: 'Email', value: 'iaa48@njit.edu', href: 'mailto:iaa48@njit.edu' },
@@ -22,9 +23,9 @@ export default function Contact({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('.headline-char'), { y: 40, opacity: 0 })
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 20, opacity: 0 })
-    gsap.set(section.querySelectorAll('.link-row'), { x: 30, opacity: 0 })
+    gsap.set(section.querySelectorAll('.headline-char'), entranceStart({ y: 40, opacity: 0 }))
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 20, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.link-row'), entranceStart({ x: 30, opacity: 0 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -34,9 +35,10 @@ export default function Contact({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('.headline-char'), { y: 0, opacity: 1, stagger: 0.04, duration: 0.6 })
-        .to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.6 }, '-=0.3')
-        .to(section.querySelectorAll('.link-row'), { x: 0, opacity: 1, stagger: 0.1, duration: 0.6 }, '-=0.2')
+      tl.to(section.querySelectorAll('.headline-char'), entranceEnd({ y: 0, opacity: 1, stagger: 0.04, duration: 0.6 }))
+        .to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.6 }), '-=0.3')
+        .to(section.querySelectorAll('.link-row'), entranceEnd({ x: 0, opacity: 1, stagger: 0.1, duration: 0.6 }), '-=0.2')
+        .add(pulseAvailability(section.querySelector('.availability-dot')))
       tlRef.current = tl
     }
   }, [isVisible])
@@ -66,7 +68,9 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div>
-            {/* Headline with letter reveal */}
+            <h2 className="sr-only">Contact</h2>
+            {/* Headline with letter reveal. Screen readers get the words; the per-letter
+                spans would otherwise be read one letter at a time. */}
             <div
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -76,15 +80,17 @@ export default function Contact({ isVisible }) {
                 color: 'var(--color-ink)',
                 marginBottom: 32,
               }}
-              aria-label="Let's talk."
             >
-              {"Let's".split('').map((c, i) => (
-                <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
-              ))}
-              <br />
-              {'talk.'.split('').map((c, i) => (
-                <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
-              ))}
+              <span className="sr-only">Let's talk.</span>
+              <span aria-hidden="true">
+                {"Let's".split('').map((c, i) => (
+                  <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
+                ))}
+                <br />
+                {'talk.'.split('').map((c, i) => (
+                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
+                ))}
+              </span>
             </div>
 
             <div data-animate style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
@@ -128,7 +134,6 @@ export default function Contact({ isVisible }) {
                   padding: '20px 0',
                   borderBottom: '0.5px solid var(--color-line)',
                   textDecoration: 'none',
-                  cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
                 {...dimOnMouseHover('0.6')}
@@ -155,7 +160,6 @@ export default function Contact({ isVisible }) {
                   background: 'var(--color-ink)',
                   borderRadius: 4,
                   textDecoration: 'none',
-                  cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
                 {...dimOnMouseHover('0.8')}
@@ -164,6 +168,7 @@ export default function Contact({ isVisible }) {
                   Download Resume
                 </span>
                 <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
           </div>

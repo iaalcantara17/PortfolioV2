@@ -6,6 +6,7 @@ import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
 import { sections } from './data/sections'
 import { useActiveSection } from './hooks/useActiveSection'
+import { useKeyboardScroll } from './hooks/useKeyboardScroll'
 
 export default function App() {
   const containerRef = useRef(null)
@@ -15,10 +16,18 @@ export default function App() {
   const [visibleSection, setVisibleSection] = useState(0)
   // The section the page is on, shown by the dots and the counter.
   const activeSection = useActiveSection(containerRef, sectionRefs)
+  useKeyboardScroll(containerRef)
 
   const navigateTo = useCallback((index) => {
     const section = sectionRefs.current[index]
-    if (section) section.scrollIntoView({ behavior: 'smooth' })
+    if (!section) return
+    // Focus follows the jump, as it would for an in-page link, so Tab and screen
+    // readers carry on from the section (not from the nav, or from the body once
+    // the mobile menu that held focus has closed)
+    section.focus({ preventScroll: true })
+    // No behavior given, so it follows the scroller's CSS scroll-behavior:
+    // smooth, or instant under reduced motion
+    section.scrollIntoView()
   }, [])
 
   useEffect(() => {
@@ -60,6 +69,7 @@ export default function App() {
             key={key}
             ref={setRef(i)}
             data-section-index={i}
+            tabIndex={-1}
             className="section-wrapper"
             style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
           >

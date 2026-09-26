@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const roles = [
   {
@@ -81,9 +82,9 @@ export default function Experience({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.exp-card'), { y: 40, opacity: 0 })
-    gsap.set(section.querySelectorAll('.timeline-dot'), { scale: 0 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.exp-card'), entranceStart({ y: 40, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.timeline-dot'), entranceStart({ scale: 0 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -93,9 +94,9 @@ export default function Experience({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelectorAll('.exp-card'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.4')
-        .to(section.querySelectorAll('.timeline-dot'), { scale: 1, stagger: 0.08, duration: 0.3, ease: 'back.out(2)' }, '-=0.3')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelectorAll('.exp-card'), entranceEnd({ y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }), '-=0.4')
+        .to(section.querySelectorAll('.timeline-dot'), entranceEnd({ scale: 1, stagger: 0.08, duration: 0.3, ease: 'back.out(2)' }), '-=0.3')
       tlRef.current = tl
     }
   }, [isVisible])
@@ -126,6 +127,7 @@ export default function Experience({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Experience</h2>
             <div
               data-animate
               className="section-intro-title"

@@ -2,10 +2,15 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { preload } from 'react-dom'
 import { gsap } from 'gsap'
 import Photo from '../Photo'
-import { galleryPhotos, srcSet } from '../../data/photos'
+import { galleryPhotos, photoAlt, srcSet } from '../../data/photos'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const WINDOW = 15
 const STAGE_SIZES = '100vw'
+
+// Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
+// are the same files Hero, About and Life show, so they borrow those descriptions.
+const stopgapAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
@@ -19,8 +24,8 @@ export default function Gallery({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelector('.gallery-stage'), { opacity: 0, scale: 0.97 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelector('.gallery-stage'), entranceStart({ opacity: 0, scale: 0.97 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -30,8 +35,8 @@ export default function Gallery({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelector('.gallery-stage'), { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelector('.gallery-stage'), entranceEnd({ opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }), '-=0.4')
       tlRef.current = tl
     }
   }, [isVisible])
@@ -98,7 +103,7 @@ export default function Gallery({ isVisible }) {
         {/* Header */}
         <div data-animate>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 4 }}>
-            <span className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</span>
+            <h2 className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</h2>
           </div>
           <div
             style={{
@@ -140,7 +145,7 @@ export default function Gallery({ isVisible }) {
               photo={galleryPhotos[activeIndex]}
               sizes={STAGE_SIZES}
               loading="lazy"
-              alt=""
+              alt={stopgapAlt(galleryPhotos[activeIndex], activeIndex, total)}
               style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
             />
             {total > 1 && (

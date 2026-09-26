@@ -27,9 +27,24 @@ export const photoByName = Object.fromEntries(
   }),
 )
 
+// Images that go through the pipeline for use elsewhere, not in Gallery
+const NOT_IN_GALLERY = new Set(['njit-diploma'])
+
 export const galleryPhotos = Object.keys(photoByName)
+  .filter((name) => !NOT_IN_GALLERY.has(name))
   .sort()
   .map((name) => photoByName[name])
 
 export const srcSet = (photo, format, widths = WIDTHS) =>
   widths.map((w) => `${photo.variants[w][format]} ${photo.variants[w].width}w`).join(', ')
+
+// Approved descriptions, by photo file. A file reused in several places (streetwear
+// in About and Life) gets the same description everywhere. Gallery shows the same
+// files and borrows these until it has descriptions of its own.
+export const photoAlt = {
+  city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
+  friends: 'Two friends standing together outdoors at night.',
+  nature: 'Looking up through a canopy of tall pine trees.',
+  portrait: 'Portrait of Israel Alcántara.',
+  streetwear: 'Israel standing on a grassy coastal hillside.',
+}

@@ -11,16 +11,19 @@
   --color-line: #d4cfc5;
   --color-ink: #0d0d0d;
   --color-muted: #666666;
-  --color-faint: #bbbbbb;
+  --color-faint: #6e6e6e;
   --color-white: #fff;
 
-  /* Accents */
+  /* Accents. Green pill text uses the darker green-deep, which meets WCAG AA on
+     its tint. Gold text (stat suffixes, "Scroll", gold pills) keeps the lighter
+     brand golds by choice, below AA contrast. */
   --color-purple: #7F77DD;
   --color-purple-deep: #534AB7;
   --color-purple-ink: #403B6E;
   --color-gold: #D4AF37;
   --color-gold-deep: #9a7d1a;
   --color-green: #1D9E75;
+  --color-green-deep: #157456;      /* green pill text on its tint */
 
   /* Translucent — suffix is the alpha, e.g. a12 = 0.12 */
   --color-purple-a12: rgba(127, 119, 221, 0.12);
@@ -43,6 +46,10 @@
   --color-white-a30: rgba(255, 255, 255, 0.3);
   --color-ink-a92: rgba(13, 13, 13, 0.92);
   --color-black-a04: rgba(0, 0, 0, 0.04);
+
+  /* Shadow — only for things that float over the page (the diploma hover preview);
+     cards sit flush with a hairline border instead */
+  --shadow-float: 0 1px 2px rgba(13, 13, 13, 0.06), 0 6px 18px rgba(13, 13, 13, 0.08);
 }
 
 *, *::before, *::after {
@@ -64,7 +71,6 @@ body {
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
   overflow-x: hidden;
 }
 
@@ -81,6 +87,26 @@ a {
   color: inherit;
 }
 
+/* Headings inherit type from their context (as Tailwind's Preflight did), so a heading
+   element can wrap existing styled text without changing how it looks */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Visually hidden, still read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Page scroller — the page scrolls inside this container, not on body */
 .page-scroller {
   height: 100vh;
@@ -88,6 +114,13 @@ a {
   scroll-behavior: smooth;
   /* Keeps the scrollbar's space reserved while scroll is locked, so nothing shifts */
   scrollbar-gutter: stable;
+}
+
+/* Each section takes focus when the nav, a dot or the mobile menu jumps to it
+   (App.jsx), so the next Tab starts inside it. A ring around a whole screen adds
+   nothing, so none is drawn; the section's own controls keep theirs. */
+.section-wrapper:focus {
+  outline: none;
 }
 
 /* Modal scroll lock, toggled by useScrollLock (Lightbox, mobile menu) */
@@ -111,8 +144,30 @@ a {
   color: var(--color-muted);
 }
 
-/* Cursor */
+/* Custom cursor — only for a fine, hover-capable pointer (mouse, trackpad). There
+   the system cursor is hidden everywhere and the dot stands in for it; touch and
+   other coarse pointers keep their own cursor and never see the dot. */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  body * {
+    cursor: none;
+  }
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  #custom-cursor {
+    display: none;
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* Hidden until the first mouse move places it (Cursor.jsx), so it never sits
+   parked in a corner */
 #custom-cursor {
+  visibility: hidden;
   position: fixed;
   width: 10px;
   height: 10px;
@@ -125,6 +180,10 @@ a {
   mix-blend-mode: multiply;
 }
 
+#custom-cursor.visible {
+  visibility: visible;
+}
+
 #custom-cursor.hovering {
   width: 20px;
   height: 20px;
@@ -135,28 +194,50 @@ a {
   mix-blend-mode: normal;
 }
 
-/* Section indicator dots */
+/* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
+   with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
+   adds, so the dots keep their horizontal position; they sit 24px apart so no two
+   targets overlap. */
 #section-indicator {
   position: fixed;
-  right: 24px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 8px;
   z-index: 100;
 }
 
 .section-dot {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Only the active dot shows by default, as before Phase 4. A dot's purple ring
+   appears only with keyboard focus (:focus-visible), never on a mouse click. The
+   browser's own focus outline stays too, so focus on the already-filled active dot
+   is still visible. */
+.section-dot::before {
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: 1px solid var(--color-purple);
-  cursor: pointer;
+  border: 1px solid transparent;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.section-dot.active {
+.section-dot:focus-visible::before {
+  border-color: var(--color-purple);
+}
+
+.section-dot.active::before {
+  border-color: var(--color-purple);
   background: var(--color-purple);
   transform: scale(1.3);
 }
@@ -193,7 +274,6 @@ nav.site-nav.scrolled {
   display: none;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 /* Mobile nav menu overlay */
@@ -232,7 +312,6 @@ nav.site-nav.scrolled {
   border: none;
   text-align: left;
   padding: 0;
-  cursor: pointer;
 }
 
 /* Pills */
@@ -281,7 +360,7 @@ nav.site-nav.scrolled {
 .pill-green {
   background: var(--color-green-a12);
   border-color: var(--color-green-a30);
-  color: var(--color-green);
+  color: var(--color-green-deep);
 }
 
 .pill-dark {
@@ -312,11 +391,15 @@ nav.site-nav.scrolled {
   50% { height: 12px; }
 }
 
-.spotify-bar:nth-child(1) { animation: spotifyBar1 0.8s ease-in-out infinite; }
-.spotify-bar:nth-child(2) { animation: spotifyBar2 0.9s ease-in-out infinite 0.1s; }
-.spotify-bar:nth-child(3) { animation: spotifyBar3 0.7s ease-in-out infinite 0.2s; }
-.spotify-bar:nth-child(4) { animation: spotifyBar4 1s ease-in-out infinite 0.05s; }
-.spotify-bar:nth-child(5) { animation: spotifyBar5 0.85s ease-in-out infinite 0.15s; }
+/* Four cycles once the widget is on screen (.in-view, set by SpotifyWidget), then
+   each bar holds its last frame. Done in about 4s, inside WCAG 2.2.2's five-second
+   limit, so it needs no pause control */
+.spotify-bar:nth-child(1) { animation: spotifyBar1 0.8s ease-in-out 0s 4 both; }
+.spotify-bar:nth-child(2) { animation: spotifyBar2 0.9s ease-in-out 0.1s 4 both; }
+.spotify-bar:nth-child(3) { animation: spotifyBar3 0.7s ease-in-out 0.2s 4 both; }
+.spotify-bar:nth-child(4) { animation: spotifyBar4 1s ease-in-out 0.05s 4 both; }
+.spotify-bar:nth-child(5) { animation: spotifyBar5 0.85s ease-in-out 0.15s 4 both; }
+.spotify-bars:not(.in-view) .spotify-bar { animation-play-state: paused; }
 
 /* 3D tilt card */
 .tilt-card {
@@ -387,7 +470,6 @@ nav.site-nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none;
 }
 .gallery-arrow-left {
   left: 16px;
@@ -410,7 +492,6 @@ nav.site-nav.scrolled {
   border: 0.5px solid var(--color-line);
   overflow: hidden;
   padding: 0;
-  cursor: none;
   scroll-snap-align: center;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -425,19 +506,85 @@ nav.site-nav.scrolled {
   transform: scale(1.08);
 }
 
-/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify signal */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+/* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
+   (the NJIT Education card). Mouse users get the hover tilt and the growing cursor
+   instead, so it only shows where the custom cursor is off (same query as above).
+   Stroke style matches the hamburger icon; purple is the site's "opens something"
+   accent, as on the ↗ arrows. */
+.tap-hint {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--color-purple);
 }
 
+@media not all and (hover: hover) and (pointer: fine) {
+  .tap-hint {
+    display: block;
+  }
+}
+
+/* Card follower — something that follows the pointer while a card is hovered,
+   placed by placeFollower (utils/follower.js). It fades in on hover with a fine
+   pointer only, so a tap on a phone can't leave it showing. */
+.card-follower {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edu-card:hover .card-follower {
+    opacity: 1;
+  }
+  /* A follower can overhang its card; lift the hovered card so the next card
+     doesn't cover it */
+  .edu-card:hover:has(> .card-follower) {
+    z-index: 1;
+  }
+}
+
+/* Hover preview (HoverPreview.jsx): a small thumbnail follower, framed like the
+   site's cards (hairline border, 4px corners), plus a soft shadow since it floats
+   over the page instead of sitting flush */
+.card-hover-preview {
+  width: 140px;
+  border-radius: 4px;
+  border: 0.5px solid var(--color-line);
+  background: var(--color-paper);
+  overflow: hidden;
+  box-shadow: var(--shadow-float);
+}
+
+.card-hover-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Hover label on a card that opens nothing (Montclair's "In progress"): a follower
+   styled like the photo caption chips in About and Life */
+.card-hover-label {
+  white-space: nowrap;
+  background: var(--color-paper);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-line);
+  color: var(--color-muted);
+}
+
+/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
+   signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
 .availability-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--color-gold);
   flex-shrink: 0;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 /* Tablet + mobile — structural stacking. Desktop (1024px+) is untouched. */
@@ -454,12 +601,6 @@ nav.site-nav.scrolled {
     overflow: visible !important;
   }
   #section-indicator {
-    display: none;
-  }
-  body {
-    cursor: auto;
-  }
-  #custom-cursor {
     display: none;
   }
   /* Stack two-column layouts */
@@ -648,6 +789,27 @@ nav.site-nav.scrolled {
   }
 }
 
+/* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
+   their content is taller than one screen. The section grows to fit instead of
+   scrolling inside a column, which only a mouse wheel could reach. Where it fits
+   (1440×900) it stays exactly one screen tall. */
+@media (min-width: 1024px) {
+  .section-wrapper:has(> .page-section.fit-content) {
+    height: auto !important;
+    min-height: 100vh;
+  }
+  /* .page-section's min-height: 100vh still applies (border included); the grid
+     fills whatever height the section ends up with */
+  .page-section.fit-content {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-section.fit-content > div:first-child {
+    flex: 1 0 auto;
+  }
+}
+
 /* Tablet + mobile — the eight nav links crowd the logo and resume button below
    about 930px, so they swap for the hamburger toggle at the same breakpoint the
    layout stacks at */
@@ -664,5 +826,36 @@ nav.site-nav.scrolled {
 @media (max-width: 600px) {
   .site-nav-inner {
     padding: 0 16px;
+  }
+}
+
+/* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
+   no smooth scrolling, the mobile menu only fades, no hover tilt, and the scaled
+   active states (section dot, filmstrip thumb) switch without animating */
+@keyframes menuFadeOnly {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  .page-scroller {
+    scroll-behavior: auto;
+  }
+  .mobile-menu-overlay {
+    animation-name: menuFadeOnly;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+  .section-dot::before {
+    transition: background 0.3s ease;
+  }
+  .filmstrip-thumb {
+    transition: border-color 0.2s ease;
+  }
+  /* The Spotify bars hold still at their first frame */
+  .spotify-bars .spotify-bar {
+    animation-play-state: paused;
   }
 }

@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { quotes } from '../../data/quotes'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const interestTiers = [
   { pills: ['Music', 'Fashion', 'Photography', 'Basketball'], type: 'purple' },
@@ -29,10 +30,10 @@ export default function About({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.pull-quote, .about-quote'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.body-para'), { y: 20, opacity: 0 })
-    gsap.set(section.querySelectorAll('.interest-pill'), { y: 12, opacity: 0, scale: 0.9 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.pull-quote, .about-quote'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.body-para'), entranceStart({ y: 20, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.interest-pill'), entranceStart({ y: 12, opacity: 0, scale: 0.9 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -42,15 +43,15 @@ export default function About({ isVisible }) {
 
     if (isVisible && !onceTlRef.current) {
       const onceTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      onceTl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.06, duration: 0.7 })
+      onceTl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.06, duration: 0.7 }))
       onceTlRef.current = onceTl
     }
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('.pull-quote, .about-quote'), { y: 0, opacity: 1, duration: 0.7 })
-        .to(section.querySelectorAll('.body-para'), { y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }, '-=0.3')
-        .to(section.querySelectorAll('.interest-pill'), { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 }, '-=0.2')
+      tl.to(section.querySelectorAll('.pull-quote, .about-quote'), entranceEnd({ y: 0, opacity: 1, duration: 0.7 }))
+        .to(section.querySelectorAll('.body-para'), entranceEnd({ y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }), '-=0.3')
+        .to(section.querySelectorAll('.interest-pill'), entranceEnd({ y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 }), '-=0.2')
       tlRef.current = tl
     }
   }, [isVisible])
@@ -58,7 +59,7 @@ export default function About({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -77,10 +78,9 @@ export default function About({ isVisible }) {
             display: 'flex',
             flexDirection: 'column',
             gap: 28,
-            overflowY: 'auto',
           }}
         >
-          <span className="eyebrow" data-animate>Who I Am</span>
+          <h2 className="eyebrow" data-animate>Who I Am</h2>
 
           {/* Pull quote */}
           <div className="pull-quote">
@@ -144,14 +144,13 @@ export default function About({ isVisible }) {
               border: '0.5px solid var(--color-line)',
               position: 'relative',
               overflow: 'hidden',
-              cursor: 'none',
             }}
           >
             <Photo
               photo={photoByName.streetwear}
               sizes="(max-width: 1023px) 100vw, 45vw"
               loading="lazy"
-              alt="Israel Alcántara"
+              alt={photoAlt.streetwear}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />
             <div

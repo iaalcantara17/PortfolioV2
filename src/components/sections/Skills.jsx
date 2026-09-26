@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const categories = [
   {
@@ -57,9 +58,9 @@ export default function Skills({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.skill-pill'), { y: 10, opacity: 0, scale: 0.92 })
-    gsap.set(section.querySelectorAll('.category-line'), { scaleX: 0, transformOrigin: 'left center' })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.skill-pill'), entranceStart({ y: 10, opacity: 0, scale: 0.92 }))
+    gsap.set(section.querySelectorAll('.category-line'), entranceStart({ scaleX: 0, transformOrigin: 'left center' }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -69,9 +70,9 @@ export default function Skills({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelectorAll('.category-line'), { scaleX: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out' }, '-=0.4')
-        .to(section.querySelectorAll('.skill-pill'), { y: 0, opacity: 1, scale: 1, stagger: 0.025, duration: 0.35, ease: 'power2.out' }, '-=0.3')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelectorAll('.category-line'), entranceEnd({ scaleX: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out' }), '-=0.4')
+        .to(section.querySelectorAll('.skill-pill'), entranceEnd({ y: 0, opacity: 1, scale: 1, stagger: 0.025, duration: 0.35, ease: 'power2.out' }), '-=0.3')
       tlRef.current = tl
     }
   }, [isVisible])
@@ -102,6 +103,7 @@ export default function Skills({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Skills</h2>
             <div
               data-animate
               className="section-intro-title"

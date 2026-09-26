@@ -3,13 +3,14 @@ import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Lightbox from '../Lightbox'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const photos = [
-  { image: photoByName.streetwear, alt: 'Israel — streetwear', label: 'Streetwear' },
-  { image: photoByName.city, alt: 'Israel — city', label: 'NYC' },
-  { image: photoByName.nature, alt: 'Israel — nature', label: 'Outdoors' },
-  { image: photoByName.friends, alt: 'Israel — friends', label: 'People' },
+  { image: photoByName.streetwear, alt: photoAlt.streetwear, label: 'Streetwear' },
+  { image: photoByName.city, alt: photoAlt.city, label: 'NYC' },
+  { image: photoByName.nature, alt: photoAlt.nature, label: 'Outdoors' },
+  { image: photoByName.friends, alt: photoAlt.friends, label: 'People' },
 ]
 
 const CELL_SIZES = '(max-width: 1023px) 50vw, 35vw'
@@ -20,12 +21,25 @@ export default function HumanIsrael({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
+  // Each photo cell opens the Lightbox by click, or by Enter/Space when focused
+  const opensLightbox = (index) => ({
+    role: 'button',
+    tabIndex: 0,
+    'aria-haspopup': 'dialog',
+    onClick: () => setLightboxIndex(index),
+    onKeyDown: (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return
+      e.preventDefault()
+      setLightboxIndex(index)
+    },
+  })
+
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelectorAll('.gallery-cell'), { opacity: 0, scale: 0.97 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelectorAll('.gallery-cell'), entranceStart({ opacity: 0, scale: 0.97 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -35,8 +49,8 @@ export default function HumanIsrael({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelectorAll('.gallery-cell'), { opacity: 1, scale: 1, stagger: 0.08, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelectorAll('.gallery-cell'), entranceEnd({ opacity: 1, scale: 1, stagger: 0.08, duration: 0.6, ease: 'power2.out' }), '-=0.4')
       tlRef.current = tl
     }
   }, [isVisible])
@@ -59,6 +73,7 @@ export default function HumanIsrael({ isVisible }) {
         <div style={{ padding: '40px 48px', borderRight: '0.5px solid var(--color-line)', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
           {/* Header */}
           <div>
+            <h2 className="sr-only">Life</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 4 }}>
               <span
                 className="eyebrow"
@@ -98,7 +113,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Streetwear — tall left */}
             <div
               className="gallery-cell gallery-cell-streetwear photo-placeholder"
-              onClick={() => setLightboxIndex(0)}
+              {...opensLightbox(0)}
               style={{
                 width: '100%',
                 height: 676,
@@ -106,14 +121,13 @@ export default function HumanIsrael({ isVisible }) {
                 border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
-                cursor: 'none',
               }}
             >
               <Photo
                 photo={photoByName.streetwear}
                 sizes={CELL_SIZES}
                 loading="lazy"
-                alt="Israel — streetwear"
+                alt={photos[0].alt}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
               />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -126,7 +140,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* City */}
               <div
                 className="gallery-cell gallery-cell-city photo-placeholder"
-                onClick={() => setLightboxIndex(1)}
+                {...opensLightbox(1)}
                 style={{
                   width: '100%',
                   height: 284,
@@ -134,14 +148,13 @@ export default function HumanIsrael({ isVisible }) {
                   border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
-                  cursor: 'none',
                 }}
               >
                 <Photo
                   photo={photoByName.city}
                   sizes={CELL_SIZES}
                   loading="lazy"
-                  alt="Israel — city"
+                  alt={photos[1].alt}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
                 />
                 <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -152,7 +165,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* Nature */}
               <div
                 className="gallery-cell gallery-cell-nature photo-placeholder"
-                onClick={() => setLightboxIndex(2)}
+                {...opensLightbox(2)}
                 style={{
                   width: '100%',
                   height: 380,
@@ -160,7 +173,6 @@ export default function HumanIsrael({ isVisible }) {
                   border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
-                  cursor: 'none',
                   background: 'var(--color-placeholder)',
                 }}
               >
@@ -168,7 +180,7 @@ export default function HumanIsrael({ isVisible }) {
                   photo={photoByName.nature}
                   sizes={CELL_SIZES}
                   loading="lazy"
-                  alt="Israel — nature"
+                  alt={photos[2].alt}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
                 />
                 <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -180,7 +192,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Friends — wide */}
             <div
               className="gallery-cell gallery-cell-friends photo-placeholder"
-              onClick={() => setLightboxIndex(3)}
+              {...opensLightbox(3)}
               style={{
                 gridColumn: 'span 2',
                 width: '100%',
@@ -189,14 +201,13 @@ export default function HumanIsrael({ isVisible }) {
                 border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
-                cursor: 'none',
               }}
             >
               <Photo
                 photo={photoByName.friends}
                 sizes={WIDE_CELL_SIZES}
                 loading="lazy"
-                alt="Israel — friends"
+                alt={photos[3].alt}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%', display: 'block' }}
               />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
