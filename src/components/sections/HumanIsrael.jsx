@@ -21,6 +21,19 @@ export default function HumanIsrael({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
+  // Each photo cell opens the Lightbox by click, or by Enter/Space when focused
+  const opensLightbox = (index) => ({
+    role: 'button',
+    tabIndex: 0,
+    'aria-haspopup': 'dialog',
+    onClick: () => setLightboxIndex(index),
+    onKeyDown: (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return
+      e.preventDefault()
+      setLightboxIndex(index)
+    },
+  })
+
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
     const section = sectionRef.current
@@ -100,7 +113,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Streetwear — tall left */}
             <div
               className="gallery-cell gallery-cell-streetwear photo-placeholder"
-              onClick={() => setLightboxIndex(0)}
+              {...opensLightbox(0)}
               style={{
                 width: '100%',
                 height: 676,
@@ -127,7 +140,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* City */}
               <div
                 className="gallery-cell gallery-cell-city photo-placeholder"
-                onClick={() => setLightboxIndex(1)}
+                {...opensLightbox(1)}
                 style={{
                   width: '100%',
                   height: 284,
@@ -152,7 +165,7 @@ export default function HumanIsrael({ isVisible }) {
               {/* Nature */}
               <div
                 className="gallery-cell gallery-cell-nature photo-placeholder"
-                onClick={() => setLightboxIndex(2)}
+                {...opensLightbox(2)}
                 style={{
                   width: '100%',
                   height: 380,
@@ -179,7 +192,7 @@ export default function HumanIsrael({ isVisible }) {
             {/* Friends — wide */}
             <div
               className="gallery-cell gallery-cell-friends photo-placeholder"
-              onClick={() => setLightboxIndex(3)}
+              {...opensLightbox(3)}
               style={{
                 gridColumn: 'span 2',
                 width: '100%',
