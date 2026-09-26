@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
@@ -127,16 +127,18 @@ export default function Hero({ isVisible }) {
   const siempreRef = useRef(null)
   const eyebrowRef = useRef(null)
   const bottomRef = useRef(null)
-  const rightColRef = useRef(null)
+  const statsRef = useRef(null)
+  const spotifyRef = useRef(null)
   const statusRef = useRef(null)
   const completedRef = useRef(false)
 
-  // Set initial hidden state on mount. Skipped once resolved, so a StrictMode
-  // (dev-only) remount doesn't re-hide elements the early resolve already revealed.
-  useEffect(() => {
+  // Set initial hidden state on mount, before the first paint, so nothing shows for
+  // a frame and then disappears. Skipped once resolved, so a StrictMode (dev-only)
+  // remount doesn't re-hide elements the early resolve already revealed.
+  useLayoutEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
-    gsap.set(rightColRef.current, entranceStart({ opacity: 0, x: 20 }))
+    gsap.set([statsRef.current, spotifyRef.current], entranceStart({ opacity: 0, x: 20 }))
     gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
     gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
@@ -147,7 +149,7 @@ export default function Hero({ isVisible }) {
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
     const eyebrow = eyebrowRef.current
-    const rightCol = rightColRef.current
+    const rightFade = [statsRef.current, spotifyRef.current]
     const status = statusRef.current
     const bottom = bottomRef.current
 
@@ -161,7 +163,7 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, rightCol, status, bottom], {
+      gsap.to([eyebrow, ...rightFade, status, bottom], {
         opacity: 1, duration: 0.6, ease: 'power2.out',
         onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
       })
@@ -183,9 +185,10 @@ export default function Hero({ isVisible }) {
     offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
     const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
 
-    // Right column fades in right after name resolves — not gated on full animation
+    // Right column's stats and Spotify fade in right after name resolves — not gated
+    // on full animation. The portrait above them is shown from the start.
     const rightFadeT = setTimeout(() => {
-      gsap.to(rightCol, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
+      gsap.to(rightFade, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
     }, nameDoneAt + 150)
     timers.push(rightFadeT)
 
@@ -223,7 +226,7 @@ export default function Hero({ isVisible }) {
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
         gsap.set(eyebrow, { opacity: 1 })
-        gsap.set(rightCol, { opacity: 1, x: 0 })
+        gsap.set(rightFade, { opacity: 1, x: 0 })
         gsap.set(status, { opacity: 1, y: 0 })
         gsap.set(bottom, { opacity: 1 })
         completedRef.current = true
@@ -320,9 +323,10 @@ export default function Hero({ isVisible }) {
           </div>
         </div>
 
-        {/* Right column — always rendered, fades in after name resolves */}
+        {/* Right column — always rendered. The portrait (the page's largest image, so
+            its LCP) shows from the first paint; the stats and Spotify fade in after
+            the name resolves. */}
         <div
-          ref={rightColRef}
           className="hero-right"
           style={{
             padding: '60px 0 48px',
@@ -355,7 +359,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Stats with gold suffixes */}
-          <div style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
+          <div ref={statsRef} style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
             {[
               { num: '12', suffix: 'W', label: 'AWS Internship' },
               { num: '6', suffix: '+', label: 'Projects shipped' },
@@ -385,7 +389,7 @@ export default function Hero({ isVisible }) {
           </div>
 
           {/* Spotify */}
-          <div style={{ width: '100%', maxWidth: 420 }}>
+          <div ref={spotifyRef} style={{ width: '100%', maxWidth: 420 }}>
             <SpotifyWidget />
           </div>
         </div>
