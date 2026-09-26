@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
-// copyOnTouch: on touch devices, tapping copies the value instead of following href
+// copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
-  { label: 'Email', value: 'ialcantara2003@gmail.com', href: 'mailto:ialcantara2003@gmail.com', copyOnTouch: true },
+  { label: 'Email', value: 'ialcantara2003@gmail.com', copy: true },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
@@ -18,6 +18,15 @@ const dimOnMouseHover = (opacity) => ({
 
 const COPIED_MS = 1500
 
+// Selects an element's text, for copying by hand
+function selectText(el) {
+  const range = document.createRange()
+  range.selectNodeContents(el)
+  const selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+}
+
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
@@ -26,18 +35,19 @@ export default function Contact({ isVisible }) {
 
   useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
 
-  // Touch only: a mail app is rarely what someone wants from a tap on their phone.
-  // If the clipboard isn't available or refuses, fall back to the mailto link.
-  const handleCopyTap = (e, link) => {
-    if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches || !navigator.clipboard) return
-    e.preventDefault()
+  // Copies a row's value, from a mouse click, a tap or the keyboard alike; the label
+  // reads "Copied" for a moment. If the clipboard isn't available or refuses, the
+  // value is selected instead, ready to copy by hand.
+  const copyValue = (e, link) => {
+    const valueEl = e.currentTarget.querySelector('[data-copy-value]')
+    if (!navigator.clipboard) return selectText(valueEl)
     navigator.clipboard.writeText(link.value).then(
       () => {
         setCopied(true)
         clearTimeout(copiedTimerRef.current)
         copiedTimerRef.current = setTimeout(() => setCopied(false), COPIED_MS)
       },
-      () => { window.location.href = link.href }
+      () => selectText(valueEl)
     )
   }
 
@@ -142,34 +152,42 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target={l.href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                className="link-row"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '20px 0',
-                  borderBottom: '0.5px solid var(--color-line)',
-                  textDecoration: 'none',
-                  transition: 'opacity 0.2s ease',
-                }}
-                {...dimOnMouseHover('0.6')}
-                onClick={l.copyOnTouch ? (e) => handleCopyTap(e, l) : undefined}
-              >
-                <div>
-                  <div className="eyebrow" style={{ marginBottom: 3 }} aria-live={l.copyOnTouch ? 'polite' : undefined}>
-                    {l.copyOnTouch && copied ? 'Copied' : l.label}
+            {links.map((l) => {
+              // A copy row is a button (it acts, it doesn't go anywhere), styled to
+              // look exactly like the link rows: its button defaults are reset
+              const Row = l.copy ? 'button' : 'a'
+              const rowProps = l.copy
+                ? { type: 'button', onClick: (e) => copyValue(e, l) }
+                : { href: l.href, target: '_blank', rel: 'noopener noreferrer' }
+              return (
+                <Row
+                  key={l.label}
+                  {...rowProps}
+                  className="link-row"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '20px 0',
+                    border: 'none',
+                    borderBottom: '0.5px solid var(--color-line)',
+                    textAlign: 'left',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.2s ease',
+                  }}
+                  {...dimOnMouseHover('0.6')}
+                >
+                  <div>
+                    <div className="eyebrow" style={{ marginBottom: 3 }} aria-live={l.copy ? 'polite' : undefined}>
+                      {l.copy && copied ? 'Copied' : l.label}
+                    </div>
+                    <div data-copy-value={l.copy ? '' : undefined} style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
                   </div>
-                  <div style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
-                </div>
-                <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
-              </a>
-            ))}
+                  <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
+                </Row>
+              )
+            })}
 
             {/* Resume download */}
             <div style={{ marginTop: 32 }}>
