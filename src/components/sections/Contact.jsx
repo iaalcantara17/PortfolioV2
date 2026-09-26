@@ -168,6 +168,7 @@ export default function Contact({ isVisible }) {
                   Download Resume
                 </span>
                 <span className="pill pill-gold on-ink" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
           </div>

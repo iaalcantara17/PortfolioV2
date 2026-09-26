@@ -68,12 +68,15 @@ export default function Nav({ containerRef, onNavigate }) {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <button
-            onClick={() => window.open('/Resume_Israel_Alcantara.pdf', '_blank')}
-            style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
+          <a
+            href="/Resume_Israel_Alcantara.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)', textDecoration: 'none' }}
           >
             Resume
-          </button>
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
 
           <button
             ref={toggleRef}
