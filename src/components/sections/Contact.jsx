@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
 const links = [
-  { label: 'Email', value: 'iaa48@njit.edu', href: 'mailto:iaa48@njit.edu' },
+  { label: 'Email', value: 'ialcantara2003@gmail.com', href: 'mailto:ialcantara2003@gmail.com' },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
