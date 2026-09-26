@@ -134,7 +134,6 @@ export default function Contact({ isVisible }) {
                   padding: '20px 0',
                   borderBottom: '0.5px solid var(--color-line)',
                   textDecoration: 'none',
-                  cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
                 {...dimOnMouseHover('0.6')}
@@ -161,7 +160,6 @@ export default function Contact({ isVisible }) {
                   background: 'var(--color-ink)',
                   borderRadius: 4,
                   textDecoration: 'none',
-                  cursor: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
                 {...dimOnMouseHover('0.8')}

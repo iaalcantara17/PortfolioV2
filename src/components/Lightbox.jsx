@@ -64,7 +64,6 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
                 color: 'var(--color-paper)',
                 fontSize: 18,
                 lineHeight: 1,
-                cursor: 'inherit',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

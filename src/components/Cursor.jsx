@@ -9,7 +9,18 @@ export default function Cursor() {
     const cursor = cursorRef.current
     if (!cursor) return
 
+    // Same query index.css gates the dot on. The dot stays hidden until the first
+    // move with such a pointer, then appears right under it instead of in a corner.
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+    let shown = false
+
     const onMove = (e) => {
+      if (!shown) {
+        if (!finePointer.matches) return
+        gsap.set(cursor, { x: e.clientX, y: e.clientY })
+        cursor.classList.add('visible')
+        shown = true
+      }
       pos.current = { x: e.clientX, y: e.clientY }
       gsap.to(cursor, {
         x: e.clientX,

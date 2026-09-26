@@ -32,7 +32,7 @@ export default function Nav({ containerRef, onNavigate }) {
       <div className="site-nav-inner">
         <button
           onClick={() => handleNavigate(0)}
-          style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', background: 'none', border: 'none', cursor: 'none' }}
+          style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', background: 'none', border: 'none' }}
         >
           I.A
         </button>
@@ -42,7 +42,7 @@ export default function Nav({ containerRef, onNavigate }) {
             <button
               key={l.key}
               onClick={() => onNavigate(l.section)}
-              style={{ background: 'none', border: 'none', cursor: 'none', color: 'var(--color-muted)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
             >
               {l.label}
             </button>
@@ -52,7 +52,7 @@ export default function Nav({ containerRef, onNavigate }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
             onClick={() => window.open('/Resume_Israel_Alcantara.pdf', '_blank')}
-            style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', cursor: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
+            style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
           >
             Resume
           </button>

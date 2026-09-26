@@ -9,7 +9,6 @@ export default function SectionIndicator({ current, onNavigate }) {
           title={s.label}
           onClick={() => onNavigate(i)}
           className={`section-dot ${current === i ? 'active' : ''}`}
-          style={{ background: current === i ? 'var(--color-purple)' : 'transparent', cursor: 'none', border: 'none', padding: 0 }}
         />
       ))}
     </div>

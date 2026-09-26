@@ -69,7 +69,6 @@ body {
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
   overflow-x: hidden;
 }
 
@@ -136,8 +135,30 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-muted);
 }
 
-/* Cursor */
+/* Custom cursor — only for a fine, hover-capable pointer (mouse, trackpad). There
+   the system cursor is hidden everywhere and the dot stands in for it; touch and
+   other coarse pointers keep their own cursor and never see the dot. */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  body * {
+    cursor: none;
+  }
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  #custom-cursor {
+    display: none;
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* Hidden until the first mouse move places it (Cursor.jsx), so it never sits
+   parked in a corner */
 #custom-cursor {
+  visibility: hidden;
   position: fixed;
   width: 10px;
   height: 10px;
@@ -150,6 +171,10 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: multiply;
 }
 
+#custom-cursor.visible {
+  visibility: visible;
+}
+
 #custom-cursor.hovering {
   width: 20px;
   height: 20px;
@@ -160,28 +185,41 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: normal;
 }
 
-/* Section indicator dots */
+/* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
+   with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
+   adds, so the dots keep their horizontal position; they sit 24px apart so no two
+   targets overlap. */
 #section-indicator {
   position: fixed;
-  right: 24px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 8px;
   z-index: 100;
 }
 
 .section-dot {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-dot::before {
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
   border: 1px solid var(--color-purple);
-  cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.section-dot.active {
+.section-dot.active::before {
   background: var(--color-purple);
   transform: scale(1.3);
 }
@@ -218,7 +256,6 @@ nav.site-nav.scrolled {
   display: none;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 /* Mobile nav menu overlay */
@@ -257,7 +294,6 @@ nav.site-nav.scrolled {
   border: none;
   text-align: left;
   padding: 0;
-  cursor: pointer;
 }
 
 /* Pills */
@@ -422,7 +458,6 @@ nav.site-nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none;
 }
 .gallery-arrow-left {
   left: 16px;
@@ -445,7 +480,6 @@ nav.site-nav.scrolled {
   border: 0.5px solid var(--color-line);
   overflow: hidden;
   padding: 0;
-  cursor: none;
   scroll-snap-align: center;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -484,12 +518,6 @@ nav.site-nav.scrolled {
     overflow: visible !important;
   }
   #section-indicator {
-    display: none;
-  }
-  body {
-    cursor: auto;
-  }
-  #custom-cursor {
     display: none;
   }
   /* Stack two-column layouts */
@@ -716,7 +744,7 @@ nav.site-nav.scrolled {
   .tilt-card {
     transform: none !important;
   }
-  .section-dot {
+  .section-dot::before {
     transition: background 0.3s ease;
   }
   .filmstrip-thumb {
