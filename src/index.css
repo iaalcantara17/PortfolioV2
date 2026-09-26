@@ -706,12 +706,17 @@ nav.site-nav.scrolled {
     font-size: 22px;
   }
   .hero-status {
-    position: static !important;
     margin-top: 48px;
+  }
+  /* Stacked, the columns keep the bottom padding they had before the desktop status
+     bar moved into the flow (their inline 20px is for desktop) */
+  .hero-left {
+    padding-bottom: 64px !important;
   }
   .hero-right {
     margin-top: 40px;
     gap: 32px !important;
+    padding-bottom: 48px !important;
   }
   /* Hero left column uses justify-content:space-between for its two children,
      which collapses to 0 gap once the section height goes from 100vh to auto */
