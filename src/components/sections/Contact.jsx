@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
@@ -31,6 +31,9 @@ export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
   const [copied, setCopied] = useState(false)
+  // The copy button's aria-label replaces its text for screen readers, so the address
+  // on screen is attached as its description: "Copy email address, button, <address>"
+  const copyValueId = useId()
   const copiedTimerRef = useRef(null)
 
   useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
@@ -157,7 +160,7 @@ export default function Contact({ isVisible }) {
               // look exactly like the link rows: its button defaults are reset
               const Row = l.copy ? 'button' : 'a'
               const rowProps = l.copy
-                ? { type: 'button', onClick: (e) => copyValue(e, l) }
+                ? { type: 'button', 'aria-label': 'Copy email address', 'aria-describedby': copyValueId, onClick: (e) => copyValue(e, l) }
                 : { href: l.href, target: '_blank', rel: 'noopener noreferrer' }
               return (
                 <Row
@@ -182,9 +185,19 @@ export default function Contact({ isVisible }) {
                     <div className="eyebrow" style={{ marginBottom: 3 }} aria-live={l.copy ? 'polite' : undefined}>
                       {l.copy && copied ? 'Copied' : l.label}
                     </div>
-                    <div data-copy-value={l.copy ? '' : undefined} style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
+                    <div data-copy-value={l.copy ? '' : undefined} id={l.copy ? copyValueId : undefined} style={{ fontSize: 13, color: 'var(--color-ink)', fontFamily: 'var(--font-sans)' }}>{l.value}</div>
                   </div>
-                  <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
+                  {l.copy ? (
+                    // Copy icon (two sheets), in the tap hint's style (14px, round caps,
+                    // the purple "does something" accent) but a lighter 1.1 stroke, so it
+                    // matches the thin ↗ arrows on the rows below it
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ color: 'var(--color-purple)', flexShrink: 0 }}>
+                      <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+                      <path d="M9.5 4.5V3A1.5 1.5 0 0 0 8 1.5H3A1.5 1.5 0 0 0 1.5 3v5A1.5 1.5 0 0 0 3 9.5h1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
+                  )}
                 </Row>
               )
             })}
