@@ -849,6 +849,13 @@ nav.site-nav.scrolled {
   }
 }
 
+/* HumanIsrael — the sidebar's Spotify slot. SpotifyWidget renders nothing when
+   Spotify never loaded, which left this wrapper empty but still spaced by the
+   sidebar's gap; taking it out of the layout closes that gap. */
+.human-spotify:empty {
+  display: none;
+}
+
 /* HumanIsrael — desktop: the photo grid's fixed pixel heights stacked to 1248px,
    overflowing the 100vh section (overflow: hidden) and clipping the People photo.
    Fit the grid to the space under the header, keeping the same 676:560 row and
