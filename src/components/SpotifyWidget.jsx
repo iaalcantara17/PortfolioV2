@@ -2,23 +2,28 @@ import { useEffect, useRef, useState } from 'react'
 import { useSpotify } from '../hooks/useSpotify'
 
 export default function SpotifyWidget() {
-  const { track, artist, isPlaying, loading } = useSpotify()
   const rootRef = useRef(null)
+  // Whether the widget is on screen right now. Polling only runs while one is.
+  const [onScreen, setOnScreen] = useState(false)
   // The bars run a capped number of cycles (see index.css), so they wait until the
   // widget is first on screen. Latched: it never goes back to false.
   const [inView, setInView] = useState(false)
+  const { status, track, artist, isPlaying } = useSpotify(onScreen)
 
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return
-      setInView(true)
-      observer.disconnect()
+      setOnScreen(entry.isIntersecting)
+      if (entry.isIntersecting) setInView(true)
     })
     observer.observe(root)
     return () => observer.disconnect()
   }, [])
+
+  // Nothing has loaded, and nothing will this visit (Spotify down or not set up): no
+  // widget at all, rather than a placeholder that reads like a real state
+  if (status === 'unavailable') return null
 
   const mutedColor = 'var(--color-muted)'
 
@@ -73,7 +78,7 @@ export default function SpotifyWidget() {
 
       {/* Text */}
       <div style={{ overflow: 'hidden', minWidth: 0 }}>
-        {loading ? (
+        {status === 'loading' ? (
           <span style={{ fontSize: 10, color: mutedColor, fontFamily: 'var(--font-sans)' }}>Loading...</span>
         ) : (
           <>
