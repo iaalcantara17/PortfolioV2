@@ -127,6 +127,7 @@ export default function Experience({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Experience</h2>
             <div
               data-animate
               className="section-intro-title"

@@ -3,14 +3,14 @@ import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Lightbox from '../Lightbox'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const photos = [
-  { image: photoByName.streetwear, alt: 'Israel — streetwear', label: 'Streetwear' },
-  { image: photoByName.city, alt: 'Israel — city', label: 'NYC' },
-  { image: photoByName.nature, alt: 'Israel — nature', label: 'Outdoors' },
-  { image: photoByName.friends, alt: 'Israel — friends', label: 'People' },
+  { image: photoByName.streetwear, alt: photoAlt.streetwear, label: 'Streetwear' },
+  { image: photoByName.city, alt: photoAlt.city, label: 'NYC' },
+  { image: photoByName.nature, alt: photoAlt.nature, label: 'Outdoors' },
+  { image: photoByName.friends, alt: photoAlt.friends, label: 'People' },
 ]
 
 const CELL_SIZES = '(max-width: 1023px) 50vw, 35vw'
@@ -60,6 +60,7 @@ export default function HumanIsrael({ isVisible }) {
         <div style={{ padding: '40px 48px', borderRight: '0.5px solid var(--color-line)', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
           {/* Header */}
           <div>
+            <h2 className="sr-only">Life</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 4 }}>
               <span
                 className="eyebrow"
@@ -114,7 +115,7 @@ export default function HumanIsrael({ isVisible }) {
                 photo={photoByName.streetwear}
                 sizes={CELL_SIZES}
                 loading="lazy"
-                alt="Israel — streetwear"
+                alt={photos[0].alt}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
               />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -142,7 +143,7 @@ export default function HumanIsrael({ isVisible }) {
                   photo={photoByName.city}
                   sizes={CELL_SIZES}
                   loading="lazy"
-                  alt="Israel — city"
+                  alt={photos[1].alt}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%', display: 'block' }}
                 />
                 <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -169,7 +170,7 @@ export default function HumanIsrael({ isVisible }) {
                   photo={photoByName.nature}
                   sizes={CELL_SIZES}
                   loading="lazy"
-                  alt="Israel — nature"
+                  alt={photos[2].alt}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
                 />
                 <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>
@@ -197,7 +198,7 @@ export default function HumanIsrael({ isVisible }) {
                 photo={photoByName.friends}
                 sizes={WIDE_CELL_SIZES}
                 loading="lazy"
-                alt="Israel — friends"
+                alt={photos[3].alt}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%', display: 'block' }}
               />
               <div className="eyebrow" style={{ position: 'absolute', bottom: 8, left: 8, background: 'var(--color-paper)', padding: '2px 6px', borderRadius: 20, border: '0.5px solid var(--color-line)', color: 'var(--color-muted)', fontSize: 8 }}>

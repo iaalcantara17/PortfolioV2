@@ -65,7 +65,7 @@ export default function SpotifyWidget() {
         </div>
       ) : (
         <div style={{ width: 14, height: 14, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style={{ color: mutedColor }}>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style={{ color: mutedColor }} role="img" aria-label="Not playing">
             <path d="M5 0a5 5 0 100 10A5 5 0 005 0zm-1 7V3l3 2-3 2z"/>
           </svg>
         </div>

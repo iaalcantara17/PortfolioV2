@@ -73,6 +73,7 @@ export default function Education({ isVisible }) {
             borderRight: '0.5px solid var(--color-line)',
           }}
         >
+          <h2 className="sr-only">Education</h2>
           <div
             data-animate
             className="section-intro-title"

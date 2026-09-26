@@ -68,7 +68,9 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div>
-            {/* Headline with letter reveal */}
+            <h2 className="sr-only">Contact</h2>
+            {/* Headline with letter reveal. Screen readers get the words; the per-letter
+                spans would otherwise be read one letter at a time. */}
             <div
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -78,15 +80,17 @@ export default function Contact({ isVisible }) {
                 color: 'var(--color-ink)',
                 marginBottom: 32,
               }}
-              aria-label="Let's talk."
             >
-              {"Let's".split('').map((c, i) => (
-                <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
-              ))}
-              <br />
-              {'talk.'.split('').map((c, i) => (
-                <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
-              ))}
+              <span className="sr-only">Let's talk.</span>
+              <span aria-hidden="true">
+                {"Let's".split('').map((c, i) => (
+                  <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
+                ))}
+                <br />
+                {'talk.'.split('').map((c, i) => (
+                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
+                ))}
+              </span>
             </div>
 
             <div data-animate style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>

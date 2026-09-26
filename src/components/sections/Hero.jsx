@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
-import { photoByName } from '../../data/photos'
+import { photoByName, photoAlt } from '../../data/photos'
 import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
@@ -37,6 +37,11 @@ const SIEMPRE_CHARS = 'Siempre aprendiendo.'.split('').map(ch => ({ ch }))
 // Static render of a char list, matching what scheduleChars types out
 function renderChars(charDefs) {
   return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
+}
+
+// A char list as one plain string, line breaks as spaces, for screen readers
+function plainText(charDefs) {
+  return charDefs.map((c) => (c.isBR ? ' ' : c.ch)).join('')
 }
 
 // Appends a char's final node: a <br>, or a span with its resolved text and style
@@ -270,23 +275,32 @@ export default function Hero({ isVisible }) {
               <span className="eyebrow">Software Engineer · MBA Candidate</span>
             </div>
 
-            {/* Name — empty on mount, chars appended by typewriter */}
-            <div style={{ marginBottom: 32 }}>
-              <div ref={word1Ref} style={wordStyle} />
-              <div ref={word2Ref} style={wordStyle} />
-              <div ref={word3Ref} style={wordStyle} />
-            </div>
+            {/* Name — empty on mount, chars appended by typewriter. Screen readers get
+                the plain name; the typed-out lines (split surname, dash, scramble) are
+                hidden from them. */}
+            <h1 style={{ marginBottom: 32 }}>
+              <span className="sr-only">Israel Alcántara</span>
+              <span aria-hidden="true" style={{ display: 'block' }}>
+                <span ref={word1Ref} style={wordStyle} />
+                <span ref={word2Ref} style={wordStyle} />
+                <span ref={word3Ref} style={wordStyle} />
+              </span>
+            </h1>
 
             {/* Subtext — the typewriter appends chars to the overlay. The hidden copy
                 underneath reserves the final text's height from the start, so the
-                stacked mobile layout doesn't shift down when the text resolves. */}
+                stacked mobile layout doesn't shift down when the text resolves.
+                Screen readers get the plain text, never the scrambling overlay. */}
             <div style={{ position: 'relative', color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9, maxWidth: 360 }}>
+              <p className="sr-only">
+                {plainText(SUBTEXT_CHARS)} <em>{plainText(SIEMPRE_CHARS)}</em>
+              </p>
               <div aria-hidden="true" style={{ visibility: 'hidden' }}>
                 <span>{renderChars(SUBTEXT_CHARS)}</span>
                 <br />
                 <em>{renderChars(SIEMPRE_CHARS)}</em>
               </div>
-              <div style={{ position: 'absolute', inset: 0 }}>
+              <div aria-hidden="true" style={{ position: 'absolute', inset: 0 }}>
                 <span ref={subtextBodyRef} />
                 <br />
                 <em ref={siempreRef} style={{ color: 'var(--color-purple-deep)', fontStyle: 'italic' }} />
@@ -335,7 +349,7 @@ export default function Hero({ isVisible }) {
               photo={photoByName.portrait}
               sizes={HERO_PHOTO_SIZES}
               fetchPriority="high"
-              alt="Israel Alcántara"
+              alt={photoAlt.portrait}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }}
             />
           </div>
