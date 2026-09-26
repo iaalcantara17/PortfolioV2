@@ -215,16 +215,25 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 
+/* Only the active dot shows by default, as before Phase 4. A dot's purple ring
+   appears only with keyboard focus (:focus-visible), never on a mouse click. The
+   browser's own focus outline stays too, so focus on the already-filled active dot
+   is still visible. */
 .section-dot::before {
   content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: 1px solid var(--color-purple);
+  border: 1px solid transparent;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
+.section-dot:focus-visible::before {
+  border-color: var(--color-purple);
+}
+
 .section-dot.active::before {
+  border-color: var(--color-purple);
   background: var(--color-purple);
   transform: scale(1.3);
 }
