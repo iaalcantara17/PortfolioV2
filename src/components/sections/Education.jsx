@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
-import Lightbox from '../Lightbox'
+import LazyLightbox from '../LazyLightbox'
 import HoverPreview from '../HoverPreview'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
 import { followPointer } from '../../utils/follower'
-import njitLogo from '../../assets/logos/njit.png'
-import montclairLogo from '../../assets/logos/montclair.png'
+import njitLogo from '../../assets/logos/njit.webp'
+import montclairLogo from '../../assets/logos/montclair.webp'
 
 // Logos show in their official colors, a deliberate exception to the token palette.
 // Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox
@@ -224,7 +224,7 @@ export default function Education({ isVisible }) {
         </div>
       </div>
 
-      <Lightbox
+      <LazyLightbox
         photos={diplomas}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}

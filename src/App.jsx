@@ -4,6 +4,7 @@ import Nav from './components/Nav'
 import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
+import SectionErrorBoundary from './components/SectionErrorBoundary'
 import { sections } from './data/sections'
 import { useActiveSection } from './hooks/useActiveSection'
 import { useKeyboardScroll } from './hooks/useKeyboardScroll'
@@ -61,7 +62,7 @@ export default function App() {
       <Cursor />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
       <SectionIndicator current={activeSection} onNavigate={navigateTo} />
-      <SectionCounter active={activeSection} />
+      <SectionCounter active={activeSection} containerRef={containerRef} />
 
       <div ref={containerRef} className="page-scroller">
         {sections.map(({ key, Component }, i) => (
@@ -73,7 +74,9 @@ export default function App() {
             className="section-wrapper"
             style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
           >
-            <Component isVisible={visibleSection === i} />
+            <SectionErrorBoundary>
+              <Component isVisible={visibleSection === i} />
+            </SectionErrorBoundary>
             <SectionLabel index={i + 1} />
           </div>
         ))}

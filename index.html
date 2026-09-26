@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Israel Alcántara — Software Engineer, AWS alum, NJIT CS Grad, MSU MBA Candidate. Builder. Bilingual." />
     <title>Israel Alcántara — Software Engineer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+    <!-- DM Serif Display, upright: the Hero name's font. Must match the src in index.css -->
+    <link rel="preload" as="font" type="font/woff2" href="/src/assets/fonts/dm-serif-display-latin-400.woff2" crossorigin />
     <!-- Hero portrait (LCP). imagesizes must match HERO_PHOTO_SIZES in Hero.jsx -->
     <link
       rel="preload"
@@ -22,6 +21,21 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Only with JavaScript turned off: the essentials, in the site's own words (styled
+         by .noscript in index.css) -->
+    <noscript>
+      <main class="noscript">
+        <p class="eyebrow">Software Engineer · MBA Candidate</p>
+        <h1>Israel Alcántara</h1>
+        <p>Builder. AWS alum. NJIT Computer Science. Bilingual.</p>
+        <ul>
+          <li><span class="eyebrow">Email</span><a href="mailto:ialcantara2003@gmail.com">ialcantara2003@gmail.com</a></li>
+          <li><span class="eyebrow">LinkedIn</span><a href="https://linkedin.com/in/israel-alcantara">linkedin.com/in/israel-alcantara</a></li>
+          <li><span class="eyebrow">GitHub</span><a href="https://github.com/iaalcantara17">github.com/iaalcantara17</a></li>
+        </ul>
+        <p><a href="/Resume_Israel_Alcantara.pdf">Download Resume</a></p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

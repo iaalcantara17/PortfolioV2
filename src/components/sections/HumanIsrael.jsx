@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
-import Lightbox from '../Lightbox'
+import LazyLightbox from '../LazyLightbox'
 import Photo from '../Photo'
 import { photoByName, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
@@ -219,7 +219,7 @@ export default function HumanIsrael({ isVisible }) {
 
         {/* Right sidebar */}
         <div className="human-sidebar" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', gap: 32 }}>
-          <div data-animate>
+          <div className="human-spotify" data-animate>
             <SpotifyWidget />
           </div>
 
@@ -235,7 +235,7 @@ export default function HumanIsrael({ isVisible }) {
         </div>
       </div>
 
-      <Lightbox
+      <LazyLightbox
         photos={photos}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
