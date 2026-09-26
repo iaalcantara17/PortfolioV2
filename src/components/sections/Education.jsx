@@ -5,6 +5,7 @@ import Lightbox from '../Lightbox'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
+import { placeFollower } from '../../utils/follower'
 import njitLogo from '../../assets/logos/njit.png'
 import montclairLogo from '../../assets/logos/montclair.png'
 
@@ -60,26 +61,15 @@ const diplomaTriggerProps = (s, open) => {
 
 // A card that opens nothing gets the same hover tilt, for consistency with the NJIT
 // card, but no data-cursor: the cursor dot doesn't grow, since there is nothing to
-// click. Its hover label follows the pointer like a tooltip, below and to the right,
-// flipping left or above near the card's edges so it stays on the card. Mouse
-// pointers only, so a tap on a phone can't leave the card tilted.
-const LABEL_OFFSET_X = 14
-const LABEL_OFFSET_Y = 18
-
+// click. Its hover label follows the pointer like a tooltip (utils/follower.js).
+// Mouse pointers only, so a tap on a phone can't leave the card tilted.
 const hoverOnlyProps = {
   onPointerMove: (e) => {
     if (e.pointerType !== 'mouse') return
     const card = e.currentTarget
     handleTilt(e, card)
-    const label = card.querySelector('.card-hover-label')
-    if (!label) return
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const fitsRight = x + LABEL_OFFSET_X + label.offsetWidth <= card.offsetWidth
-    const fitsBelow = y + LABEL_OFFSET_Y + label.offsetHeight <= card.offsetHeight
-    label.style.left = `${fitsRight ? x + LABEL_OFFSET_X : x - LABEL_OFFSET_X - label.offsetWidth}px`
-    label.style.top = `${fitsBelow ? y + LABEL_OFFSET_Y : y - LABEL_OFFSET_Y - label.offsetHeight}px`
+    const label = card.querySelector('.card-follower')
+    if (label) placeFollower(e, card, label)
   },
   onPointerLeave: (e) => resetTilt(e.currentTarget),
 }
@@ -220,10 +210,10 @@ export default function Education({ isVisible }) {
                 </svg>
               )}
 
-              {/* Hover label, positioned by hoverOnlyProps (see .card-hover-label).
+              {/* Hover label, positioned by hoverOnlyProps (see .card-follower).
                   aria-hidden: the status pill already says the same to screen readers. */}
               {s.hoverLabel && (
-                <span className="eyebrow card-hover-label" aria-hidden="true">{s.hoverLabel}</span>
+                <span className="eyebrow card-follower card-hover-label" aria-hidden="true">{s.hoverLabel}</span>
               )}
             </div>
           ))}
