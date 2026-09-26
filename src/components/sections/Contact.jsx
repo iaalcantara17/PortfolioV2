@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import { entranceStart, entranceEnd } from '../../utils/motion'
+import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 
 const links = [
   { label: 'Email', value: 'iaa48@njit.edu', href: 'mailto:iaa48@njit.edu' },
@@ -38,6 +38,7 @@ export default function Contact({ isVisible }) {
       tl.to(section.querySelectorAll('.headline-char'), entranceEnd({ y: 0, opacity: 1, stagger: 0.04, duration: 0.6 }))
         .to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.6 }), '-=0.3')
         .to(section.querySelectorAll('.link-row'), entranceEnd({ x: 0, opacity: 1, stagger: 0.1, duration: 0.6 }), '-=0.2')
+        .add(pulseAvailability(section.querySelector('.availability-dot')))
       tlRef.current = tl
     }
   }, [isVisible])

@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
 import { photoByName } from '../../data/photos'
-import { prefersReducedMotion, entranceStart } from '../../utils/motion'
+import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
 // Must match imagesizes on the portrait preload in index.html
@@ -156,7 +156,10 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, rightCol, status, bottom], { opacity: 1, duration: 0.6, ease: 'power2.out' })
+      gsap.to([eyebrow, rightCol, status, bottom], {
+        opacity: 1, duration: 0.6, ease: 'power2.out',
+        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
+      })
       return
     }
 
@@ -198,7 +201,10 @@ export default function Hero({ isVisible }) {
     // Status bar and bottom fade in after full animation
     const finalFadeT = setTimeout(() => {
       completedRef.current = true
-      gsap.to(status, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
+      gsap.to(status, {
+        opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
+        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
+      })
       gsap.to(bottom, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
     }, siempreDoneAt + 150)
     timers.push(finalFadeT)
