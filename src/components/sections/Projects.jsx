@@ -123,7 +123,6 @@ export default function Projects({ isVisible }) {
               borderRadius: 4,
               padding: '28px 32px',
               border: '0.5px solid #2a2a2a', /* one-off: review */
-              cursor: 'none',
             }}
           >
             {/* Award badge */}
@@ -179,7 +178,6 @@ export default function Projects({ isVisible }) {
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
-                  cursor: 'none',
                 }}
               >
                 Live Demo ↗
@@ -200,7 +198,6 @@ export default function Projects({ isVisible }) {
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
-                  cursor: 'none',
                 }}
               >
                 GitHub ↗
@@ -221,7 +218,6 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
-                cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
@@ -267,7 +263,6 @@ export default function Projects({ isVisible }) {
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: 'var(--font-sans)',
-                      cursor: 'none',
                     }}
                   >
                     {l.label} ↗
@@ -286,7 +281,6 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
-                cursor: 'none',
               }}
             >
               <div style={{ marginBottom: 8 }}>
@@ -332,7 +326,6 @@ export default function Projects({ isVisible }) {
                       textDecoration: 'none',
                       letterSpacing: '0.04em',
                       fontFamily: 'var(--font-sans)',
-                      cursor: 'none',
                     }}
                   >
                     {l.label} ↗

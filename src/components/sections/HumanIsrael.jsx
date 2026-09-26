@@ -108,7 +108,6 @@ export default function HumanIsrael({ isVisible }) {
                 border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
-                cursor: 'none',
               }}
             >
               <Photo
@@ -136,7 +135,6 @@ export default function HumanIsrael({ isVisible }) {
                   border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
-                  cursor: 'none',
                 }}
               >
                 <Photo
@@ -162,7 +160,6 @@ export default function HumanIsrael({ isVisible }) {
                   border: '0.5px solid var(--color-line)',
                   position: 'relative',
                   overflow: 'hidden',
-                  cursor: 'none',
                   background: 'var(--color-placeholder)',
                 }}
               >
@@ -191,7 +188,6 @@ export default function HumanIsrael({ isVisible }) {
                 border: '0.5px solid var(--color-line)',
                 position: 'relative',
                 overflow: 'hidden',
-                cursor: 'none',
               }}
             >
               <Photo

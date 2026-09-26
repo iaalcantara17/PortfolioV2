@@ -69,7 +69,6 @@ body {
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
   overflow-x: hidden;
 }
 
@@ -136,8 +135,30 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-muted);
 }
 
-/* Cursor */
+/* Custom cursor — only for a fine, hover-capable pointer (mouse, trackpad). There
+   the system cursor is hidden everywhere and the dot stands in for it; touch and
+   other coarse pointers keep their own cursor and never see the dot. */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  body * {
+    cursor: none;
+  }
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  #custom-cursor {
+    display: none;
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* Hidden until the first mouse move places it (Cursor.jsx), so it never sits
+   parked in a corner */
 #custom-cursor {
+  visibility: hidden;
   position: fixed;
   width: 10px;
   height: 10px;
@@ -148,6 +169,10 @@ h1, h2, h3, h4, h5, h6 {
   transform: translate(-50%, -50%);
   transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
   mix-blend-mode: multiply;
+}
+
+#custom-cursor.visible {
+  visibility: visible;
 }
 
 #custom-cursor.hovering {
@@ -218,7 +243,6 @@ nav.site-nav.scrolled {
   display: none;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 /* Mobile nav menu overlay */
@@ -257,7 +281,6 @@ nav.site-nav.scrolled {
   border: none;
   text-align: left;
   padding: 0;
-  cursor: pointer;
 }
 
 /* Pills */
@@ -422,7 +445,6 @@ nav.site-nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none;
 }
 .gallery-arrow-left {
   left: 16px;
@@ -445,7 +467,6 @@ nav.site-nav.scrolled {
   border: 0.5px solid var(--color-line);
   overflow: hidden;
   padding: 0;
-  cursor: none;
   scroll-snap-align: center;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -484,12 +505,6 @@ nav.site-nav.scrolled {
     overflow: visible !important;
   }
   #section-indicator {
-    display: none;
-  }
-  body {
-    cursor: auto;
-  }
-  #custom-cursor {
     display: none;
   }
   /* Stack two-column layouts */

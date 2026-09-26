@@ -145,7 +145,6 @@ export default function About({ isVisible }) {
               border: '0.5px solid var(--color-line)',
               position: 'relative',
               overflow: 'hidden',
-              cursor: 'none',
             }}
           >
             <Photo
