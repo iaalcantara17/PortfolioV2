@@ -1,7 +1,52 @@
+/* DM Serif Display, served from the site instead of Google Fonts: the same Latin
+   files Google serves, under the SIL Open Font License (assets/fonts/OFL.txt). The
+   upright face is preloaded in index.html; the italic is only used further down. */
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/dm-serif-display-latin-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/dm-serif-display-latin-400-italic.woff2') format('woff2');
+}
+
+/* Georgia, adjusted to DM Serif Display's proportions for the moment before the web
+   font arrives, so the swap barely moves any text. size-adjust matches the average
+   glyph width (Georgia's x-height then matches too, within 0.1% upright); the ascent
+   and descent overrides match DM Serif's, so lines sit at the same height. Worked out
+   from the two fonts' own metrics. Where Georgia isn't installed, these faces are
+   skipped and the plain Georgia, serif fallback applies as before. */
+@font-face {
+  font-family: 'DM Serif Display Fallback';
+  font-style: normal;
+  src: local('Georgia');
+  size-adjust: 99.58%;
+  ascent-override: 104.04%;
+  descent-override: 33.64%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'DM Serif Display Fallback';
+  font-style: italic;
+  src: local('Georgia Italic'), local('Georgia-Italic');
+  size-adjust: 95.35%;
+  ascent-override: 108.66%;
+  descent-override: 35.14%;
+  line-gap-override: 0%;
+}
+
 /* Design tokens */
 :root {
   /* Type */
-  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-serif: 'DM Serif Display', 'DM Serif Display Fallback', Georgia, serif;
   --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* Neutrals */
