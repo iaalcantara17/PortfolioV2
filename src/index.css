@@ -521,6 +521,31 @@ nav.site-nav.scrolled {
   }
 }
 
+/* Hover label on a card that opens nothing (Montclair's "In progress"): a tooltip
+   that follows the pointer (placed by Education.jsx), styled like the photo caption
+   chips in About and Life. It fades in on hover with a fine pointer only, so a tap
+   on a phone can't leave it showing. */
+.card-hover-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  background: var(--color-paper);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-line);
+  color: var(--color-muted);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edu-card:hover .card-hover-label {
+    opacity: 1;
+  }
+}
+
 /* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
    signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
 .availability-dot {

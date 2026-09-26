@@ -9,7 +9,8 @@ import njitLogo from '../../assets/logos/njit.png'
 import montclairLogo from '../../assets/logos/montclair.png'
 
 // Logos show in their official colors, a deliberate exception to the token palette.
-// Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox.
+// Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox;
+// a card with a hoverLabel only reacts to hover (tilt plus the label).
 const schools = [
   {
     degree: 'Bachelor of Science in Computer Science',
@@ -27,6 +28,7 @@ const schools = [
     status: 'in-progress',
     period: 'Aug 2026 — Expected Fall 2028',
     logo: { src: montclairLogo, width: 165, height: 192 },
+    hoverLabel: 'In progress',
   },
 ]
 
@@ -54,6 +56,32 @@ const diplomaTriggerProps = (s, open) => {
     onMouseMove: (e) => handleTilt(e, e.currentTarget),
     onMouseLeave: (e) => resetTilt(e.currentTarget),
   }
+}
+
+// A card that opens nothing gets the same hover tilt, for consistency with the NJIT
+// card, but no data-cursor: the cursor dot doesn't grow, since there is nothing to
+// click. Its hover label follows the pointer like a tooltip, below and to the right,
+// flipping left or above near the card's edges so it stays on the card. Mouse
+// pointers only, so a tap on a phone can't leave the card tilted.
+const LABEL_OFFSET_X = 14
+const LABEL_OFFSET_Y = 18
+
+const hoverOnlyProps = {
+  onPointerMove: (e) => {
+    if (e.pointerType !== 'mouse') return
+    const card = e.currentTarget
+    handleTilt(e, card)
+    const label = card.querySelector('.card-hover-label')
+    if (!label) return
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const fitsRight = x + LABEL_OFFSET_X + label.offsetWidth <= card.offsetWidth
+    const fitsBelow = y + LABEL_OFFSET_Y + label.offsetHeight <= card.offsetHeight
+    label.style.left = `${fitsRight ? x + LABEL_OFFSET_X : x - LABEL_OFFSET_X - label.offsetWidth}px`
+    label.style.top = `${fitsBelow ? y + LABEL_OFFSET_Y : y - LABEL_OFFSET_Y - label.offsetHeight}px`
+  },
+  onPointerLeave: (e) => resetTilt(e.currentTarget),
 }
 
 export default function Education({ isVisible }) {
@@ -134,8 +162,9 @@ export default function Education({ isVisible }) {
           {schools.map((s) => (
             <div
               key={s.school}
-              className={s.diploma ? 'edu-card tilt-card' : 'edu-card'}
+              className={s.diploma || s.hoverLabel ? 'edu-card tilt-card' : 'edu-card'}
               {...(s.diploma && diplomaTriggerProps(s, () => setLightboxIndex(diplomas.indexOf(s.diploma))))}
+              {...(s.hoverLabel && hoverOnlyProps)}
               style={{
                 display: 'grid',
                 gridTemplateColumns: '96px 1fr auto',
@@ -189,6 +218,12 @@ export default function Education({ isVisible }) {
                 <svg className="tap-hint" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M8.5 1.5h4v4M12.5 1.5L8 6M5.5 12.5h-4v-4M1.5 12.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
+              )}
+
+              {/* Hover label, positioned by hoverOnlyProps (see .card-hover-label).
+                  aria-hidden: the status pill already says the same to screen readers. */}
+              {s.hoverLabel && (
+                <span className="eyebrow card-hover-label" aria-hidden="true">{s.hoverLabel}</span>
               )}
             </div>
           ))}
