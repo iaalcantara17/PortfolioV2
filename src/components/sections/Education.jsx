@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
-import Lightbox from '../Lightbox'
+import LazyLightbox from '../LazyLightbox'
 import HoverPreview from '../HoverPreview'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
@@ -224,7 +224,7 @@ export default function Education({ isVisible }) {
         </div>
       </div>
 
-      <Lightbox
+      <LazyLightbox
         photos={diplomas}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
