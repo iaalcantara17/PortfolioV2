@@ -38,6 +38,15 @@ export const galleryPhotos = Object.keys(photoByName)
 export const srcSet = (photo, format, widths = WIDTHS) =>
   widths.map((w) => `${photo.variants[w][format]} ${photo.variants[w].width}w`).join(', ')
 
+// sizes for a photo scaled to fit inside a box without cropping (Gallery stage,
+// Lightbox): the width it's actually drawn at, in CSS px. A tall photo in a wide box
+// is drawn by its height, far narrower than the box, so the box width alone would
+// fetch a much bigger file than it needs.
+export const containSizes = (photo, boxWidth, boxHeight) => {
+  const { width, height } = photo.variants[WIDTHS[0]]
+  return `${Math.ceil(Math.min(boxWidth, boxHeight * (width / height)))}px`
+}
+
 // Approved descriptions, by photo file. A file reused in several places (streetwear
 // in About and Life) gets the same description everywhere. Gallery shows the same
 // files and borrows these until it has descriptions of its own.
