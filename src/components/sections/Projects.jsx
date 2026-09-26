@@ -50,7 +50,7 @@ export default function Projects({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -111,7 +111,7 @@ export default function Projects({ isVisible }) {
         </div>
 
         {/* Right column */}
-        <div style={{ overflowY: 'auto', padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Featured card */}
           <div

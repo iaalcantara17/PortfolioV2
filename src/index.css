@@ -114,6 +114,13 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-gutter: stable;
 }
 
+/* Each section takes focus when the nav, a dot or the mobile menu jumps to it
+   (App.jsx), so the next Tab starts inside it. A ring around a whole screen adds
+   nothing, so none is drawn; the section's own controls keep theirs. */
+.section-wrapper:focus {
+  outline: none;
+}
+
 /* Modal scroll lock, toggled by useScrollLock (Lightbox, mobile menu) */
 .scroll-locked .page-scroller {
   overflow-y: hidden;
@@ -703,6 +710,27 @@ nav.site-nav.scrolled {
     flex: 380 1 0;
     min-height: 0;
     height: auto !important;
+  }
+}
+
+/* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
+   their content is taller than one screen. The section grows to fit instead of
+   scrolling inside a column, which only a mouse wheel could reach. Where it fits
+   (1440×900) it stays exactly one screen tall. */
+@media (min-width: 1024px) {
+  .section-wrapper:has(> .page-section.fit-content) {
+    height: auto !important;
+    min-height: 100vh;
+  }
+  /* .page-section's min-height: 100vh still applies (border included); the grid
+     fills whatever height the section ends up with */
+  .page-section.fit-content {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-section.fit-content > div:first-child {
+    flex: 1 0 auto;
   }
 }
 
