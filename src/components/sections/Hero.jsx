@@ -53,7 +53,68 @@ function appendFinalChar(container, charDef) {
   return container.appendChild(span)
 }
 
+// Fewest random glyphs a slot scrambles through, even for a narrow final character
+const MIN_SLOT_GLYPHS = 6
+
+// POOL's glyph widths per font (a canvas measures them once per font the Hero uses)
+const glyphWidthsByFont = new Map()
+function measureGlyphs(el) {
+  const cs = getComputedStyle(el)
+  const font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
+  if (!glyphWidthsByFont.has(font)) {
+    const ctx = document.createElement('canvas').getContext('2d')
+    ctx.font = font
+    const measure = (ch) => ctx.measureText(ch).width
+    glyphWidthsByFont.set(font, { measure, pool: [...POOL].map((ch) => ({ ch, width: measure(ch) })) })
+  }
+  return glyphWidthsByFont.get(font)
+}
+
+// Narrowest random glyph a slot uses, as a share of its final character's width
+const MIN_GLYPH_SHARE = 0.7
+
+// The random glyphs a slot scrambles through: close to its final character's width
+// but no wider, so a scrambling glyph never runs into the characters beside it and
+// leaves little gap. A narrow final character (".") falls back to the narrowest few.
+function slotGlyphs(span, finalCh) {
+  const { measure, pool } = measureGlyphs(span)
+  const target = measure(finalCh)
+  const fits = pool.filter((g) => g.width <= target + 0.5).sort((a, b) => b.width - a.width)
+  let glyphs = fits.filter((g) => g.width >= target * MIN_GLYPH_SHARE)
+  if (glyphs.length < MIN_SLOT_GLYPHS) glyphs = fits.slice(0, MIN_SLOT_GLYPHS)
+  if (glyphs.length < MIN_SLOT_GLYPHS) glyphs = [...pool].sort((a, b) => a.width - b.width).slice(0, MIN_SLOT_GLYPHS)
+  return glyphs.map((g) => g.ch)
+}
+
+// While a char scrambles, its final character holds its place in the line, invisible,
+// and the random glyphs are drawn over it. The characters after it then never move
+// (they were pushed along by each glyph's width, a layout shift). line-height normal
+// puts the drawn glyph on the same baseline as the text around it. The span must be
+// in the page, for its font. Returns a function that shows the next random glyph.
+function holdSlot(span, finalCh) {
+  const glyphs = slotGlyphs(span, finalCh)
+  span.style.position = 'relative'
+  const hold = document.createElement('span')
+  hold.style.visibility = 'hidden'
+  hold.textContent = finalCh
+  const glyph = document.createElement('span')
+  Object.assign(glyph.style, { position: 'absolute', left: '0', top: '0', lineHeight: 'normal' })
+  const scramble = () => { glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)] }
+  scramble()
+  span.append(hold, glyph)
+  return scramble
+}
+
+// Ends a scramble: the span holds only its final character, as if never scrambled
+function resolveSlot(span, finalCh) {
+  span.style.position = ''
+  span.textContent = finalCh
+}
+
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
+  // Spaces waiting to go in with the next character
+  let waitingSpaces = []
+
   for (let i = 0; i < charDefs.length; i++) {
     const charDef = charDefs[i]
     const startAt = startOffset + i * CHAR_STAGGER
@@ -68,14 +129,26 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
       if (!state.span) {
         if (container) state.span = appendFinalChar(container, charDef)
       } else if (!charDef.isBR) {
-        state.span.textContent = charDef.ch
+        resolveSlot(state.span, charDef.ch)
       }
     }
     resolvers.push(finishNow)
 
+    // A space goes in with the character after it, in the same task. Alone, it sat at
+    // the end of the line for a moment, where the browser collapses it, and it counted
+    // as a layout shift once the next character arrived. A space at the end of a line
+    // draws nothing, so this changes nothing on screen.
+    if (charDef.ch === ' ' && i < charDefs.length - 1) {
+      waitingSpaces.push(finishNow)
+      continue
+    }
+    const spacesBefore = waitingSpaces
+    waitingSpaces = []
+
     const t = setTimeout(() => {
       const container = containerRef.current
       if (!container) return
+      spacesBefore.forEach((appendSpace) => appendSpace())
 
       if (charDef.isBR) {
         container.appendChild(document.createElement('br'))
@@ -95,18 +168,16 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
         return
       }
 
-      span.textContent = POOL[Math.floor(Math.random() * POOL.length)]
       container.appendChild(span)
+      const scramble = holdSlot(span, charDef.ch)
 
-      const iv = setInterval(() => {
-        span.textContent = POOL[Math.floor(Math.random() * POOL.length)]
-      }, SCRAMBLE_TICK)
+      const iv = setInterval(scramble, SCRAMBLE_TICK)
       state.iv = iv
       intervals.push(iv)
 
       const resolveT = setTimeout(() => {
         clearInterval(iv)
-        span.textContent = charDef.ch
+        resolveSlot(span, charDef.ch)
         state.done = true
       }, SCRAMBLE_MS)
       state.resolveT = resolveT
