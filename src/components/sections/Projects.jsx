@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
@@ -11,9 +12,9 @@ export default function Projects({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
     gsap.set(section.querySelector('.featured-card'), { opacity: 0 })
-    gsap.set(section.querySelectorAll('.grid-card'), { y: 30, opacity: 0, rotateX: 5 })
+    gsap.set(section.querySelectorAll('.grid-card'), entranceStart({ y: 30, opacity: 0, rotateX: 5 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -23,9 +24,9 @@ export default function Projects({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
         .to(section.querySelector('.featured-card'), { opacity: 1, duration: 0.8 }, '-=0.4')
-        .to(section.querySelectorAll('.grid-card'), { y: 0, opacity: 1, rotateX: 0, stagger: 0.12, duration: 0.7 }, '-=0.3')
+        .to(section.querySelectorAll('.grid-card'), entranceEnd({ y: 0, opacity: 1, rotateX: 0, stagger: 0.12, duration: 0.7 }), '-=0.3')
       tlRef.current = tl
     }
   }, [isVisible])

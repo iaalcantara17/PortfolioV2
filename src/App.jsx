@@ -18,7 +18,9 @@ export default function App() {
 
   const navigateTo = useCallback((index) => {
     const section = sectionRefs.current[index]
-    if (section) section.scrollIntoView({ behavior: 'smooth' })
+    // No behavior given, so it follows the scroller's CSS scroll-behavior:
+    // smooth, or instant under reduced motion
+    if (section) section.scrollIntoView()
   }, [])
 
   useEffect(() => {

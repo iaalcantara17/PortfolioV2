@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
 import { photoByName } from '../../data/photos'
+import { prefersReducedMotion, entranceStart } from '../../utils/motion'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
 // Must match imagesizes on the portrait preload in index.html
@@ -130,8 +131,8 @@ export default function Hero({ isVisible }) {
   useEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
-    gsap.set(rightColRef.current, { opacity: 0, x: 20 })
-    gsap.set(statusRef.current, { opacity: 0, y: 10 })
+    gsap.set(rightColRef.current, entranceStart({ opacity: 0, x: 20 }))
+    gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
     gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
 
@@ -144,6 +145,20 @@ export default function Hero({ isVisible }) {
     const rightCol = rightColRef.current
     const status = statusRef.current
     const bottom = bottomRef.current
+
+    // Reduced motion: no typewriter or scramble. The final text goes in at once and
+    // the whole Hero fades in together.
+    if (prefersReducedMotion) {
+      const typed = [
+        [NAME_LINE1, word1Ref], [NAME_LINE2, word2Ref], [NAME_LINE3, word3Ref],
+        [SUBTEXT_CHARS, subtextBodyRef], [SIEMPRE_CHARS, siempreRef],
+      ]
+      typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
+      completedRef.current = true
+      gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
+      gsap.to([eyebrow, rightCol, status, bottom], { opacity: 1, duration: 0.6, ease: 'power2.out' })
+      return
+    }
 
     const timers = []
     const intervals = []

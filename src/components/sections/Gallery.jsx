@@ -3,6 +3,7 @@ import { preload } from 'react-dom'
 import { gsap } from 'gsap'
 import Photo from '../Photo'
 import { galleryPhotos, srcSet } from '../../data/photos'
+import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const WINDOW = 15
 const STAGE_SIZES = '100vw'
@@ -19,8 +20,8 @@ export default function Gallery({ isVisible }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
-    gsap.set(section.querySelectorAll('[data-animate]'), { y: 30, opacity: 0 })
-    gsap.set(section.querySelector('.gallery-stage'), { opacity: 0, scale: 0.97 })
+    gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
+    gsap.set(section.querySelector('.gallery-stage'), entranceStart({ opacity: 0, scale: 0.97 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -30,8 +31,8 @@ export default function Gallery({ isVisible }) {
 
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('[data-animate]'), { y: 0, opacity: 1, stagger: 0.07, duration: 0.7 })
-        .to(section.querySelector('.gallery-stage'), { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
+        .to(section.querySelector('.gallery-stage'), entranceEnd({ opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }), '-=0.4')
       tlRef.current = tl
     }
   }, [isVisible])
