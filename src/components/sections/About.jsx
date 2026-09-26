@@ -81,7 +81,7 @@ export default function About({ isVisible }) {
             overflowY: 'auto',
           }}
         >
-          <span className="eyebrow" data-animate>Who I Am</span>
+          <h2 className="eyebrow" data-animate>Who I Am</h2>
 
           {/* Pull quote */}
           <div className="pull-quote">
@@ -152,7 +152,7 @@ export default function About({ isVisible }) {
               photo={photoByName.streetwear}
               sizes="(max-width: 1023px) 100vw, 45vw"
               loading="lazy"
-              alt="Israel Alcántara"
+              alt="Portrait of Israel Alcántara."
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />
             <div

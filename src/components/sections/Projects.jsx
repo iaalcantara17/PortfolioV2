@@ -72,6 +72,7 @@ export default function Projects({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Projects</h2>
             <div
               data-animate
               style={{

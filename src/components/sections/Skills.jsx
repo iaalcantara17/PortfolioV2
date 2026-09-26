@@ -103,6 +103,7 @@ export default function Skills({ isVisible }) {
           }}
         >
           <div>
+            <h2 className="sr-only">Skills</h2>
             <div
               data-animate
               className="section-intro-title"

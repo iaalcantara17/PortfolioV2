@@ -2,11 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { preload } from 'react-dom'
 import { gsap } from 'gsap'
 import Photo from '../Photo'
-import { galleryPhotos, srcSet } from '../../data/photos'
+import { galleryPhotos, photoAlt, srcSet } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const WINDOW = 15
 const STAGE_SIZES = '100vw'
+
+// Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
+// are the same files Life and About show, so they borrow those descriptions.
+const STOPGAP_ALT = { ...photoAlt, portrait: 'Portrait of Israel Alcántara.' }
+const stopgapAlt = (photo, index, total) => STOPGAP_ALT[photo.name] ?? `Photo ${index + 1} of ${total}`
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
@@ -99,7 +104,7 @@ export default function Gallery({ isVisible }) {
         {/* Header */}
         <div data-animate>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 4 }}>
-            <span className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</span>
+            <h2 className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</h2>
           </div>
           <div
             style={{
@@ -141,7 +146,7 @@ export default function Gallery({ isVisible }) {
               photo={galleryPhotos[activeIndex]}
               sizes={STAGE_SIZES}
               loading="lazy"
-              alt=""
+              alt={stopgapAlt(galleryPhotos[activeIndex], activeIndex, total)}
               style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
             />
             {total > 1 && (
