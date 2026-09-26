@@ -2,16 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
 import Lightbox from '../Lightbox'
+import HoverPreview from '../HoverPreview'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
-import { placeFollower } from '../../utils/follower'
+import { followPointer } from '../../utils/follower'
 import njitLogo from '../../assets/logos/njit.png'
 import montclairLogo from '../../assets/logos/montclair.png'
 
 // Logos show in their official colors, a deliberate exception to the token palette.
-// Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox;
-// a card with a hoverLabel only reacts to hover (tilt plus the label).
+// Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox
+// and previews it on hover; a card with a hoverLabel only reacts to hover (tilt plus
+// the label).
 const schools = [
   {
     degree: 'Bachelor of Science in Computer Science',
@@ -36,7 +38,8 @@ const schools = [
 const diplomas = schools.filter((s) => s.diploma).map((s) => s.diploma)
 
 // Makes a card open its diploma. Same hover tilt as the Projects cards;
-// data-cursor grows the custom cursor like any other clickable.
+// data-cursor grows the custom cursor like any other clickable. With a mouse, a
+// thumbnail of the diploma follows the pointer (HoverPreview).
 const diplomaTriggerProps = (s, open) => {
   const openFrom = (el) => {
     // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
@@ -56,6 +59,7 @@ const diplomaTriggerProps = (s, open) => {
     },
     onMouseMove: (e) => handleTilt(e, e.currentTarget),
     onMouseLeave: (e) => resetTilt(e.currentTarget),
+    onPointerMove: followPointer,
   }
 }
 
@@ -66,10 +70,8 @@ const diplomaTriggerProps = (s, open) => {
 const hoverOnlyProps = {
   onPointerMove: (e) => {
     if (e.pointerType !== 'mouse') return
-    const card = e.currentTarget
-    handleTilt(e, card)
-    const label = card.querySelector('.card-follower')
-    if (label) placeFollower(e, card, label)
+    handleTilt(e, e.currentTarget)
+    followPointer(e)
   },
   onPointerLeave: (e) => resetTilt(e.currentTarget),
 }
@@ -209,6 +211,8 @@ export default function Education({ isVisible }) {
                   <path d="M8.5 1.5h4v4M12.5 1.5L8 6M5.5 12.5h-4v-4M1.5 12.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
+
+              {s.diploma && <HoverPreview image={s.diploma.image} />}
 
               {/* Hover label, positioned by hoverOnlyProps (see .card-follower).
                   aria-hidden: the status pill already says the same to screen readers. */}
