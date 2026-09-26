@@ -11,16 +11,21 @@
   --color-line: #d4cfc5;
   --color-ink: #0d0d0d;
   --color-muted: #666666;
-  --color-faint: #bbbbbb;
+  --color-faint: #6e6e6e;
   --color-white: #fff;
 
-  /* Accents */
+  /* Accents. Brand gold and green are for lines, dots and fills; text uses the
+     darker variants below, which meet WCAG AA against the paper */
   --color-purple: #7F77DD;
   --color-purple-deep: #534AB7;
   --color-purple-ink: #403B6E;
   --color-gold: #D4AF37;
-  --color-gold-deep: #9a7d1a;
+  --color-gold-text: #836c22;       /* gold text under 24px on paper, 4.5:1 */
+  --color-gold-text-large: #a6892b; /* gold text 24px and up on paper, 3:1 */
+  --color-gold-deep: #7f6715;       /* gold pill text on its tint */
+  --color-gold-deep-on-ink: #9a7d1a; /* gold pill text on the ink cards */
   --color-green: #1D9E75;
+  --color-green-deep: #157456;      /* green pill text on its tint */
 
   /* Translucent — suffix is the alpha, e.g. a12 = 0.12 */
   --color-purple-a12: rgba(127, 119, 221, 0.12);
@@ -278,10 +283,16 @@ nav.site-nav.scrolled {
   color: var(--color-gold-deep);
 }
 
+/* Gold pills on the ink cards (Contact's PDF tag, the featured project's award) keep
+   the lighter gold: the paper pills' darker text would drop to 2.98:1 on ink */
+.pill-gold.on-ink {
+  color: var(--color-gold-deep-on-ink);
+}
+
 .pill-green {
   background: var(--color-green-a12);
   border-color: var(--color-green-a30);
-  color: var(--color-green);
+  color: var(--color-green-deep);
 }
 
 .pill-dark {

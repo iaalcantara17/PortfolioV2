@@ -159,7 +159,7 @@ export default function Experience({ isVisible }) {
                 lineHeight: 1,
               }}
             >
-              4<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
+              4<span style={{ color: 'var(--color-gold-text-large)', fontWeight: 600 }}>+</span>
             </div>
             <div className="eyebrow" style={{ marginTop: 4 }}>Years of experience</div>
           </div>

@@ -127,7 +127,7 @@ export default function Projects({ isVisible }) {
           >
             {/* Award badge */}
             <div style={{ marginBottom: 14 }}>
-              <span className="pill pill-gold" style={{ fontSize: 9 }}>
+              <span className="pill pill-gold on-ink" style={{ fontSize: 9 }}>
                 2nd Place, NJIT CS491 Capstone 2026
               </span>
             </div>
@@ -171,7 +171,7 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: 'var(--color-purple)',
+                  background: 'var(--color-purple-deep)',
                   borderRadius: 4,
                   fontSize: 11,
                   color: 'var(--color-white)',
