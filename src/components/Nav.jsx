@@ -5,7 +5,7 @@ import { trapFocus } from '../utils/focusTrap'
 
 // section = index in the full registry, so links stay correct if sections reorder
 const links = sections
-  .map(({ key, label, inNav }, section) => ({ key, label, inNav, section }))
+  .map(({ key, anchor, label, inNav }, section) => ({ key, anchor, label, inNav, section }))
   .filter((l) => l.inNav)
 
 export default function Nav({ containerRef, onNavigate }) {
@@ -45,25 +45,37 @@ export default function Nav({ containerRef, onNavigate }) {
     onNavigate(section)
   }
 
+  // The nav items are real links to each section's #anchor, so they can be crawled,
+  // copied and opened in a new tab. A plain click goes through onNavigate instead of
+  // the browser's jump (smooth scroll, focus, closing the menu); a modified click is
+  // left to the browser.
+  const followLink = (e, section) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    e.preventDefault()
+    handleNavigate(section)
+  }
+
   return (
     <nav ref={navRef} className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="site-nav-inner">
-        <button
-          onClick={() => handleNavigate(0)}
-          style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', background: 'none', border: 'none' }}
+        <a
+          href={`#${sections[0].anchor}`}
+          onClick={(e) => followLink(e, 0)}
+          style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', textDecoration: 'none' }}
         >
           I.A
-        </button>
+        </a>
 
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {links.map((l) => (
-            <button
+            <a
               key={l.key}
-              onClick={() => onNavigate(l.section)}
-              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)' }}
+              href={`#${l.anchor}`}
+              onClick={(e) => followLink(e, l.section)}
+              style={{ color: 'var(--color-muted)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)', textDecoration: 'none' }}
             >
               {l.label}
-            </button>
+            </a>
           ))}
         </div>
 
@@ -108,9 +120,9 @@ export default function Nav({ containerRef, onNavigate }) {
         <div className="mobile-menu-overlay">
           <div className="mobile-menu-links">
             {links.map((l) => (
-              <button key={l.key} onClick={() => handleNavigate(l.section)}>
+              <a key={l.key} href={`#${l.anchor}`} onClick={(e) => followLink(e, l.section)}>
                 {l.label}
-              </button>
+              </a>
             ))}
           </div>
         </div>
