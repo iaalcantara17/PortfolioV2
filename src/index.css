@@ -614,6 +614,18 @@ nav.site-nav.scrolled {
   top: 12px;
   right: 12px;
   color: var(--color-purple);
+  /* It sits over the card's diploma button; a tap on it goes to the button */
+  pointer-events: none;
+}
+
+/* The button that opens a card's diploma (DiplomaButton in Education.jsx), stretched
+   invisibly over the whole card. Its keyboard focus ring follows the card's corners. */
+.edu-card-open {
+  position: absolute;
+  inset: 0;
+  border: none;
+  border-radius: inherit;
+  background: none;
 }
 
 @media not all and (hover: hover) and (pointer: fine) {
