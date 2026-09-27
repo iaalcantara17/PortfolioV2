@@ -192,9 +192,9 @@ export default function Experience({ isVisible }) {
                   {/* Header row */}
                   <div className="exp-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
                     <div>
-                      <div className="exp-title" style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-ink)', lineHeight: 1.3, marginBottom: 2 }}>
+                      <h3 className="exp-title" style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-ink)', lineHeight: 1.3, marginBottom: 2 }}>
                         {role.title}
-                      </div>
+                      </h3>
                       <div className="eyebrow" style={{ color: 'var(--color-muted)' }}>
                         {role.company}{role.location ? `, ${role.location}` : ''}
                       </div>

@@ -187,7 +187,7 @@ export default function Education({ isVisible }) {
               </div>
 
               <div>
-                <div
+                <h3
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontSize: 22,
@@ -198,7 +198,7 @@ export default function Education({ isVisible }) {
                   }}
                 >
                   {s.degree}
-                </div>
+                </h3>
                 <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-ink)', lineHeight: 1.3, marginBottom: 2 }}>
                   {s.school}
                 </div>
