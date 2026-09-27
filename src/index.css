@@ -599,15 +599,41 @@ nav.site-nav.scrolled {
   scroll-snap-align: center;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
+/* Thumbs other than the one on the stage sit dimmed, so the active one reads at a
+   glance. Hover or keyboard focus brings a thumb most of the way up. */
 .filmstrip-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
 }
 .filmstrip-thumb.active {
   border: 2px solid var(--color-purple);
   transform: scale(1.08);
+}
+.filmstrip-thumb.active img {
+  opacity: 1;
+}
+.filmstrip-thumb:not(.active):focus-visible img {
+  opacity: 0.85;
+}
+/* Keyboard focus: the site's purple, as a ring standing off the thumb, so it reads
+   apart from the active thumb's border */
+.filmstrip-thumb:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+/* Hover, for a mouse or trackpad only (a tap can't leave a thumb lifted): the thumb
+   brightens and lifts 2px. The active thumb stays as it is. */
+@media (hover: hover) and (pointer: fine) {
+  .filmstrip-thumb:not(.active):hover {
+    transform: translateY(-2px);
+  }
+  .filmstrip-thumb:not(.active):hover img {
+    opacity: 0.85;
+  }
 }
 
 /* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
@@ -913,6 +939,14 @@ nav.site-nav.scrolled {
     aspect-ratio: 4 / 3;
     flex: none !important;
   }
+  /* Where the thumbs run past the screen's edge, the strip fades out over its last
+     24px instead of cutting a thumb off. The end padding grows by the same 24px, so
+     scrolled to the end, the last thumb clears the fade. */
+  .gallery-filmstrip {
+    padding-right: 31px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
 }
 
 /* HumanIsrael — the sidebar's Spotify slot. SpotifyWidget renders nothing when
@@ -993,8 +1027,9 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, and the scaled
-   active states (section dot, filmstrip thumb) switch without animating */
+   no smooth scrolling, the mobile menu only fades, no hover tilt or filmstrip hover
+   lift, and the scaled active states (section dot, filmstrip thumb) switch without
+   animating */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1015,6 +1050,9 @@ nav.site-nav.scrolled {
   }
   .filmstrip-thumb {
     transition: border-color 0.2s ease;
+  }
+  .filmstrip-thumb:not(.active):hover {
+    transform: none;
   }
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {
