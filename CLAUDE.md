@@ -26,8 +26,15 @@ WebSite structured data, permanent redirects for /index.html and
 - The About bio, the pull quote, approved section headings, and the 
   quote rotation list in src/data/quotes.js.
 - Section order and nav order.
-- The Gallery Option B layout (fixed-height hero + filmstrip), the 
-  filmstrip's visual treatment, and the section counter handoff behavior.
+- The Gallery film reel: one looping black 35mm band (cream sprocket 
+  holes) that is both viewer and thumbnails, pinned to the full 1344px 
+  content width so its edges line up under "Through the lens." and 
+  "FULL GALLERY". Uniform square photos with no size hierarchy (340px at 
+  full width): the current photo in the middle, one dimmed neighbor each 
+  side, and a half-cut end sliver at each end. No matte around any photo, 
+  square corners throughout. The current photo is marked mainly by full 
+  brightness against its dimmed neighbors, with a 3px --color-purple-ink 
+  ring as a secondary cue. The section counter handoff behavior.
 - The "play once and persist" animation behavior — entrance animations 
   fire once per element on first view and then stay visible permanently. 
   No reverse-on-scroll-up, no re-triggering.
