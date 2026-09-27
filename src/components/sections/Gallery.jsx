@@ -1,15 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { preload } from 'react-dom'
 import { gsap } from 'gsap'
-import Photo from '../Photo'
-import { galleryPhotos, photoAlt, srcSet, containSizes } from '../../data/photos'
+import FilmReel from '../FilmReel'
+import LazyLightbox from '../LazyLightbox'
+import { galleryPhotos, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
-import { useElementSize } from '../../hooks/useElementSize'
-
-const WINDOW = 15
-// Only for the one render before the stage is measured; never used to load an image,
-// since the stage photo is lazy and the section starts far off screen
-const UNMEASURED_SIZES = '100vw'
 
 // Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
 // are the same files Hero, About and Life show, so they borrow those descriptions.
@@ -18,24 +12,23 @@ const stopgapAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${ind
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
-  const heroImgRef = useRef(null)
-  const stageRef = useRef(null)
-  const [activeIndex, setActiveIndex] = useState(0)
+  // The photo in the middle of the reel. The Lightbox opens on it, and its own
+  // previous/next move the reel along behind it.
+  const [index, setIndex] = useState(0)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   const total = galleryPhotos.length
-
-  // The stage photo is fitted inside the stage box, so it's drawn at whichever of the
-  // box's width or height limits it first
-  const stage = useElementSize(stageRef)
-  const stageSizes = (photo) =>
-    stage?.width && stage?.height ? containSizes(photo, stage.width, stage.height) : UNMEASURED_SIZES
+  const lightboxPhotos = useMemo(
+    () => galleryPhotos.map((image, i) => ({ image, alt: stopgapAlt(image, i, total) })),
+    [total],
+  )
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
     gsap.set(section.querySelectorAll('[data-animate]'), entranceStart({ y: 30, opacity: 0 }))
-    gsap.set(section.querySelector('.gallery-stage'), entranceStart({ opacity: 0, scale: 0.97 }))
+    gsap.set(section.querySelector('.film-reel'), entranceStart({ opacity: 0, scale: 0.97 }))
   }, [])
 
   // Animate in once, on first entrance — never reverses or re-triggers
@@ -46,55 +39,12 @@ export default function Gallery({ isVisible }) {
     if (isVisible && !tlRef.current) {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
       tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.07, duration: 0.7 }))
-        .to(section.querySelector('.gallery-stage'), entranceEnd({ opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }), '-=0.4')
+        .to(section.querySelector('.film-reel'), entranceEnd({ opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }), '-=0.4')
       tlRef.current = tl
     }
   }, [isVisible])
 
-  // Crossfade the hero image on active-photo change
-  useEffect(() => {
-    if (!heroImgRef.current) return
-    gsap.killTweensOf(heroImgRef.current)
-    gsap.fromTo(heroImgRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' })
-  }, [activeIndex])
-
-  // Preload the neighboring photos at the size the stage will draw them, only while
-  // the section is in view
-  useEffect(() => {
-    if (total === 0 || !isVisible || !stage?.width || !stage?.height) return
-    const next = galleryPhotos[(activeIndex + 1) % total]
-    const prev = galleryPhotos[(activeIndex - 1 + total) % total]
-    ;[next, prev].forEach((p) => {
-      preload(p.variants[1200].avif, {
-        as: 'image',
-        type: 'image/avif',
-        imageSrcSet: srcSet(p, 'avif'),
-        imageSizes: containSizes(p, stage.width, stage.height),
-      })
-    })
-  }, [activeIndex, total, isVisible, stage])
-
-  // Keyboard navigation, only while this section is visible
-  useEffect(() => {
-    if (!isVisible || total === 0) return
-    const onKeyDown = (e) => {
-      if (e.key === 'ArrowLeft') setActiveIndex((i) => (i - 1 + total) % total)
-      if (e.key === 'ArrowRight') setActiveIndex((i) => (i + 1) % total)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isVisible, total])
-
-  const windowed = useMemo(() => {
-    const start = Math.max(0, activeIndex - WINDOW)
-    const end = Math.min(total, activeIndex + WINDOW + 1)
-    return galleryPhotos.slice(start, end).map((photo, i) => ({ photo, index: start + i }))
-  }, [activeIndex, total])
-
   if (total === 0) return null
-
-  const goPrev = () => setActiveIndex((i) => (i - 1 + total) % total)
-  const goNext = () => setActiveIndex((i) => (i + 1) % total)
 
   return (
     <section
@@ -133,70 +83,25 @@ export default function Gallery({ isVisible }) {
           </div>
         </div>
 
-        {/* Fixed-height stage — does not grow with photo count */}
-        <div className="gallery-stage" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div
-            ref={stageRef}
-            className="gallery-hero"
-            style={{
-              flex: 1,
-              minHeight: 0,
-              position: 'relative',
-              borderRadius: 8,
-              border: '0.5px solid var(--color-line)',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'var(--color-surface)',
-            }}
-          >
-            <Photo
-              key={activeIndex}
-              ref={heroImgRef}
-              photo={galleryPhotos[activeIndex]}
-              sizes={stageSizes(galleryPhotos[activeIndex])}
-              loading="lazy"
-              alt={stopgapAlt(galleryPhotos[activeIndex], activeIndex, total)}
-              style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-            />
-            {total > 1 && (
-              <>
-                <button
-                  type="button"
-                  className="gallery-arrow gallery-arrow-left"
-                  onClick={goPrev}
-                  aria-label="Previous photo"
-                >
-                  &lsaquo;
-                </button>
-                <button
-                  type="button"
-                  className="gallery-arrow gallery-arrow-right"
-                  onClick={goNext}
-                  aria-label="Next photo"
-                >
-                  &rsaquo;
-                </button>
-              </>
-            )}
-          </div>
-
-          <div className="gallery-filmstrip">
-            {windowed.map((p) => (
-              <button
-                key={p.index}
-                type="button"
-                className={`filmstrip-thumb${p.index === activeIndex ? ' active' : ''}`}
-                onClick={() => setActiveIndex(p.index)}
-                aria-label={`View photo ${p.index + 1}`}
-              >
-                <Photo photo={p.photo} thumb alt="" loading="lazy" />
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* The reel, centered in the space under the header */}
+        <FilmReel
+          photos={galleryPhotos}
+          isVisible={isVisible}
+          index={index}
+          onIndexChange={setIndex}
+          onOpen={setLightboxIndex}
+        />
       </div>
+
+      <LazyLightbox
+        photos={lightboxPhotos}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={(i) => {
+          setLightboxIndex(i)
+          setIndex(i)
+        }}
+      />
     </section>
   )
 }

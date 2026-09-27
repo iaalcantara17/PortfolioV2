@@ -552,56 +552,116 @@ nav.site-nav.scrolled {
   font-family: var(--font-sans);
 }
 
-/* Gallery — hero stage + filmstrip */
-.gallery-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 0.5px solid var(--color-line);
-  background: var(--color-paper-a85);
-  color: var(--color-ink);
-  font-size: 18px;
-  line-height: 1;
+/* Gallery film reel (FilmReel.jsx) — a 35mm band that is both the viewer and the
+   thumbnails. FilmReel sizes the band and places each frame as the reel moves; here
+   is what doesn't move.
+   - Band: the negative's black, with PR #18's sprocket rows (6px cream squares every
+     14px, 3px in from each edge) as its own background. It hugs its frames and sits
+     centered in the space under the header.
+   - Frames: a cream matte around a square photo. --ring (1 in the middle, fading as
+     a frame leaves it) draws the purple ring for the current photo.
+   - Ends: the frame past each side frame, cut off by the band's edge, under a fade
+     into the black and a chevron. */
+.film-reel {
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.gallery-arrow-left {
-  left: 16px;
-}
-.gallery-arrow-right {
-  right: 16px;
-}
-.gallery-filmstrip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding-bottom: 4px;
-}
-.filmstrip-thumb {
+.reel-band {
+  position: relative;
   flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 4px;
-  border: 0.5px solid var(--color-line);
   overflow: hidden;
-  padding: 0;
-  scroll-snap-align: center;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border-radius: 2px;
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(to right, var(--color-paper) 6px, transparent 6px),
+    linear-gradient(to right, var(--color-paper) 6px, transparent 6px);
+  background-size: 14px 6px;
+  background-repeat: repeat-x;
+  background-position: 4px 3px, 4px calc(100% - 3px);
+  /* Vertical swipes scroll the page; sideways ones drag the reel */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.filmstrip-thumb img {
+.reel-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: none;
+  background: var(--color-paper);
+}
+.reel-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.filmstrip-thumb.active {
-  border: 2px solid var(--color-purple);
-  transform: scale(1.08);
+.reel-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 0 2px var(--color-purple);
+  opacity: var(--ring, 0);
+  pointer-events: none;
+}
+/* Keyboard focus: an outline standing off the current photo's ring */
+.reel-frame:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 3px;
+}
+/* Between the sprocket rows, so the film's edges run crisp to the end */
+.reel-fade {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  z-index: 1;
+  pointer-events: none;
+}
+.reel-fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--color-ink), transparent);
+}
+.reel-fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--color-ink), transparent);
+}
+/* Chevrons: a single polyline each, drawn 1:1 (viewBox = size) so the stroke stays
+   1.6px, with a soft shadow to read over photos. The button is clear and covers the
+   end slice, so the chevron sits right at the band's edge. */
+.reel-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+}
+.reel-arrow-left {
+  left: 0;
+  justify-content: flex-start;
+}
+.reel-arrow-right {
+  right: 0;
+  justify-content: flex-end;
+}
+.reel-arrow polyline {
+  stroke: var(--color-paper);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.reel-arrow svg {
+  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.55));
+}
+.reel-arrow:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: -2px;
 }
 
 /* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
@@ -898,15 +958,6 @@ nav.site-nav.scrolled {
     aspect-ratio: 16 / 9;
   }
 
-  /* Gallery — hero stage goes full-width and auto-height; filmstrip keeps its
-     own horizontal scroll-snap */
-  .gallery-stage {
-    height: auto !important;
-  }
-  .gallery-hero {
-    aspect-ratio: 4 / 3;
-    flex: none !important;
-  }
 }
 
 /* HumanIsrael — the sidebar's Spotify slot. SpotifyWidget renders nothing when
@@ -987,8 +1038,9 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, and the scaled
-   active states (section dot, filmstrip thumb) switch without animating */
+   no smooth scrolling, the mobile menu only fades, no hover tilt, and the section
+   dot's scaled active state switches without animating. (The Gallery reel moves
+   instantly, in FilmReel.jsx.) */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1006,9 +1058,6 @@ nav.site-nav.scrolled {
   }
   .section-dot::before {
     transition: background 0.3s ease;
-  }
-  .filmstrip-thumb {
-    transition: border-color 0.2s ease;
   }
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {
