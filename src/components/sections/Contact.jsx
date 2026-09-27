@@ -104,8 +104,10 @@ export default function Contact({ isVisible }) {
         >
           <div>
             <h2 className="sr-only">Contact</h2>
-            {/* Headline with letter reveal. Screen readers get the words; the per-letter
-                spans would otherwise be read one letter at a time. */}
+            {/* Headline with letter reveal. The words exist once as text (the
+                screen-reader copy); the per-letter spans are drawn by CSS from
+                data-glyph, so they're neither read one letter at a time nor indexed
+                as a second copy. */}
             <div
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -119,11 +121,11 @@ export default function Contact({ isVisible }) {
               <span className="sr-only">Let's talk.</span>
               <span aria-hidden="true">
                 {"Let's".split('').map((c, i) => (
-                  <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
+                  <span key={i} className="headline-char" style={{ display: 'inline-block' }} data-glyph={c} />
                 ))}
                 <br />
                 {'talk.'.split('').map((c, i) => (
-                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
+                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }} data-glyph={c} />
                 ))}
               </span>
             </div>

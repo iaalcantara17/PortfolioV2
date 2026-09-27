@@ -152,6 +152,14 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
 }
 
+/* Visual-only text: characters drawn by CSS from data-glyph instead of written as
+   DOM text (the Hero typewriter, Contact's letter drop). The real text sits once in
+   a screen-reader copy beside them, so search engines and assistive tech don't also
+   read these as a second, broken-up copy. */
+[data-glyph]::before {
+  content: attr(data-glyph);
+}
+
 /* No-JavaScript fallback (the <noscript> in index.html): name, bio, contact and
    resume, in the Hero's type. The custom cursor needs JavaScript, so the system
    cursor comes back here. */
