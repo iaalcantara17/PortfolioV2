@@ -1,8 +1,11 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import LazyLightbox from '../LazyLightbox'
+import HoverPreview from '../HoverPreview'
+import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
-import { placeFollower } from '../../utils/follower'
+import { placeFollower, followPointer, hideFollower } from '../../utils/follower'
 
 // A project link with a note in a small bubble (.link-tip-bubble, styled like
 // Montclair's "In progress" chip) that overlays its card:
@@ -85,9 +88,28 @@ function NoteLink({ link, style }) {
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
+// LinkdUp's capstone certificate, opened in the Lightbox like the NJIT diploma in Education
+const certificates = [
+  {
+    image: photoByName['linkdup-certificate'],
+    alt: 'NJIT Capstone certificate, second place for LinkdUp in the Spring 2026 YWCC Capstone Showcase',
+  },
+]
+
+// The Certificate button shows its card's hover preview (HoverPreview) the way the NJIT
+// card shows the diploma's, but only while the pointer is over the button. The preview
+// sits in the card's coordinates, always below the pointer (like the Live Demo note),
+// so it never covers the card's content above the button.
+const cardOf = (e) => e.currentTarget.closest('.featured-card')
+const certificatePreviewProps = {
+  onPointerMove: (e) => followPointer(e, cardOf(e), { alwaysBelow: true }),
+  onPointerLeave: (e) => hideFollower(e, cardOf(e)),
+}
+
 export default function Projects({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -180,7 +202,8 @@ export default function Projects({ isVisible }) {
         {/* Right column */}
         <div style={{ padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-          {/* Featured card */}
+          {/* Featured card. position: relative makes the card the certificate
+              preview's frame (followPointer places it in the card's coordinates). */}
           <div
             className="featured-card tilt-card"
             onMouseMove={(e) => handleTilt(e, e.currentTarget)}
@@ -190,6 +213,7 @@ export default function Projects({ isVisible }) {
               borderRadius: 4,
               padding: '28px 32px',
               border: '0.5px solid #2a2a2a', /* one-off: review */
+              position: 'relative',
             }}
           >
             {/* Award badge */}
@@ -228,7 +252,8 @@ export default function Projects({ isVisible }) {
               ))}
             </div>
 
-            <div style={{ display: 'flex', gap: 10 }}>
+            {/* Wraps on narrow screens, where the three don't fit on one line */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               <a
                 href="https://linkdup.app"
                 target="_blank"
@@ -269,7 +294,34 @@ export default function Projects({ isVisible }) {
               >
                 GitHub ↗
               </a>
+              {/* Opens the certificate in the Lightbox, not a new tab, so no ↗ */}
+              <button
+                type="button"
+                aria-label="View certificate: LinkdUp, 2nd Place, NJIT CS491 Capstone 2026"
+                {...certificatePreviewProps}
+                onClick={(e) => {
+                  // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
+                  resetTilt(cardOf(e))
+                  setLightboxIndex(0)
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '8px 16px',
+                  border: '0.5px solid var(--color-paper-a30)',
+                  borderRadius: 4,
+                  fontSize: 11,
+                  color: 'var(--color-paper-a70)',
+                  letterSpacing: '0.06em',
+                  fontFamily: 'var(--font-sans)',
+                }}
+              >
+                Certificate
+              </button>
             </div>
+
+            <HoverPreview image={certificates[0].image} />
           </div>
 
           {/* Grid cards */}
@@ -410,6 +462,13 @@ export default function Projects({ isVisible }) {
           </div>
         </div>
       </div>
+
+      <LazyLightbox
+        photos={certificates}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
     </section>
   )
 }
