@@ -553,20 +553,25 @@ nav.site-nav.scrolled {
 }
 
 /* Gallery film reel (FilmReel.jsx) — a 35mm band that is both the viewer and the
-   thumbnails. FilmReel sizes the band and places each frame as the reel moves; here
-   is what doesn't move.
+   thumbnails. FilmReel sizes the band, its frames and chevrons for the space it has,
+   and places each frame as the reel moves; here is what doesn't move.
+   - Space: at least 80px under the header (the column's 24px gap plus 56px here),
+     then the band and its dots centered in what's left.
    - Band: the negative's black, with PR #18's sprocket rows (6px cream squares every
-     14px, 3px in from each edge) as its own background. It hugs its frames and sits
-     centered in the space under the header.
-   - Frames: all one size, a 2px cream matte around a square photo. --ring (1 in the
-     middle, fading as a frame leaves it) draws the purple ring for the current
-     photo.
-   - Ends: the frame past each side frame, cut off by the band's edge, under a fade
-     into the black and a chevron. */
+     14px, 3px in from each edge) as its own background. It hugs its frames.
+   - Frames: all one size, a 2px cream matte around a square photo, with rounded
+     corners set by FilmReel (--radius: the matte's; the photo's is 2/3 of it; none on
+     the cut-off end slices). --ring (1 in the middle, fading as a frame leaves it)
+     draws the purple ring for the current photo.
+   - Ends: the frame past the last neighbor, cut off by the band's edge, under a fade
+     into the black and a chevron.
+   - Dots: one per photo under the band, purple for the one showing. */
 .film-reel {
   flex: 1;
   min-height: 0;
+  padding-top: 56px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -593,6 +598,7 @@ nav.site-nav.scrolled {
   left: 50%;
   padding: 2px;
   border: none;
+  border-radius: var(--radius, 0px);
   background: var(--color-paper);
 }
 .reel-frame img {
@@ -600,11 +606,13 @@ nav.site-nav.scrolled {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: calc(var(--radius, 0px) * 2 / 3);
 }
 .reel-frame::after {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   box-shadow: 0 0 0 2px var(--color-purple);
   opacity: var(--ring, 0);
   pointer-events: none;
@@ -632,7 +640,8 @@ nav.site-nav.scrolled {
 }
 /* Chevrons: a single polyline each, drawn 1:1 (viewBox = size) so the stroke stays
    1.6px, with a soft shadow to read over photos. The button is clear and covers the
-   end slice; the chevron sits 10px in from the band's edge. */
+   end slice; FilmReel sizes the chevron and insets it from the band's edge, both in
+   proportion to the frames. */
 .reel-arrow {
   position: absolute;
   top: 0;
@@ -647,12 +656,10 @@ nav.site-nav.scrolled {
 .reel-arrow-left {
   left: 0;
   justify-content: flex-start;
-  padding-left: 10px;
 }
 .reel-arrow-right {
   right: 0;
   justify-content: flex-end;
-  padding-right: 10px;
 }
 .reel-arrow polyline {
   stroke: var(--color-paper);
@@ -666,6 +673,21 @@ nav.site-nav.scrolled {
 .reel-arrow:focus-visible {
   outline: 2px solid var(--color-purple);
   outline-offset: -2px;
+}
+.reel-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.reel-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-line);
+  transition: background-color 0.2s ease;
+}
+.reel-dots .active {
+  background: var(--color-purple);
 }
 
 /* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
