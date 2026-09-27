@@ -127,8 +127,9 @@ export default function Experience({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Experience</h2>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Experience") first when navigating by heading */}
+            <h2
               data-animate
               className="section-intro-title"
               style={{
@@ -140,12 +141,13 @@ export default function Experience({ isVisible }) {
                 marginBottom: 16,
               }}
             >
-              Where I've
+              <span className="sr-only">Experience: </span>
+              Where I've{' '}
               <br />
-              shown
+              shown{' '}
               <br />
               up<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Not just what I built, but where I was, what I did, and how I carried myself doing it.
             </p>

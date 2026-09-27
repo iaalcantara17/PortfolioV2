@@ -73,7 +73,6 @@ export default function HumanIsrael({ isVisible }) {
         <div style={{ padding: '40px 48px', borderRight: '0.5px solid var(--color-line)', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
           {/* Header */}
           <div>
-            <h2 className="sr-only">Life</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 4 }}>
               <span
                 className="eyebrow"
@@ -82,7 +81,9 @@ export default function HumanIsrael({ isVisible }) {
                 Shot on Canon SL3
               </span>
             </div>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Life") first when navigating by heading */}
+            <h2
               data-animate
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -92,12 +93,13 @@ export default function HumanIsrael({ isVisible }) {
                 color: 'var(--color-ink)',
               }}
             >
-              Beyond
+              <span className="sr-only">Life: </span>
+              Beyond{' '}
               <br />
-              the
+              the{' '}
               <br />
               code<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
           </div>
 
           {/* Photo grid */}

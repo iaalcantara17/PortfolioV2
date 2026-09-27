@@ -57,8 +57,9 @@ export default function Projects({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Projects</h2>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Projects") first when navigating by heading */}
+            <h2
               data-animate
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -69,12 +70,13 @@ export default function Projects({ isVisible }) {
                 marginBottom: 16,
               }}
             >
-              What I've
+              <span className="sr-only">Projects: </span>
+              What I've{' '}
               <br />
-              actually
+              actually{' '}
               <br />
               built<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
               Projects I can speak to in full, start to finish.
             </p>
