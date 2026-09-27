@@ -13,7 +13,12 @@ and content decisions, and accessibility/motion safety). Phase 5
 (performance and resilience) is complete and on main: the main work in 
 PR #10, and the follow-up fixes in PR #11 (the contact email copies on 
 click instead of opening a mail app, and the Education hover floaters 
-work with trackpads).
+work with trackpads). Phase 6 (SEO and search rankings) is complete and 
+on main: canonical URLs and site.config.js's BASE_URL, robots.txt and 
+sitemap.xml, heading structure and section anchor fixes, Person and 
+WebSite structured data, permanent redirects for /index.html and 
+/resume.pdf, resume PDF metadata, and the Live Demo hover tooltip 
+(PR #13).
 
 ## Locked — do not change without explicit approval
 
