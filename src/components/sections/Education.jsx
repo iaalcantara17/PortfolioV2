@@ -37,31 +37,35 @@ const schools = [
 
 const diplomas = schools.filter((s) => s.diploma).map((s) => s.diploma)
 
-// Makes a card open its diploma. Same hover tilt as the Projects cards;
-// data-cursor grows the custom cursor like any other clickable. With a mouse, a
-// thumbnail of the diploma follows the pointer (HoverPreview).
-const diplomaTriggerProps = (s, open) => {
-  const openFrom = (el) => {
-    // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
-    resetTilt(el)
-    open()
-  }
-  return {
-    role: 'button',
-    tabIndex: 0,
-    'aria-label': `View diploma: ${s.degree}, ${s.school}`,
-    'data-cursor': '',
-    onClick: (e) => openFrom(e.currentTarget),
-    onKeyDown: (e) => {
-      if (e.key !== 'Enter' && e.key !== ' ') return
-      e.preventDefault()
-      openFrom(e.currentTarget)
-    },
-    onMouseMove: (e) => handleTilt(e, e.currentTarget),
-    onMouseLeave: (e) => resetTilt(e.currentTarget),
-    onPointerMove: followPointer,
-    onPointerLeave: hideFollower,
-  }
+// Hover behavior of a card with a diploma: the same tilt as the Projects cards, and
+// with a mouse a thumbnail of the diploma follows the pointer (HoverPreview). What
+// opens the diploma is DiplomaButton, inside the card.
+const diplomaCardProps = {
+  onMouseMove: (e) => handleTilt(e, e.currentTarget),
+  onMouseLeave: (e) => resetTilt(e.currentTarget),
+  onPointerMove: followPointer,
+  onPointerLeave: hideFollower,
+}
+
+// Opens a card's diploma: a real button stretched over the whole card (.edu-card-open),
+// beside the card's content rather than around it. With role="button" on the card
+// itself, everything inside counted as the button's label, which kept the degree's h3
+// out of heading navigation in some screen readers. A click or tap anywhere on the
+// card lands on this button, Enter and Space work natively, and it grows the custom
+// cursor like any other button.
+function DiplomaButton({ school, onOpen }) {
+  return (
+    <button
+      type="button"
+      className="edu-card-open"
+      aria-label={`View diploma: ${school.degree}, ${school.school}`}
+      onClick={(e) => {
+        // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
+        resetTilt(e.currentTarget.parentElement)
+        onOpen()
+      }}
+    />
+  )
 }
 
 // A card that opens nothing gets the same hover tilt, for consistency with the NJIT
@@ -161,7 +165,7 @@ export default function Education({ isVisible }) {
             <div
               key={s.school}
               className={s.diploma || s.hoverLabel ? 'edu-card tilt-card' : 'edu-card'}
-              {...(s.diploma && diplomaTriggerProps(s, () => setLightboxIndex(diplomas.indexOf(s.diploma))))}
+              {...(s.diploma && diplomaCardProps)}
               {...(s.hoverLabel && hoverOnlyProps)}
               style={{
                 display: 'grid',
@@ -210,8 +214,12 @@ export default function Education({ isVisible }) {
                 <span className="eyebrow" style={{ color: 'var(--color-faint)', whiteSpace: 'nowrap' }}>{s.period}</span>
               </div>
 
+              {s.diploma && (
+                <DiplomaButton school={s} onOpen={() => setLightboxIndex(diplomas.indexOf(s.diploma))} />
+              )}
+
               {/* Expand icon, shown only where there's no hover tilt to say the card
-                  opens (see .tap-hint). Decorative: the card's label already says it. */}
+                  opens (see .tap-hint). Decorative: the button's label already says it. */}
               {s.diploma && (
                 <svg className="tap-hint" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M8.5 1.5h4v4M12.5 1.5L8 6M5.5 12.5h-4v-4M1.5 12.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
