@@ -37,7 +37,6 @@ export function initScrollBlur(lenis, content) {
   let lastUpdate = -Infinity
   let lastFrame = 0
   let frame = null
-  const debug = new URLSearchParams(window.location.search).has('blurdebug') ? debugReadout() : null
 
   const apply = () => {
     content.style.filter = blur > OFF ? `blur(${blur.toFixed(2)}px)` : ''
@@ -57,7 +56,6 @@ export function initScrollBlur(lenis, content) {
     blur += (goal - blur) * (1 - Math.exp((-3 * dt) / ms))
     if (goal === 0 && blur <= OFF) blur = 0
     apply()
-    debug?.(speed, blur)
     if (blur > 0 || speed > 0) frame = requestAnimationFrame(tick)
   }
 
@@ -95,27 +93,5 @@ export function initScrollBlur(lenis, content) {
       offScroll()
       this.clear()
     },
-  }
-}
-
-// TEMPORARY, for tuning on real hardware: ?blurdebug shows the speed Lenis reports,
-// the fastest in the last second, and the blur. It comes out once the numbers are set.
-function debugReadout() {
-  const el = document.createElement('div')
-  el.style.cssText =
-    'position:fixed;left:12px;bottom:12px;z-index:10000;padding:6px 10px;background:#0d0d0d;color:#f5f2ec;font:12px/1.4 ui-monospace,monospace;border-radius:4px;pointer-events:none'
-  document.body.appendChild(el)
-  const recent = []
-  const stats = { speed: 0, peak: 0, blur: 0, maxBlur: 0 }
-  window.__scrollBlur = stats
-  return (speed, blur) => {
-    const now = performance.now()
-    recent.push([now, speed])
-    while (recent[0][0] < now - 1000) recent.shift()
-    stats.speed = speed
-    stats.peak = Math.max(...recent.map(([, s]) => s))
-    stats.blur = blur
-    stats.maxBlur = Math.max(stats.maxBlur, blur)
-    el.textContent = `speed ${Math.round(speed)} px/s · peak (1s) ${Math.round(stats.peak)} · blur ${blur.toFixed(2)} px`
   }
 }
