@@ -35,6 +35,24 @@
       }
     }
   },
+  "linkdup-certificate": {
+    "width": 2000,
+    "height": 1545,
+    "variants": {
+      "400": {
+        "width": 400,
+        "height": 309
+      },
+      "1200": {
+        "width": 1200,
+        "height": 927
+      },
+      "2400": {
+        "width": 2000,
+        "height": 1545
+      }
+    }
+  },
   "nature": {
     "width": 4000,
     "height": 6000,
