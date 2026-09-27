@@ -575,23 +575,44 @@ nav.site-nav.scrolled {
 .gallery-arrow-right {
   right: 16px;
 }
+/* Filmstrip — a 35mm negative: a black band with a row of square sprocket holes
+   along each edge, and each thumb a small print with a cream matte.
+   - Band: 12px sprocket rows above and below a 68px print, 92px in all.
+   - Sprockets: 6px squares every 14px, 3px in from the band's edges. They're the
+     band's own background, so their rhythm doesn't depend on the photos, and
+     (background-attachment: local) they scroll with the prints where the strip
+     overflows.
+   - Print: a 64px photo in a 2px matte. Prints other than the one on the stage sit
+     at 55%; hover (mouse or trackpad), keyboard focus and the active one are full.
+   - Active: a 2px purple ring inside the matte, on the photo's edge. Keyboard focus:
+     a 2px purple outline around the print, on the black, so the two read apart. */
 .gallery-filmstrip {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
-  padding-bottom: 4px;
+  padding: 12px;
+  border-radius: 2px;
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(to right, var(--color-paper) 6px, transparent 6px),
+    linear-gradient(to right, var(--color-paper) 6px, transparent 6px);
+  background-size: 14px 6px;
+  background-repeat: repeat-x;
+  background-position: 4px 3px, 4px calc(100% - 3px);
+  background-attachment: local;
 }
 .filmstrip-thumb {
+  position: relative;
   flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 4px;
-  border: 0.5px solid var(--color-line);
-  overflow: hidden;
-  padding: 0;
+  width: 68px;
+  height: 68px;
+  padding: 2px;
+  border: none;
+  background: var(--color-paper);
   scroll-snap-align: center;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
 }
 .filmstrip-thumb img {
   width: 100%;
@@ -599,9 +620,26 @@ nav.site-nav.scrolled {
   object-fit: cover;
   display: block;
 }
-.filmstrip-thumb.active {
-  border: 2px solid var(--color-purple);
-  transform: scale(1.08);
+.filmstrip-thumb.active,
+.filmstrip-thumb:focus-visible {
+  opacity: 1;
+}
+.filmstrip-thumb.active::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  box-shadow: inset 0 0 0 2px var(--color-purple);
+  pointer-events: none;
+}
+.filmstrip-thumb:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 0;
+}
+/* Mouse or trackpad only, so a tap can't leave a print lit */
+@media (hover: hover) and (pointer: fine) {
+  .filmstrip-thumb:hover {
+    opacity: 1;
+  }
 }
 
 /* Tap hint — a small expand icon in the corner of a card that opens the Lightbox
@@ -907,6 +945,14 @@ nav.site-nav.scrolled {
     aspect-ratio: 4 / 3;
     flex: none !important;
   }
+  /* Where the prints run past the screen's edge, the band fades out over its last
+     24px instead of cutting a print off. The end padding grows by the same 24px, so
+     scrolled to the end, the last print clears the fade. */
+  .gallery-filmstrip {
+    padding-right: 36px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
 }
 
 /* HumanIsrael — the sidebar's Spotify slot. SpotifyWidget renders nothing when
@@ -987,8 +1033,8 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, and the scaled
-   active states (section dot, filmstrip thumb) switch without animating */
+   no smooth scrolling, the mobile menu only fades, no hover tilt, and the section
+   dot's scaled active state switches without animating */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1006,9 +1052,6 @@ nav.site-nav.scrolled {
   }
   .section-dot::before {
     transition: background 0.3s ease;
-  }
-  .filmstrip-thumb {
-    transition: border-color 0.2s ease;
   }
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {

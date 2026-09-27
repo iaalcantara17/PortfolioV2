@@ -102,9 +102,11 @@ export default function Gallery({ isVisible }) {
       className="page-section"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
+      {/* 26px below: the filmstrip's band (index.css) is 24px taller than the plain
+          strip it replaced; 14px of that came from here and 10px from the stage */}
       <div
         style={{
-          padding: '56px 48px 40px',
+          padding: '56px 48px 26px',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
