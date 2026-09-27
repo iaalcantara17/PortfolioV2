@@ -205,11 +205,12 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
-/* Page scroller — the page scrolls inside this container, not on body */
+/* Page scroller — the page scrolls inside this container, not on body. No CSS
+   scroll-behavior: Lenis eases its scrolling (utils/pageScroll.js), and under
+   reduced motion it stays instant */
 .page-scroller {
   height: 100vh;
   overflow-y: scroll;
-  scroll-behavior: smooth;
   /* Keeps the scrollbar's space reserved while scroll is locked, so nothing shifts */
   scrollbar-gutter: stable;
 }
@@ -994,8 +995,7 @@ nav.site-nav.scrolled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html,
-  .page-scroller {
+  html {
     scroll-behavior: auto;
   }
   .mobile-menu-overlay {
