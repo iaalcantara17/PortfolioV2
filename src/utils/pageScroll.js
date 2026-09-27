@@ -8,8 +8,9 @@ import { prefersReducedMotion } from './motion'
 // natively and these helpers fall back to the browser's own (instant) scrolling.
 
 // The share of the remaining distance each frame covers: Lenis's default glide.
-// Named here because scrollPageBy has to pass it to Lenis itself
-const LERP = 0.1
+// Named here because scrollPageBy has to pass it to Lenis itself, and exported so the
+// Gallery reel (FilmReel.jsx) glides the same way
+export const LERP = 0.1
 
 let scroller = null
 let lenis = null

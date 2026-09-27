@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { gsap } from 'gsap'
 import Photo from './Photo'
 import { prefersReducedMotion } from '../utils/motion'
+import { LERP as PAGE_LERP } from '../utils/pageScroll'
 
 // Gallery's film reel: one black 35mm band that is both the viewer and the thumbnail
 // row. Every frame is the same size; the current photo is the one in the middle, at
@@ -38,7 +39,13 @@ const SPROCKET_ROW = 12
 const RING_ROOM = 6
 const SPROCKET_PITCH = 14
 const DRAG_THRESHOLD = 6
-const SETTLE = 0.45
+// The same glide as the page's scrolling (Lenis, utils/pageScroll.js). Lenis's lerp of
+// 0.1 a frame closes the gap exponentially at 6/s (0.1 × 60fps). expo.out is that same
+// curve, 1 − 2^(−10t): over 10·ln2/6 ≈ 1.16s its rate is exactly 6/s, and it ends
+// within 0.1% of the target, about where Lenis stops. An exponential has no memory,
+// so a new glide from wherever the reel is carries on at the same speed, and repeated
+// clicks retarget smoothly, as they do in Lenis.
+const GLIDE = { duration: (10 * Math.LN2) / (PAGE_LERP * 60), ease: 'expo.out' }
 
 const mod = (k, n) => ((k % n) + n) % n
 
@@ -148,7 +155,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
       place()
       return
     }
-    r.tween = gsap.to(r, { pos: k, duration: SETTLE, ease: 'power3.out', onUpdate: place })
+    r.tween = gsap.to(r, { pos: k, ...GLIDE, onUpdate: place })
   }, [n, onIndexChange, place])
 
   const step = useCallback((dir) => goTo(reel.current.target + dir), [goTo])
