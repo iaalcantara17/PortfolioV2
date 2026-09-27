@@ -319,6 +319,10 @@ export default function Projects({ isVisible }) {
                   </a>
                 ))}
               </div>
+              {/* The demo runs on Streamlit, which puts idle apps to sleep */}
+              <p className="eyebrow" style={{ color: 'var(--color-faint)', marginTop: 10 }}>
+                The demo can take a few seconds to wake up.
+              </p>
             </div>
           </div>
 
