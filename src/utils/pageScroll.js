@@ -1,5 +1,6 @@
 import Lenis from 'lenis'
 import { prefersReducedMotion } from './motion'
+import { initScrollBlur } from './scrollBlur'
 
 // Wheel and trackpad scrolling is eased by Lenis, which still moves the page by
 // setting .page-scroller's real scrollTop, so everything that watches the scroller
@@ -14,6 +15,8 @@ export const LERP = 0.1
 
 let scroller = null
 let lenis = null
+// The speed blur (scrollBlur.js), which reads Lenis's velocity
+let blur = null
 let frame = null
 // A section asked for while a modal had the page locked (a mobile menu link closes
 // the menu and navigates in the same click), scrolled to once the lock lifts
@@ -59,10 +62,13 @@ export function initPageScroll(wrapper, content) {
         return true
       },
     })
+    blur = initScrollBlur(lenis, content)
   }
   return () => {
     if (frame !== null) cancelAnimationFrame(frame)
     frame = null
+    blur?.destroy()
+    blur = null
     lenis?.destroy()
     lenis = null
     scroller = null
@@ -97,8 +103,10 @@ export function scrollPageBy(delta) {
 }
 
 // Modal scroll lock (useScrollLock): .scroll-locked hides the scroller's overflow,
-// but Lenis sets scrollTop itself, which overflow: hidden doesn't stop
+// but Lenis sets scrollTop itself, which overflow: hidden doesn't stop. The speed
+// blur comes off at once, since a filter would misplace the fixed Lightbox.
 export function pausePageScroll() {
+  blur?.clear()
   lenis?.stop()
 }
 export function resumePageScroll() {
