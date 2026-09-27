@@ -687,6 +687,38 @@ nav.site-nav.scrolled {
   color: var(--color-muted);
 }
 
+/* Link note (NoteLink in Projects.jsx): the same chip as the hover label above,
+   overlaying the card just above its link, so showing it never moves anything.
+   Shown on mouse hover (.tip-hovered) and keyboard focus, unless Escape dismissed it
+   (.tip-dismissed). visibility (not just opacity) keeps it from catching the pointer
+   while hidden; screen readers get the note as the link's description either way. */
+.link-tip {
+  position: relative;
+  display: inline-flex;
+}
+
+.link-tip-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 2;
+  white-space: nowrap;
+  background: var(--color-paper);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-line);
+  color: var(--color-muted);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.link-tip.tip-hovered:not(.tip-dismissed) .link-tip-bubble,
+.link-tip:not(.tip-dismissed):has(> a:focus-visible) .link-tip-bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
    signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
 .availability-dot {
