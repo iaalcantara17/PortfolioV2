@@ -190,8 +190,10 @@ export default function Gallery({ isVisible }) {
                 className={`filmstrip-thumb${p.index === activeIndex ? ' active' : ''}`}
                 onClick={() => setActiveIndex(p.index)}
                 aria-label={`View photo ${p.index + 1}`}
+                // Screen readers hear which thumb is the photo on the stage
+                aria-current={p.index === activeIndex ? 'true' : undefined}
               >
-                <Photo photo={p.photo} thumb alt="" loading="lazy" />
+                <Photo photo={p.photo} thumb sizes="64px" alt="" loading="lazy" />
               </button>
             ))}
           </div>
