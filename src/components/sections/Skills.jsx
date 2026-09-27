@@ -103,8 +103,9 @@ export default function Skills({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Skills</h2>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Skills") first when navigating by heading */}
+            <h2
               data-animate
               className="section-intro-title"
               style={{
@@ -116,12 +117,13 @@ export default function Skills({ isVisible }) {
                 marginBottom: 16,
               }}
             >
+              <span className="sr-only">Skills: </span>
               What I{' '}
               <br />
               work{' '}
               <br />
               with<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
 
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Tools I've used in production, in class, and on projects I actually care about.

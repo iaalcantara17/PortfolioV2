@@ -34,9 +34,17 @@ const SUBTEXT_CHARS = [
 
 const SIEMPRE_CHARS = 'Siempre aprendiendo.'.split('').map(ch => ({ ch }))
 
+// The typed characters are drawn by CSS from data-glyph ([data-glyph]::before in
+// index.css), not written as text. The Hero's real text is its screen-reader copy
+// (the h1's name, the intro paragraph), so search engines and assistive tech read
+// each line once instead of also reading the typed-out copies.
+function setGlyph(el, ch) {
+  el.dataset.glyph = ch
+}
+
 // Static render of a char list, matching what scheduleChars types out
 function renderChars(charDefs) {
-  return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style}>{c.ch}</span>))
+  return charDefs.map((c, i) => (c.isBR ? <br key={i} /> : <span key={i} style={c.style} data-glyph={c.ch} />))
 }
 
 // A char list as one plain string, line breaks as spaces, for screen readers
@@ -49,7 +57,7 @@ function appendFinalChar(container, charDef) {
   if (charDef.isBR) return container.appendChild(document.createElement('br'))
   const span = document.createElement('span')
   if (charDef.style) Object.assign(span.style, charDef.style)
-  span.textContent = charDef.ch
+  setGlyph(span, charDef.ch)
   return container.appendChild(span)
 }
 
@@ -96,10 +104,10 @@ function holdSlot(span, finalCh) {
   span.style.position = 'relative'
   const hold = document.createElement('span')
   hold.style.visibility = 'hidden'
-  hold.textContent = finalCh
+  setGlyph(hold, finalCh)
   const glyph = document.createElement('span')
   Object.assign(glyph.style, { position: 'absolute', left: '0', top: '0', lineHeight: 'normal' })
-  const scramble = () => { glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)] }
+  const scramble = () => setGlyph(glyph, glyphs[Math.floor(Math.random() * glyphs.length)])
   scramble()
   span.append(hold, glyph)
   return scramble
@@ -108,7 +116,8 @@ function holdSlot(span, finalCh) {
 // Ends a scramble: the span holds only its final character, as if never scrambled
 function resolveSlot(span, finalCh) {
   span.style.position = ''
-  span.textContent = finalCh
+  span.replaceChildren()
+  setGlyph(span, finalCh)
 }
 
 function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, resolvers) {
@@ -162,7 +171,7 @@ function scheduleChars(charDefs, containerRef, startOffset, timers, intervals, r
       state.span = span
 
       if (charDef.noScramble || charDef.ch === ' ') {
-        span.textContent = charDef.ch
+        setGlyph(span, charDef.ch)
         container.appendChild(span)
         state.done = true
         return

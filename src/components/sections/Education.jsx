@@ -128,8 +128,9 @@ export default function Education({ isVisible }) {
             borderRight: '0.5px solid var(--color-line)',
           }}
         >
-          <h2 className="sr-only">Education</h2>
-          <div
+          {/* The visible title is the section's heading; the screen-reader prefix
+              keeps its nav label ("Education") first when navigating by heading */}
+          <h2
             data-animate
             className="section-intro-title"
             style={{
@@ -140,14 +141,15 @@ export default function Education({ isVisible }) {
               color: 'var(--color-ink)',
             }}
           >
-            Still
+            <span className="sr-only">Education: </span>
+            Still{' '}
             <br />
-            building.
+            building.{' '}
             <br />
-            Still
+            Still{' '}
             <br />
             learning<span style={{ color: 'var(--color-purple)' }}>.</span>
-          </div>
+          </h2>
         </div>
 
         {/* Right column */}
@@ -185,7 +187,7 @@ export default function Education({ isVisible }) {
               </div>
 
               <div>
-                <div
+                <h3
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontSize: 22,
@@ -196,7 +198,7 @@ export default function Education({ isVisible }) {
                   }}
                 >
                   {s.degree}
-                </div>
+                </h3>
                 <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-ink)', lineHeight: 1.3, marginBottom: 2 }}>
                   {s.school}
                 </div>

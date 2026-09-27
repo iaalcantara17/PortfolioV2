@@ -57,8 +57,9 @@ export default function Projects({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Projects</h2>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Projects") first when navigating by heading */}
+            <h2
               data-animate
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -69,12 +70,13 @@ export default function Projects({ isVisible }) {
                 marginBottom: 16,
               }}
             >
-              What I've
+              <span className="sr-only">Projects: </span>
+              What I've{' '}
               <br />
-              actually
+              actually{' '}
               <br />
               built<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
               Projects I can speak to in full, start to finish.
             </p>
@@ -117,7 +119,7 @@ export default function Projects({ isVisible }) {
               </span>
             </div>
 
-            <div
+            <h3
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 26,
@@ -127,7 +129,7 @@ export default function Projects({ isVisible }) {
               }}
             >
               LinkdUp
-            </div>
+            </h3>
             <div style={{ fontSize: 12, color: 'var(--color-paper-a50)', marginBottom: 12 }}>
               Mobile-first web app for group meetup coordination
             </div>
@@ -208,7 +210,7 @@ export default function Projects({ isVisible }) {
               <div style={{ marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems — Compiler</span>
               </div>
-              <div
+              <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: 18,
@@ -218,7 +220,7 @@ export default function Projects({ isVisible }) {
                 }}
               >
                 SFort95 Compiler
-              </div>
+              </h3>
               <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
               </p>
@@ -271,7 +273,7 @@ export default function Projects({ isVisible }) {
               <div style={{ marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning — Python</span>
               </div>
-              <div
+              <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: 18,
@@ -281,7 +283,7 @@ export default function Projects({ isVisible }) {
                 }}
               >
                 Data Analysis App
-              </div>
+              </h3>
               <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
                 <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
