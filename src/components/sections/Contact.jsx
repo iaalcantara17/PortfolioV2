@@ -103,10 +103,11 @@ export default function Contact({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Contact</h2>
-            {/* Headline with letter reveal. Screen readers get the words; the per-letter
-                spans would otherwise be read one letter at a time. */}
-            <div
+            {/* Headline with letter reveal, and the section's heading. The words exist
+                once as text (the screen-reader copy, after the nav-label prefix); the
+                per-letter spans are drawn by CSS from data-glyph, so they're neither
+                read one letter at a time nor indexed as a second copy. */}
+            <h2
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(40px, 5vw, 52px)',
@@ -116,17 +117,17 @@ export default function Contact({ isVisible }) {
                 marginBottom: 32,
               }}
             >
-              <span className="sr-only">Let's talk.</span>
+              <span className="sr-only">Contact: Let's talk.</span>
               <span aria-hidden="true">
                 {"Let's".split('').map((c, i) => (
-                  <span key={i} className="headline-char" style={{ display: 'inline-block' }}>{c}</span>
+                  <span key={i} className="headline-char" style={{ display: 'inline-block' }} data-glyph={c} />
                 ))}
                 <br />
                 {'talk.'.split('').map((c, i) => (
-                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }}>{c}</span>
+                  <span key={i} className="headline-char" style={{ display: 'inline-block', color: c === '.' ? 'var(--color-purple)' : 'var(--color-ink)' }} data-glyph={c} />
                 ))}
               </span>
-            </div>
+            </h2>
 
             <div data-animate style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
               <p style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9 }}>

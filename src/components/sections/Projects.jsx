@@ -1,7 +1,87 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
+import { placeFollower } from '../../utils/follower'
+
+// A project link with a note in a small bubble (.link-tip-bubble, styled like
+// Montclair's "In progress" chip) that overlays its card:
+// - Shows on mouse hover (by pointer type, like the Education floaters, so a tap
+//   can't leave it stuck) and on keyboard focus (:focus-visible, in index.css).
+// - Placed like the Education floaters (placeFollower): below and to the right of
+//   the pointer in the card's coordinates, following it across the link. Always
+//   below (alwaysBelow): the link sits at the card's bottom edge, where the
+//   floaters' flip would put it above, over the tech pills. Keyboard focus has no
+//   pointer, so it takes the same offset from the link's bottom-left corner.
+// - Per WCAG 1.4.13, Escape hides it; it stays for as long as hover or focus does.
+// - It's always the link's description (aria-describedby), so screen readers read
+//   it with the link on any device. The description comes from a hidden copy in
+//   sentence case; the bubble itself is aria-hidden, since its eyebrow style would
+//   hand screen readers the text in capitals. Touch shows no bubble: a tap opens
+//   the link.
+// - Where it would still run off the right edge of the screen (narrow screens), it's
+//   pulled back to 8px inside it.
+function NoteLink({ link, style }) {
+  const noteId = useId()
+  const bubbleRef = useRef(null)
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
+
+  // point: the pointer event, or for keyboard focus the link's bottom-left corner
+  const place = (point) => {
+    const bubble = bubbleRef.current
+    const card = bubble.offsetParent
+    if (!card) return
+    placeFollower(point, card, bubble, { alwaysBelow: true })
+    const overflow = bubble.getBoundingClientRect().right - (document.documentElement.clientWidth - 8)
+    if (overflow > 0) bubble.style.left = `${parseFloat(bubble.style.left) - overflow}px`
+  }
+
+  useEffect(() => {
+    if (!hovered && !focused) return
+    const onKeyDown = (e) => { if (e.key === 'Escape') setDismissed(true) }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [hovered, focused])
+
+  return (
+    <span
+      className={`link-tip${hovered ? ' tip-hovered' : ''}${dismissed ? ' tip-dismissed' : ''}`}
+      onPointerEnter={(e) => {
+        if (e.pointerType !== 'mouse') return
+        place(e)
+        setHovered(true)
+      }}
+      onPointerMove={(e) => { if (e.pointerType === 'mouse') place(e) }}
+      onPointerLeave={() => {
+        setHovered(false)
+        if (!focused) setDismissed(false)
+      }}
+    >
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={style}
+        aria-describedby={noteId}
+        onFocus={(e) => {
+          const r = e.currentTarget.getBoundingClientRect()
+          place({ clientX: r.left, clientY: r.bottom })
+          setFocused(true)
+        }}
+        onBlur={() => {
+          setFocused(false)
+          if (!hovered) setDismissed(false)
+        }}
+      >
+        {link.label} ↗
+      </a>
+      <span id={noteId} hidden>{link.note}</span>
+      <span ref={bubbleRef} className="eyebrow link-tip-bubble" aria-hidden="true">{link.note}</span>
+    </span>
+  )
+}
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
@@ -57,8 +137,9 @@ export default function Projects({ isVisible }) {
           }}
         >
           <div>
-            <h2 className="sr-only">Projects</h2>
-            <div
+            {/* The visible title is the section's heading; the screen-reader prefix
+                keeps its nav label ("Projects") first when navigating by heading */}
+            <h2
               data-animate
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -69,12 +150,13 @@ export default function Projects({ isVisible }) {
                 marginBottom: 16,
               }}
             >
-              What I've
+              <span className="sr-only">Projects: </span>
+              What I've{' '}
               <br />
-              actually
+              actually{' '}
               <br />
               built<span style={{ color: 'var(--color-purple)' }}>.</span>
-            </div>
+            </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
               Projects I can speak to in full, start to finish.
             </p>
@@ -117,7 +199,7 @@ export default function Projects({ isVisible }) {
               </span>
             </div>
 
-            <div
+            <h3
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 26,
@@ -127,7 +209,7 @@ export default function Projects({ isVisible }) {
               }}
             >
               LinkdUp
-            </div>
+            </h3>
             <div style={{ fontSize: 12, color: 'var(--color-paper-a50)', marginBottom: 12 }}>
               Mobile-first web app for group meetup coordination
             </div>
@@ -208,7 +290,7 @@ export default function Projects({ isVisible }) {
               <div style={{ marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems — Compiler</span>
               </div>
-              <div
+              <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: 18,
@@ -218,7 +300,7 @@ export default function Projects({ isVisible }) {
                 }}
               >
                 SFort95 Compiler
-              </div>
+              </h3>
               <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
               </p>
@@ -256,7 +338,8 @@ export default function Projects({ isVisible }) {
               </div>
             </div>
 
-            {/* Data Analysis App */}
+            {/* Data Analysis App. position: relative makes the card the Live Demo
+                note's frame (NoteLink places it in the card's coordinates). */}
             <div
               className="grid-card tilt-card"
               onMouseMove={(e) => handleTilt(e, e.currentTarget)}
@@ -266,12 +349,13 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
+                position: 'relative',
               }}
             >
               <div style={{ marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning — Python</span>
               </div>
-              <div
+              <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: 18,
@@ -281,7 +365,7 @@ export default function Projects({ isVisible }) {
                 }}
               >
                 Data Analysis App
-              </div>
+              </h3>
               <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
                 <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
@@ -293,29 +377,29 @@ export default function Projects({ isVisible }) {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {[
-                  { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/' },
+                  // The demo runs on Streamlit, which puts idle apps to sleep
+                  { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
                   { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
-                ].map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
-                      border: '0.5px solid var(--color-purple-a40)',
-                      borderRadius: 4,
-                      fontSize: 10,
-                      color: 'var(--color-purple-deep)',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                      fontFamily: 'var(--font-sans)',
-                    }}
-                  >
-                    {l.label} ↗
-                  </a>
-                ))}
+                ].map((l) => {
+                  const style = {
+                    display: 'inline-flex',
+                    padding: '4px 10px',
+                    border: '0.5px solid var(--color-purple-a40)',
+                    borderRadius: 4,
+                    fontSize: 10,
+                    color: 'var(--color-purple-deep)',
+                    textDecoration: 'none',
+                    letterSpacing: '0.04em',
+                    fontFamily: 'var(--font-sans)',
+                  }
+                  return l.note ? (
+                    <NoteLink key={l.label} link={l} style={style} />
+                  ) : (
+                    <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" style={style}>
+                      {l.label} ↗
+                    </a>
+                  )
+                })}
               </div>
             </div>
           </div>

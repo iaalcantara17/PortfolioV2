@@ -152,6 +152,14 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
 }
 
+/* Visual-only text: characters drawn by CSS from data-glyph instead of written as
+   DOM text (the Hero typewriter, Contact's letter drop). The real text sits once in
+   a screen-reader copy beside them, so search engines and assistive tech don't also
+   read these as a second, broken-up copy. */
+[data-glyph]::before {
+  content: attr(data-glyph);
+}
+
 /* No-JavaScript fallback (the <noscript> in index.html): name, bio, contact and
    resume, in the Hero's type. The custom cursor needs JavaScript, so the system
    cursor comes back here. */
@@ -393,13 +401,12 @@ nav.site-nav.scrolled {
   gap: 28px;
 }
 
-.mobile-menu-links button {
+.mobile-menu-links a {
   font-family: var(--font-serif);
   font-size: 34px;
   letter-spacing: -0.02em;
   color: var(--color-ink);
-  background: none;
-  border: none;
+  text-decoration: none;
   text-align: left;
   padding: 0;
 }
@@ -607,6 +614,18 @@ nav.site-nav.scrolled {
   top: 12px;
   right: 12px;
   color: var(--color-purple);
+  /* It sits over the card's diploma button; a tap on it goes to the button */
+  pointer-events: none;
+}
+
+/* The button that opens a card's diploma (DiplomaButton in Education.jsx), stretched
+   invisibly over the whole card. Its keyboard focus ring follows the card's corners. */
+.edu-card-open {
+  position: absolute;
+  inset: 0;
+  border: none;
+  border-radius: inherit;
+  background: none;
 }
 
 @media not all and (hover: hover) and (pointer: fine) {
@@ -666,6 +685,40 @@ nav.site-nav.scrolled {
   border-radius: 20px;
   border: 0.5px solid var(--color-line);
   color: var(--color-muted);
+}
+
+/* Link note (NoteLink in Projects.jsx): the same chip as the hover label above,
+   overlaying its card, so showing it never moves anything. Positioned like the
+   Education floaters: placeFollower (utils/follower.js) sets its top/left in the
+   card's coordinates, just below and right of the pointer, so the card (not
+   .link-tip) is its frame. Shown on mouse hover (.tip-hovered) and keyboard focus,
+   unless Escape dismissed it (.tip-dismissed); it never takes the pointer, like the
+   floaters. Screen readers get the note as the link's description either way. */
+.link-tip {
+  display: inline-flex;
+}
+
+.link-tip-bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+  background: var(--color-paper);
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-line);
+  color: var(--color-muted);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.link-tip.tip-hovered:not(.tip-dismissed) .link-tip-bubble,
+.link-tip:not(.tip-dismissed):has(> a:focus-visible) .link-tip-bubble {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
