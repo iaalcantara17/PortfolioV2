@@ -1,7 +1,77 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
+
+// A project link with a note in a small bubble (.link-tip-bubble, styled like
+// Montclair's "In progress" chip) that overlays the card just above it:
+// - Shows on mouse hover (by pointer type, like the Education floaters, so a tap
+//   can't leave it stuck) and on keyboard focus (:focus-visible, in index.css).
+// - Per WCAG 1.4.13, Escape hides it, and it stays while the pointer moves onto it.
+// - It's always the link's description (aria-describedby), so screen readers read
+//   it with the link on any device. The description comes from a hidden copy in
+//   sentence case; the bubble itself is aria-hidden, since its eyebrow style would
+//   hand screen readers the text in capitals. Touch shows no bubble: a tap opens
+//   the link.
+// - Where the bubble would run off the right edge of the screen (narrow screens),
+//   it shifts left to stay 8px inside it.
+function NoteLink({ link, style }) {
+  const noteId = useId()
+  const bubbleRef = useRef(null)
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
+
+  const place = () => {
+    const bubble = bubbleRef.current
+    bubble.style.translate = ''
+    const r = bubble.getBoundingClientRect()
+    const overflow = r.right - (document.documentElement.clientWidth - 8)
+    if (overflow > 0) bubble.style.translate = `${-Math.min(overflow, r.left - 8)}px 0`
+  }
+
+  useEffect(() => {
+    if (!hovered && !focused) return
+    const onKeyDown = (e) => { if (e.key === 'Escape') setDismissed(true) }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [hovered, focused])
+
+  return (
+    <span
+      className={`link-tip${hovered ? ' tip-hovered' : ''}${dismissed ? ' tip-dismissed' : ''}`}
+      onPointerEnter={(e) => {
+        if (e.pointerType !== 'mouse') return
+        place()
+        setHovered(true)
+      }}
+      onPointerLeave={() => {
+        setHovered(false)
+        if (!focused) setDismissed(false)
+      }}
+    >
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={style}
+        aria-describedby={noteId}
+        onFocus={() => {
+          place()
+          setFocused(true)
+        }}
+        onBlur={() => {
+          setFocused(false)
+          if (!hovered) setDismissed(false)
+        }}
+      >
+        {link.label} ↗
+      </a>
+      <span id={noteId} hidden>{link.note}</span>
+      <span ref={bubbleRef} className="eyebrow link-tip-bubble" aria-hidden="true">{link.note}</span>
+    </span>
+  )
+}
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
@@ -295,34 +365,30 @@ export default function Projects({ isVisible }) {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {[
-                  { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/' },
+                  // The demo runs on Streamlit, which puts idle apps to sleep
+                  { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
                   { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
-                ].map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
-                      border: '0.5px solid var(--color-purple-a40)',
-                      borderRadius: 4,
-                      fontSize: 10,
-                      color: 'var(--color-purple-deep)',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                      fontFamily: 'var(--font-sans)',
-                    }}
-                  >
-                    {l.label} ↗
-                  </a>
-                ))}
+                ].map((l) => {
+                  const style = {
+                    display: 'inline-flex',
+                    padding: '4px 10px',
+                    border: '0.5px solid var(--color-purple-a40)',
+                    borderRadius: 4,
+                    fontSize: 10,
+                    color: 'var(--color-purple-deep)',
+                    textDecoration: 'none',
+                    letterSpacing: '0.04em',
+                    fontFamily: 'var(--font-sans)',
+                  }
+                  return l.note ? (
+                    <NoteLink key={l.label} link={l} style={style} />
+                  ) : (
+                    <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" style={style}>
+                      {l.label} ↗
+                    </a>
+                  )
+                })}
               </div>
-              {/* The demo runs on Streamlit, which puts idle apps to sleep */}
-              <p className="eyebrow" style={{ color: 'var(--color-faint)', marginTop: 10 }}>
-                The demo can take a few seconds to wake up.
-              </p>
             </div>
           </div>
 
