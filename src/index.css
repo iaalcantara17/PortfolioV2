@@ -558,8 +558,9 @@ nav.site-nav.scrolled {
    - Band: the negative's black, with PR #18's sprocket rows (6px cream squares every
      14px, 3px in from each edge) as its own background. It hugs its frames and sits
      centered in the space under the header.
-   - Frames: a cream matte around a square photo. --ring (1 in the middle, fading as
-     a frame leaves it) draws the purple ring for the current photo.
+   - Frames: all one size, a 2px cream matte around a square photo. --ring (1 in the
+     middle, fading as a frame leaves it) draws the purple ring for the current
+     photo.
    - Ends: the frame past each side frame, cut off by the band's edge, under a fade
      into the black and a chevron. */
 .film-reel {
@@ -590,6 +591,7 @@ nav.site-nav.scrolled {
   position: absolute;
   top: 50%;
   left: 50%;
+  padding: 2px;
   border: none;
   background: var(--color-paper);
 }
@@ -630,7 +632,7 @@ nav.site-nav.scrolled {
 }
 /* Chevrons: a single polyline each, drawn 1:1 (viewBox = size) so the stroke stays
    1.6px, with a soft shadow to read over photos. The button is clear and covers the
-   end slice, so the chevron sits right at the band's edge. */
+   end slice; the chevron sits 10px in from the band's edge. */
 .reel-arrow {
   position: absolute;
   top: 0;
@@ -645,10 +647,12 @@ nav.site-nav.scrolled {
 .reel-arrow-left {
   left: 0;
   justify-content: flex-start;
+  padding-left: 10px;
 }
 .reel-arrow-right {
   right: 0;
   justify-content: flex-end;
+  padding-right: 10px;
 }
 .reel-arrow polyline {
   stroke: var(--color-paper);

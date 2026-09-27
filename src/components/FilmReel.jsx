@@ -4,16 +4,17 @@ import Photo from './Photo'
 import { prefersReducedMotion } from '../utils/motion'
 
 // Gallery's film reel: one black 35mm band that is both the viewer and the thumbnail
-// row. The current photo sits enlarged in the middle, a neighbor on each side, and at
-// each end the next frame cut off by the band's edge (so the part showing is always
-// the half nearer the middle), under a fade and a chevron. It loops both ways with no
+// row. Every frame is the same size; the current photo is the one in the middle, at
+// full brightness with the purple ring, with dimmer neighbors on each side and, at
+// each end, the next frame cut off by the band's edge (so the part showing is always
+// the half nearer the middle) under a fade and a chevron. It loops both ways with no
 // start or end.
 //
 // The reel's place is a fractional position, pos, in photos: 2.5 is halfway between
-// the third and fourth. A frame's size, matte, dimming and ring all follow its
-// distance from pos, so frames grow into the middle and shrink out of it while the
-// reel moves. Looping is just the photo index wrapping around (k mod n); frames are
-// keyed by k, so nothing is ever copied or jumps back.
+// the third and fourth. Frames sit one step (frame + gap) apart and slide as pos
+// changes; their dimming and ring follow their distance from pos. Looping is just the
+// photo index wrapping around (k mod n); frames are keyed by k, so nothing is ever
+// copied or jumps back.
 //
 // Moves: drag (mouse, pen, touch, sideways only; vertical swipes still scroll the
 // page), a sideways trackpad swipe, a click on a side frame, the chevrons, and the
@@ -21,16 +22,17 @@ import { prefersReducedMotion } from '../utils/motion'
 // click on the middle frame opens it (onOpen). Frames are placed only while the reel
 // moves (GSAP tweens pos); nothing runs while it sits still.
 
-const GAP = 5
-// Outer sizes, matte included: an 84px photo in a 2px matte, a 210px one in a 3px matte
-const SIDE = 88
-const SIDE_MATTE = 2
-const ACTIVE_MATTE = 3
-// Wide layout: end slice, side frame, middle frame, side frame, end slice
-const WIDE = { width: 504, active: 216, edge: 46 }
-// Narrow screens: the middle frame between the two end slices, sized to fit
-const NARROW_MAX = 290
-const NARROW_EDGE = 40
+// A 200px photo in a 2px matte, every frame alike
+const FRAME = 204
+const GAP = 10
+// Visible slice of the cut-off frame at each end
+const EDGE = 70
+// On the narrowest screens the end slices give way first, down to this
+const MIN_EDGE = 30
+// Brightness by distance from the middle: the photo itself, the first and second
+// neighbors, then the end slices
+const DIM = [1, 0.65, 0.45]
+const DIM_EDGE = 0.4
 // PR #18's sprocket rows (12px), plus room for the ring and focus outline on the black
 const SPROCKET_ROW = 12
 const RING_ROOM = 6
@@ -40,35 +42,40 @@ const SETTLE = 0.45
 
 const mod = (k, n) => ((k % n) + n) % n
 
-// sizes for a photo in a frame: the width it's drawn at under object-fit: cover in the
-// square, as big as the frame gets (210px wide, 194px narrow). A landscape photo is
-// drawn wider than the frame (the 3:2 city photo at 1.5×), so the frame's own width
-// would fetch a file too small for it.
+// sizes for a photo in a frame: the width it's drawn at under object-fit: cover in
+// the 200px square. A landscape photo is drawn wider than the frame (the 3:2 city
+// photo at 1.5×), so the frame's own width would fetch a file too small for it.
 function coverSizes(photo) {
   const { width, height } = photo.variants[400]
-  const wide = Math.max(1, width / height)
-  return `(max-width: 599px) ${Math.ceil(194 * wide)}px, ${Math.ceil(210 * wide)}px`
+  return `${Math.ceil((FRAME - 4) * Math.max(1, width / height))}px`
 }
 
+// Band width with this many neighbors each side of the middle frame
+const bandWidth = (neighbors) => 2 * EDGE + (2 * neighbors + 1) * FRAME + (2 * neighbors + 2) * GAP
+
+// As many neighbors as fit: two (1220px), one (792px), or none, where the middle frame
+// sits between the end slices (364px). Below that the slices narrow, and past
+// MIN_EDGE the frame itself shrinks.
 function layoutFor(width) {
-  if (width >= WIDE.width) return WIDE
-  const band = Math.min(NARROW_MAX, width)
-  return { width: band, active: band - 2 * (NARROW_EDGE + GAP), edge: NARROW_EDGE }
+  for (const neighbors of [2, 1]) {
+    if (width >= bandWidth(neighbors)) return { neighbors, width: bandWidth(neighbors), frame: FRAME, edge: EDGE }
+  }
+  const band = Math.min(bandWidth(0), width)
+  const edge = Math.max(MIN_EDGE, Math.min(EDGE, (band - FRAME - 2 * GAP) / 2))
+  return { neighbors: 0, width: band, frame: band - 2 * edge - 2 * GAP, edge }
 }
 
-// Distance from the middle to the next frame's center, when the reel is settled
-const firstStep = (layout) => layout.active / 2 + GAP + SIDE / 2
+const stepOf = (layout) => layout.frame + GAP
 
-// A frame's look at distance d (in photos) from the middle
+// A frame's place and look at distance d (in photos) from the middle
 function frameAt(d, layout) {
   const a = Math.abs(d)
-  const near = Math.min(a, 1)
-  const step = firstStep(layout)
+  const levels = [...DIM.slice(0, layout.neighbors + 1), DIM_EDGE]
+  const i = Math.min(Math.floor(a), levels.length - 1)
+  const next = levels[Math.min(i + 1, levels.length - 1)]
   return {
-    size: SIDE + (layout.active - SIDE) * (1 - near),
-    matte: ACTIVE_MATTE - (ACTIVE_MATTE - SIDE_MATTE) * near,
-    x: a <= 1 ? step * d : Math.sign(d) * (step + (a - 1) * (SIDE + GAP)),
-    opacity: a <= 1 ? 1 - 0.3 * a : Math.max(0.45, 0.7 - 0.25 * (a - 1)),
+    x: d * stepOf(layout),
+    opacity: levels[i] + (next - levels[i]) * (a - i),
     ring: Math.max(0, 1 - 2 * a),
   }
 }
@@ -81,7 +88,8 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
   // pos: where the reel is; target: the photo (k, unwrapped) it's settled on or heading to
   const reel = useRef({ pos: 0, target: 0, tween: null, drag: null, wheelTimer: null, suppressClick: false })
   const [layout, setLayout] = useState(() => layoutFor(window.innerWidth - 96))
-  // Frames are mounted around Math.round(pos), three each side
+  // Frames are mounted around Math.round(pos), enough each side to fill the band
+  // while it moves
   const [base, setBase] = useState(0)
   const [activeK, setActiveK] = useState(0)
   const [announcement, setAnnouncement] = useState('')
@@ -103,18 +111,15 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
     const half = layout.width / 2
     frameEls.current.forEach((el, k) => {
       const f = frameAt(k - pos, layout)
-      const visible = Math.abs(f.x) - f.size / 2 < half
+      const visible = Math.abs(f.x) - layout.frame / 2 < half
       el.style.visibility = visible ? '' : 'hidden'
       if (!visible) return
-      el.style.width = `${f.size}px`
-      el.style.height = `${f.size}px`
-      el.style.padding = `${f.matte}px`
       el.style.opacity = f.opacity
       el.style.transform = `translate(-50%, -50%) translateX(${f.x}px)`
       el.style.setProperty('--ring', f.ring)
     })
     // The sprockets travel with the film
-    const shift = 4 - mod(pos * firstStep(layout), SPROCKET_PITCH)
+    const shift = 4 - mod(pos * stepOf(layout), SPROCKET_PITCH)
     bandRef.current.style.backgroundPosition = `${shift}px 3px, ${shift}px calc(100% - 3px)`
   }, [])
 
@@ -208,7 +213,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
     }
     drag.samples.push([e.timeStamp, e.clientX])
     if (drag.samples.length > 6) drag.samples.shift()
-    r.pos = drag.pos0 - dx / firstStep(layout)
+    r.pos = drag.pos0 - dx / stepOf(layout)
     place()
   }
   const onPointerUp = (e) => {
@@ -225,7 +230,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
     const [t0, x0] = drag.samples[0]
     const [t1, x1] = drag.samples[drag.samples.length - 1]
     const velocity = t1 > t0 ? (x1 - x0) / (t1 - t0) : 0
-    const carry = Math.max(-1, Math.min(1, -(velocity * 120) / firstStep(layout)))
+    const carry = Math.max(-1, Math.min(1, -(velocity * 120) / stepOf(layout)))
     goTo(Math.round(r.pos + carry))
   }
 
@@ -238,7 +243,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
       e.preventDefault()
       const r = reel.current
       r.tween?.kill()
-      r.pos += e.deltaX / firstStep(layout)
+      r.pos += e.deltaX / stepOf(layout)
       place()
       clearTimeout(r.wheelTimer)
       r.wheelTimer = setTimeout(() => goTo(Math.round(r.pos)), 140)
@@ -252,9 +257,10 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
     clearTimeout(reel.current.wheelTimer)
   }, [])
 
-  const bandHeight = layout.active + 2 * (SPROCKET_ROW + RING_ROOM)
+  const bandHeight = layout.frame + 2 * (SPROCKET_ROW + RING_ROOM)
+  const reach = layout.neighbors + 2
   const frames = []
-  for (let k = base - 3; k <= base + 3; k++) frames.push(k)
+  for (let k = base - reach; k <= base + reach; k++) frames.push(k)
 
   return (
     <div ref={containerRef} className="film-reel">
@@ -299,6 +305,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
               }}
               type="button"
               className="reel-frame"
+              style={{ width: layout.frame, height: layout.frame }}
               // The middle frame is the one control; side frames are for mouse and
               // touch, and repeat photos, so screen readers and Tab skip them
               tabIndex={isActive ? 0 : -1}
