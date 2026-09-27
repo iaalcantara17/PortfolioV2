@@ -27,15 +27,18 @@ export function placeFollower(e, card, follower, { alwaysBelow = false } = {}) {
 // on the card), for mouse pointers only. Keyed off the pointer itself rather than a
 // (hover: hover) media query, which only describes a device's primary input: an iPad
 // with a trackpad is touch-primary, but Safari reports its trackpad as a mouse.
-export function followPointer(e) {
+// card is the element that holds the follower and frames it: the one the handler is
+// on, unless given (a control inside the card that shows the card's follower).
+// options go to placeFollower.
+export function followPointer(e, card = e.currentTarget, options) {
   if (e.pointerType !== 'mouse') return
-  const follower = e.currentTarget.querySelector('.card-follower')
+  const follower = card.querySelector('.card-follower')
   if (!follower) return
-  placeFollower(e, e.currentTarget, follower)
-  e.currentTarget.classList.add('follower-shown')
+  placeFollower(e, card, follower, options)
+  card.classList.add('follower-shown')
 }
 
 // pointerleave handler for a card with a follower: hides it
-export function hideFollower(e) {
-  e.currentTarget.classList.remove('follower-shown')
+export function hideFollower(e, card = e.currentTarget) {
+  card.classList.remove('follower-shown')
 }
