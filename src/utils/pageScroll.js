@@ -6,18 +6,10 @@ import { prefersReducedMotion } from './motion'
 // (entrances, the section dots and counter, the nav) works as before. Touch stays
 // native. Under reduced motion Lenis isn't created at all: the page scrolls
 // natively and these helpers fall back to the browser's own (instant) scrolling.
-//
-// TEMPORARY: three easing feels to compare on the preview, switched with ?scroll=a|b|c
-// (b without it). The two that lose, and the switch, go once one is picked.
-const PRESETS = {
-  // Light: settles quickly, close to the wheel's own steps
-  a: { lerp: 0.15 },
-  // Lenis's default
-  b: { lerp: 0.1 },
-  // Long glide: each wheel step eases out over a fixed 1.2s
-  c: { duration: 1.2, easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)) },
-}
-const ease = PRESETS[new URLSearchParams(window.location.search).get('scroll')] ?? PRESETS.b
+
+// The share of the remaining distance each frame covers: Lenis's default glide.
+// Named here because scrollPageBy has to pass it to Lenis itself
+const LERP = 0.1
 
 let scroller = null
 let lenis = null
@@ -59,7 +51,7 @@ export function initPageScroll(wrapper, content) {
       wrapper,
       content,
       eventsTarget: wheelOnly(wrapper),
-      ...ease,
+      lerp: LERP,
       // Called for each wheel event before Lenis eases toward it
       virtualScroll: () => {
         run()
@@ -99,7 +91,7 @@ export function scrollPageBy(delta) {
     scroller?.scrollBy({ top: delta })
     return
   }
-  lenis.scrollTo(lenis.targetScroll + delta, { programmatic: false, ...ease })
+  lenis.scrollTo(lenis.targetScroll + delta, { programmatic: false, lerp: LERP })
   run()
 }
 
