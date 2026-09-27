@@ -575,12 +575,18 @@ nav.site-nav.scrolled {
 .gallery-arrow-right {
   right: 16px;
 }
+/* The strip clips what overflows it, and the active thumb (scaled, bordered) and the
+   focus ring reach past a thumb's box. The padding gives them room on every side,
+   and the matching negative margin keeps the strip's box, and so the stage above
+   it, exactly where they were: 7px top and bottom, taking the place of the old
+   4px bottom padding, so the strip stays 68px tall. */
 .gallery-filmstrip {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
-  padding-bottom: 4px;
+  padding: 7px;
+  margin: -7px -7px -3px;
 }
 .filmstrip-thumb {
   flex-shrink: 0;
