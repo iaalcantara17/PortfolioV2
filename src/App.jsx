@@ -81,22 +81,26 @@ export default function App() {
       <SectionCounter active={activeSection} containerRef={containerRef} />
 
       <div ref={containerRef} className="page-scroller">
-        {sections.map(({ key, anchor, Component }, i) => (
-          <div
-            key={key}
-            id={anchor}
-            ref={setRef(i)}
-            data-section-index={i}
-            tabIndex={-1}
-            className="section-wrapper"
-            style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
-          >
-            <SectionErrorBoundary>
-              <Component isVisible={visibleSection === i} />
-            </SectionErrorBoundary>
-            <SectionLabel index={i + 1} />
-          </div>
-        ))}
+        {/* Every section in one box: the scroller stays one screen tall, so this is
+            the element whose size follows the page's full height */}
+        <div className="page-content">
+          {sections.map(({ key, anchor, Component }, i) => (
+            <div
+              key={key}
+              id={anchor}
+              ref={setRef(i)}
+              data-section-index={i}
+              tabIndex={-1}
+              className="section-wrapper"
+              style={{ height: '100vh', overflow: 'hidden', position: 'relative' }}
+            >
+              <SectionErrorBoundary>
+                <Component isVisible={visibleSection === i} />
+              </SectionErrorBoundary>
+              <SectionLabel index={i + 1} />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   )
