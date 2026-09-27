@@ -2,19 +2,25 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
+import { placeFollower } from '../../utils/follower'
 
 // A project link with a note in a small bubble (.link-tip-bubble, styled like
-// Montclair's "In progress" chip) that overlays the card just above it:
+// Montclair's "In progress" chip) that overlays its card:
 // - Shows on mouse hover (by pointer type, like the Education floaters, so a tap
 //   can't leave it stuck) and on keyboard focus (:focus-visible, in index.css).
-// - Per WCAG 1.4.13, Escape hides it, and it stays while the pointer moves onto it.
+// - Placed like the Education floaters (placeFollower): below and to the right of
+//   the pointer in the card's coordinates, following it across the link. Always
+//   below (alwaysBelow): the link sits at the card's bottom edge, where the
+//   floaters' flip would put it above, over the tech pills. Keyboard focus has no
+//   pointer, so it takes the same offset from the link's bottom-left corner.
+// - Per WCAG 1.4.13, Escape hides it; it stays for as long as hover or focus does.
 // - It's always the link's description (aria-describedby), so screen readers read
 //   it with the link on any device. The description comes from a hidden copy in
 //   sentence case; the bubble itself is aria-hidden, since its eyebrow style would
 //   hand screen readers the text in capitals. Touch shows no bubble: a tap opens
 //   the link.
-// - Where the bubble would run off the right edge of the screen (narrow screens),
-//   it shifts left to stay 8px inside it.
+// - Where it would still run off the right edge of the screen (narrow screens), it's
+//   pulled back to 8px inside it.
 function NoteLink({ link, style }) {
   const noteId = useId()
   const bubbleRef = useRef(null)
@@ -22,12 +28,14 @@ function NoteLink({ link, style }) {
   const [focused, setFocused] = useState(false)
   const [dismissed, setDismissed] = useState(false)
 
-  const place = () => {
+  // point: the pointer event, or for keyboard focus the link's bottom-left corner
+  const place = (point) => {
     const bubble = bubbleRef.current
-    bubble.style.translate = ''
-    const r = bubble.getBoundingClientRect()
-    const overflow = r.right - (document.documentElement.clientWidth - 8)
-    if (overflow > 0) bubble.style.translate = `${-Math.min(overflow, r.left - 8)}px 0`
+    const card = bubble.offsetParent
+    if (!card) return
+    placeFollower(point, card, bubble, { alwaysBelow: true })
+    const overflow = bubble.getBoundingClientRect().right - (document.documentElement.clientWidth - 8)
+    if (overflow > 0) bubble.style.left = `${parseFloat(bubble.style.left) - overflow}px`
   }
 
   useEffect(() => {
@@ -42,9 +50,10 @@ function NoteLink({ link, style }) {
       className={`link-tip${hovered ? ' tip-hovered' : ''}${dismissed ? ' tip-dismissed' : ''}`}
       onPointerEnter={(e) => {
         if (e.pointerType !== 'mouse') return
-        place()
+        place(e)
         setHovered(true)
       }}
+      onPointerMove={(e) => { if (e.pointerType === 'mouse') place(e) }}
       onPointerLeave={() => {
         setHovered(false)
         if (!focused) setDismissed(false)
@@ -56,8 +65,9 @@ function NoteLink({ link, style }) {
         rel="noopener noreferrer"
         style={style}
         aria-describedby={noteId}
-        onFocus={() => {
-          place()
+        onFocus={(e) => {
+          const r = e.currentTarget.getBoundingClientRect()
+          place({ clientX: r.left, clientY: r.bottom })
           setFocused(true)
         }}
         onBlur={() => {
@@ -328,7 +338,8 @@ export default function Projects({ isVisible }) {
               </div>
             </div>
 
-            {/* Data Analysis App */}
+            {/* Data Analysis App. position: relative makes the card the Live Demo
+                note's frame (NoteLink places it in the card's coordinates). */}
             <div
               className="grid-card tilt-card"
               onMouseMove={(e) => handleTilt(e, e.currentTarget)}
@@ -338,6 +349,7 @@ export default function Projects({ isVisible }) {
                 borderRadius: 4,
                 padding: '22px 24px',
                 border: '0.5px solid var(--color-line)',
+                position: 'relative',
               }}
             >
               <div style={{ marginBottom: 8 }}>
