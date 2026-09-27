@@ -8,9 +8,11 @@ import SectionErrorBoundary from './components/SectionErrorBoundary'
 import { sections, sectionIndexForHash } from './data/sections'
 import { useActiveSection } from './hooks/useActiveSection'
 import { useKeyboardScroll } from './hooks/useKeyboardScroll'
+import { initPageScroll, scrollPageTo } from './utils/pageScroll'
 
 export default function App() {
   const containerRef = useRef(null)
+  const contentRef = useRef(null)
   const sectionRefs = useRef([])
   // Most recent section to enter the viewport. Gates each section's one-shot
   // entrance (isVisible), so it deliberately fires early.
@@ -19,6 +21,9 @@ export default function App() {
   const activeSection = useActiveSection(containerRef, sectionRefs)
   useKeyboardScroll(containerRef)
 
+  // Eased wheel scrolling, except under reduced motion (utils/pageScroll.js)
+  useEffect(() => initPageScroll(containerRef.current, contentRef.current), [])
+
   const navigateTo = useCallback((index) => {
     const section = sectionRefs.current[index]
     if (!section) return
@@ -26,9 +31,8 @@ export default function App() {
     // readers carry on from the section (not from the nav, or from the body once
     // the mobile menu that held focus has closed)
     section.focus({ preventScroll: true })
-    // No behavior given, so it follows the scroller's CSS scroll-behavior:
-    // smooth, or instant under reduced motion
-    section.scrollIntoView()
+    // Eased, or instant under reduced motion
+    scrollPageTo(section)
     // The address bar follows too (#projects), so the section can be linked to and
     // Back returns to the previous one
     const hash = `#${sections[index].anchor}`
@@ -66,7 +70,10 @@ export default function App() {
     const sectionForHash = () => sectionRefs.current[Math.max(0, sectionIndexForHash(window.location.hash))]
     const start = sectionIndexForHash(window.location.hash)
     if (start > 0) sectionRefs.current[start]?.scrollIntoView({ behavior: 'instant' })
-    const onHistory = () => sectionForHash()?.scrollIntoView()
+    const onHistory = () => {
+      const section = sectionForHash()
+      if (section) scrollPageTo(section)
+    }
     window.addEventListener('popstate', onHistory)
     return () => window.removeEventListener('popstate', onHistory)
   }, [])
@@ -83,7 +90,7 @@ export default function App() {
       <div ref={containerRef} className="page-scroller">
         {/* Every section in one box: the scroller stays one screen tall, so this is
             the element whose size follows the page's full height */}
-        <div className="page-content">
+        <div ref={contentRef} className="page-content">
           {sections.map(({ key, anchor, Component }, i) => (
             <div
               key={key}

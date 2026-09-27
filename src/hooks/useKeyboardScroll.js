@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { scrollPageBy, scrollPageTo } from '../utils/pageScroll'
 
 const LINE = 40
 
@@ -29,10 +30,10 @@ export function useKeyboardScroll(containerRef) {
 
       if (e.key === 'Home' || e.key === 'End') {
         e.preventDefault()
-        container.scrollTo({ top: e.key === 'Home' ? 0 : container.scrollHeight })
+        scrollPageTo(e.key === 'Home' ? 0 : container.scrollHeight)
       } else if (delta !== undefined) {
         e.preventDefault()
-        container.scrollBy({ top: delta })
+        scrollPageBy(delta)
       }
     }
 

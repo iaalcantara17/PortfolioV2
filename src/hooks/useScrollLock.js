@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
+import { pausePageScroll, resumePageScroll } from '../utils/pageScroll'
 
 // The page scrolls inside .page-scroller, not on body, so locking body does
 // nothing. The lock adds .scroll-locked to <html>, which hides the container's
 // overflow (see index.css) and stops wheel/touch scrolling. Chrome still
 // keyboard-scrolls an overflow: hidden container, so vertical scroll keys are
-// blocked too. Counted, so two overlapping locks don't release each other.
+// blocked too, and the eased wheel scrolling is paused, since it sets scrollTop
+// itself. Counted, so two overlapping locks don't release each other.
 const SCROLL_KEYS = new Set([' ', 'PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown'])
 let locks = 0
 
@@ -21,11 +23,13 @@ export function useScrollLock(locked) {
     if (locks++ === 0) {
       document.documentElement.classList.add('scroll-locked')
       window.addEventListener('keydown', blockScrollKeys)
+      pausePageScroll()
     }
     return () => {
       if (--locks === 0) {
         document.documentElement.classList.remove('scroll-locked')
         window.removeEventListener('keydown', blockScrollKeys)
+        resumePageScroll()
       }
     }
   }, [locked])
