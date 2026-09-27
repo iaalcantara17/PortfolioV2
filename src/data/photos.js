@@ -26,7 +26,7 @@ export const photoByName = Object.fromEntries(
 )
 
 // Images that go through the pipeline for use elsewhere, not in Gallery
-const NOT_IN_GALLERY = new Set(['njit-diploma', 'linkdup-certificate'])
+const NOT_IN_GALLERY = new Set(['njit-diploma', 'linkdup-certificate', 'portrait'])
 
 export const galleryPhotos = Object.keys(photoByName)
   .filter((name) => !NOT_IN_GALLERY.has(name))
