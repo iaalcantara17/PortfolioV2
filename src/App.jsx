@@ -5,7 +5,7 @@ import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
 import SectionErrorBoundary from './components/SectionErrorBoundary'
-import { sections } from './data/sections'
+import { sections, sectionIndexForHash } from './data/sections'
 import { useActiveSection } from './hooks/useActiveSection'
 import { useKeyboardScroll } from './hooks/useKeyboardScroll'
 
@@ -29,6 +29,10 @@ export default function App() {
     // No behavior given, so it follows the scroller's CSS scroll-behavior:
     // smooth, or instant under reduced motion
     section.scrollIntoView()
+    // The address bar follows too (#projects), so the section can be linked to and
+    // Back returns to the previous one
+    const hash = `#${sections[index].anchor}`
+    if (window.location.hash !== hash) window.history.pushState(null, '', hash)
   }, [])
 
   useEffect(() => {
@@ -55,6 +59,18 @@ export default function App() {
     return () => observer.disconnect()
   }, [])
 
+  // Section links (/#projects): opened directly, the page starts at that section;
+  // Back and Forward, or a hash typed into the address bar, move between sections
+  // (no hash is the top)
+  useEffect(() => {
+    const sectionForHash = () => sectionRefs.current[Math.max(0, sectionIndexForHash(window.location.hash))]
+    const start = sectionIndexForHash(window.location.hash)
+    if (start > 0) sectionRefs.current[start]?.scrollIntoView({ behavior: 'instant' })
+    const onHistory = () => sectionForHash()?.scrollIntoView()
+    window.addEventListener('popstate', onHistory)
+    return () => window.removeEventListener('popstate', onHistory)
+  }, [])
+
   const setRef = (index) => (el) => { sectionRefs.current[index] = el }
 
   return (
@@ -65,9 +81,10 @@ export default function App() {
       <SectionCounter active={activeSection} containerRef={containerRef} />
 
       <div ref={containerRef} className="page-scroller">
-        {sections.map(({ key, Component }, i) => (
+        {sections.map(({ key, anchor, Component }, i) => (
           <div
             key={key}
+            id={anchor}
             ref={setRef(i)}
             data-section-index={i}
             tabIndex={-1}

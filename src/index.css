@@ -401,13 +401,12 @@ nav.site-nav.scrolled {
   gap: 28px;
 }
 
-.mobile-menu-links button {
+.mobile-menu-links a {
   font-family: var(--font-serif);
   font-size: 34px;
   letter-spacing: -0.02em;
   color: var(--color-ink);
-  background: none;
-  border: none;
+  text-decoration: none;
   text-align: left;
   padding: 0;
 }

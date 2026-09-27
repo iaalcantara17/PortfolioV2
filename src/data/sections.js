@@ -1,5 +1,7 @@
 // Single source of truth for page sections. Order here is page order, dot
 // order and counter numbering; inNav controls whether it gets a nav link.
+// anchor is the section's id, so /#projects links straight to it; changing one
+// breaks links people have already shared.
 import Hero from '../components/sections/Hero'
 import About from '../components/sections/About'
 import Skills from '../components/sections/Skills'
@@ -11,16 +13,19 @@ import Gallery from '../components/sections/Gallery'
 import Contact from '../components/sections/Contact'
 
 export const sections = [
-  { key: 'hero', label: 'Hero', Component: Hero, inNav: false },
-  { key: 'about', label: 'About', Component: About, inNav: true },
-  { key: 'skills', label: 'Skills', Component: Skills, inNav: true },
-  { key: 'experience', label: 'Experience', Component: Experience, inNav: true },
-  { key: 'education', label: 'Education', Component: Education, inNav: true },
-  { key: 'projects', label: 'Projects', Component: Projects, inNav: true },
-  { key: 'human', label: 'Life', Component: HumanIsrael, inNav: true },
-  { key: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
-  { key: 'contact', label: 'Contact', Component: Contact, inNav: true },
+  { key: 'hero', anchor: 'hero', label: 'Hero', Component: Hero, inNav: false },
+  { key: 'about', anchor: 'about', label: 'About', Component: About, inNav: true },
+  { key: 'skills', anchor: 'skills', label: 'Skills', Component: Skills, inNav: true },
+  { key: 'experience', anchor: 'experience', label: 'Experience', Component: Experience, inNav: true },
+  { key: 'education', anchor: 'education', label: 'Education', Component: Education, inNav: true },
+  { key: 'projects', anchor: 'projects', label: 'Projects', Component: Projects, inNav: true },
+  { key: 'human', anchor: 'life', label: 'Life', Component: HumanIsrael, inNav: true },
+  { key: 'gallery', anchor: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
+  { key: 'contact', anchor: 'contact', label: 'Contact', Component: Contact, inNav: true },
 ]
+
+// Index of the section a URL hash ("#projects") points to, or -1
+export const sectionIndexForHash = (hash) => sections.findIndex((s) => `#${s.anchor}` === hash)
 
 // Zero-padded total for "NN / TT" counters.
 export const SECTION_TOTAL = String(sections.length).padStart(2, '0')
