@@ -5,11 +5,11 @@ import { prefersReducedMotion } from '../utils/motion'
 import { LERP as PAGE_LERP } from '../utils/pageScroll'
 
 // Gallery's film reel: one black 35mm band that is both the viewer and the thumbnail
-// row. Every frame is the same size; the current photo is the one in the middle, at
-// full brightness with the purple ring, with dimmer neighbors on each side and, at
-// each end, the next frame cut off by the band's edge (so the part showing is always
-// the half nearer the middle) under a fade and a chevron. It loops both ways with no
-// start or end.
+// row, as wide as the section's content. Every photo is the same size, square and
+// straight on the black; the current one is in the middle, at full brightness with a
+// deep purple ring, with a dimmer neighbor on each side and, at each end, the next
+// photo cut off by the band's edge (so the part showing is always the part nearer the
+// middle) under a fade and a chevron. It loops both ways with no start or end.
 //
 // The reel's place is a fractional position, pos, in photos: 2.5 is halfway between
 // the third and fourth. Frames sit one step (frame + gap) apart and slide as pos
@@ -23,26 +23,25 @@ import { LERP as PAGE_LERP } from '../utils/pageScroll'
 // click on the middle frame opens it (onOpen). Frames are placed only while the reel
 // moves (GSAP tweens pos); nothing runs while it sits still.
 
-// The largest the reel gets: a 340px photo in a 2px matte, 20px apart. Smaller screens
-// scale the whole reel down together, keeping these proportions (the matte stays 2px).
-const FRAME = 344
-const GAP = 20
-// End slices: the visible part of the cut-off frame at each end
-const EDGE_RATIO = 70 / 204
-// Corner radius of the matte (6px at full size); the photo's is 2/3 of it
-const RADIUS_RATIO = 6 / 344
-// Chevron height, and its inset from the band's edge
-const CHEVRON_RATIO = 128 / 344
-const CHEVRON_INSET_RATIO = 40 / 344
-// Two neighbors each side, or one, while frames can stay at least this big; below it,
-// fewer. With none, on phones, the end slices narrow first, down to MIN_EDGE.
+// The reel fills the content width (1344px in the 1440px grid): at that width, 340px
+// photos with a 130px end sliver each side and 16px between everything. Narrower or
+// shorter, the photos shrink and the slivers take up the rest of the width.
+const FRAME = 340
+const GAP = 16
+// The slivers' share of a photo where the width sets the size (130 / 340)
+const EDGE_RATIO = 130 / 340
+// Chevron height (128px at 340) and its inset from the band's edge (16px at 340)
+const CHEVRON_RATIO = 128 / 340
+const CHEVRON_INSET_RATIO = 16 / 340
+// A neighbor each side while photos can stay at least this big; below it, just the
+// current photo, with the slivers narrowing first, down to MIN_EDGE
 const MIN_FRAME = 200
 const MIN_EDGE = 30
-// Below the band: 7px position dots, 14px down
-const DOTS_ROOM = 14 + 7
-// Brightness by distance from the middle: the photo itself, the first and second
-// neighbors, then the end slices
-const DIM = [1, 0.65, 0.45]
+// Below the band: 7px position dots, 20px down
+const DOTS_ROOM = 20 + 7
+// Brightness by distance from the middle: the photo itself, its neighbor, then the
+// end slivers
+const DIM = [1, 0.65]
 const DIM_EDGE = 0.4
 // PR #18's sprocket rows (12px), plus room for the ring and focus outline on the black
 const SPROCKET_ROW = 12
@@ -59,55 +58,44 @@ const GLIDE = { duration: (10 * Math.LN2) / (PAGE_LERP * 60), ease: 'expo.out' }
 
 const mod = (k, n) => ((k % n) + n) % n
 
-// sizes for a photo in a frame: the width it's drawn at under object-fit: cover in
-// the square. A landscape photo is drawn wider than the frame (the 3:2 city photo at
-// 1.5x), so the frame's own width would fetch a file too small for it.
+// sizes for a photo: the width it's drawn at under object-fit: cover in the square. A
+// landscape photo is drawn wider than the square (the 3:2 city photo at 1.5x), so the
+// square's own width would fetch a file too small for it.
 function coverSizes(photo, frame) {
   const { width, height } = photo.variants[400]
-  return `${Math.ceil((frame - 4) * Math.max(1, width / height))}px`
+  return `${Math.ceil(frame * Math.max(1, width / height))}px`
 }
 
-// Band width per pixel of frame, with this many neighbors each side of the middle
-const widthPerFrame = (neighbors) =>
-  2 * EDGE_RATIO + (2 * neighbors + 1) + ((2 * neighbors + 2) * GAP) / FRAME
-
-// The reel at a given frame size, everything else in proportion
-function sized(neighbors, frameSize, edgeSize) {
+// The reel across a band `width` wide: photos `frame` px, `neighbors` each side, and
+// the end slivers taking up what's left
+function sized(neighbors, frameSize, width) {
   const frame = Math.floor(frameSize)
-  const edge = edgeSize ?? Math.round(frame * EDGE_RATIO)
-  const gap = Math.round((frame * GAP) / FRAME)
+  const edge = (width - (2 * neighbors + 1) * frame - (2 * neighbors + 2) * GAP) / 2
   const chevron = Math.round(frame * CHEVRON_RATIO)
-  const chevronWidth = (chevron * 20) / 76
+  const chevronWidth = (chevron * 34) / 128
   return {
     neighbors,
     frame,
-    gap,
     edge,
-    width: 2 * edge + (2 * neighbors + 1) * frame + (2 * neighbors + 2) * gap,
-    radius: frame * RADIUS_RATIO,
+    width,
     chevron,
-    // Clear of the edge, but never past the end slice onto the next frame
+    // Near the edge, but never past the sliver onto the next photo
     chevronInset: Math.max(4, Math.min(Math.round(frame * CHEVRON_INSET_RATIO), edge - chevronWidth - 4)),
   }
 }
 
-// The reel for the space it has. height is the room under the header on desktop, where
-// the section is one screen tall; on phones the section grows, so there's no limit.
+// The reel for the space it has: the band always spans the full width. height is the
+// room under the header on desktop, where the section is one screen tall; on phones
+// the section grows, so there's no limit.
 function layoutFor(width, height = Infinity) {
   const byHeight = height - 2 * (SPROCKET_ROW + RING_ROOM) - DOTS_ROOM
-  for (const neighbors of [2, 1]) {
-    const byWidth = Math.min(FRAME, width / widthPerFrame(neighbors))
-    if (byWidth >= MIN_FRAME) return sized(neighbors, Math.min(byWidth, byHeight))
-  }
-  // Just the middle frame. The end slices keep their proportion where there's room,
-  // and narrow first where there isn't, so the photo stays as big as it can.
-  const perFrame = 1 + (2 * GAP) / FRAME
-  const frame = Math.floor(Math.min(FRAME, byHeight, (width - 2 * MIN_EDGE) / perFrame))
-  const edge = Math.floor(Math.max(MIN_EDGE, Math.min(frame * EDGE_RATIO, (width - frame * perFrame) / 2)))
-  return sized(0, frame, edge)
+  const byWidth = (width - 4 * GAP) / (3 + 2 * EDGE_RATIO)
+  if (byWidth >= MIN_FRAME) return sized(1, Math.min(FRAME, byWidth, byHeight), width)
+  // Just the current photo, as big as it can be: the slivers narrow first
+  return sized(0, Math.min(FRAME, byHeight, width - 2 * GAP - 2 * MIN_EDGE), width)
 }
 
-const stepOf = (layout) => layout.frame + layout.gap
+const stepOf = (layout) => layout.frame + GAP
 
 // A frame's place and look at distance d (in photos) from the middle
 function frameAt(d, layout) {
@@ -119,8 +107,6 @@ function frameAt(d, layout) {
     x: d * stepOf(layout),
     opacity: levels[i] + (next - levels[i]) * (a - i),
     ring: Math.max(0, 1 - 2 * a),
-    // Rounded as a full frame, square as an end slice (the band's edge cuts it)
-    radius: layout.radius * Math.max(0, Math.min(1, layout.neighbors + 1 - a)),
   }
 }
 
@@ -161,7 +147,6 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
       el.style.opacity = f.opacity
       el.style.transform = `translate(-50%, -50%) translateX(${f.x}px)`
       el.style.setProperty('--ring', f.ring)
-      el.style.setProperty('--radius', `${f.radius}px`)
     })
     // The sprockets travel with the film
     const shift = 4 - mod(pos * stepOf(layout), SPROCKET_PITCH)
@@ -313,6 +298,8 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
   }, [])
 
   const bandHeight = layout.frame + 2 * (SPROCKET_ROW + RING_ROOM)
+  // Over the end sliver, the photo's height
+  const fadeStyle = { width: layout.edge, height: layout.frame, top: SPROCKET_ROW + RING_ROOM }
   const reach = layout.neighbors + 2
   const frames = []
   for (let k = base - reach; k <= base + reach; k++) frames.push(k)
@@ -336,7 +323,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
         }}
       >
         {/* The left chevron comes first so Tab runs previous, the middle frame, next */}
-        <span className="reel-fade reel-fade-left" style={{ width: layout.edge }} aria-hidden="true" />
+        <span className="reel-fade reel-fade-left" style={fadeStyle} aria-hidden="true" />
         <button
           type="button"
           className="reel-arrow reel-arrow-left"
@@ -377,7 +364,7 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
           )
         })}
 
-        <span className="reel-fade reel-fade-right" style={{ width: layout.edge }} aria-hidden="true" />
+        <span className="reel-fade reel-fade-right" style={fadeStyle} aria-hidden="true" />
         <button
           type="button"
           className="reel-arrow reel-arrow-right"
@@ -401,15 +388,15 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
 }
 
 // A chevron: one polyline (two strokes would show a seam at the point), drawn 1:1
-// (viewBox = size) so the stroke stays 1.6px at any height. The shape is the 20x76
-// original, scaled.
+// (viewBox = size) so the stroke keeps its width at any height. The shape is the
+// mockup's 34x128, scaled.
 function Chevron({ height, direction }) {
-  const s = height / 76
-  const width = 20 * s
-  const [outer, inner] = direction === 'left' ? [15 * s, 5 * s] : [5 * s, 15 * s]
+  const s = height / 128
+  const width = 34 * s
+  const [outer, inner] = direction === 'left' ? [25 * s, 9 * s] : [9 * s, 25 * s]
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none" aria-hidden="true">
-      <polyline points={`${outer},${3 * s} ${inner},${38 * s} ${outer},${73 * s}`} />
+      <polyline points={`${outer},${5 * s} ${inner},${64 * s} ${outer},${124 * s}`} />
     </svg>
   )
 }

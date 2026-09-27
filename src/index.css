@@ -558,12 +558,12 @@ nav.site-nav.scrolled {
    - Space: at least 80px under the header (the column's 24px gap plus 56px here),
      then the band and its dots centered in what's left.
    - Band: the negative's black, with PR #18's sprocket rows (6px cream squares every
-     14px, 3px in from each edge) as its own background. It hugs its frames.
-   - Frames: all one size, a 2px cream matte around a square photo, with rounded
-     corners set by FilmReel (--radius: the matte's; the photo's is 2/3 of it; none on
-     the cut-off end slices). --ring (1 in the middle, fading as a frame leaves it)
-     draws the purple ring for the current photo.
-   - Ends: the frame past the last neighbor, cut off by the band's edge, under a fade
+     14px, 3px in from each edge) as its own background. It spans the content width.
+   - Frames: square photos straight on the black, no matte, square corners. --ring (1
+     in the middle, fading as a frame leaves it) draws the current photo's 3px ring,
+     in the deep purple (--color-purple-ink): the lilac accent reads too close to the
+     site's links to mark it here.
+   - Ends: the photo past each neighbor, cut off by the band's edge, under a fade
      into the black and a chevron.
    - Dots: one per photo under the band, purple for the one showing. */
 .film-reel {
@@ -596,24 +596,21 @@ nav.site-nav.scrolled {
   position: absolute;
   top: 50%;
   left: 50%;
-  padding: 2px;
+  padding: 0;
   border: none;
-  border-radius: var(--radius, 0px);
-  background: var(--color-paper);
+  background: none;
 }
 .reel-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: calc(var(--radius, 0px) * 2 / 3);
 }
 .reel-frame::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  box-shadow: 0 0 0 2px var(--color-purple);
+  box-shadow: 0 0 0 3px var(--color-purple-ink);
   opacity: var(--ring, 0);
   pointer-events: none;
 }
@@ -622,24 +619,23 @@ nav.site-nav.scrolled {
   outline: 2px solid var(--color-purple);
   outline-offset: 3px;
 }
-/* Between the sprocket rows, so the film's edges run crisp to the end */
+/* Over the end slivers' photos (FilmReel sizes and places it), clear of the sprocket
+   rows: 60% black at the band's edge, clear by 85% of the way in */
 .reel-fade {
   position: absolute;
-  top: 12px;
-  bottom: 12px;
   z-index: 1;
   pointer-events: none;
 }
 .reel-fade-left {
   left: 0;
-  background: linear-gradient(to right, var(--color-ink), transparent);
+  background: linear-gradient(to right, rgba(13, 13, 13, 0.6), transparent 85%);
 }
 .reel-fade-right {
   right: 0;
-  background: linear-gradient(to left, var(--color-ink), transparent);
+  background: linear-gradient(to left, rgba(13, 13, 13, 0.6), transparent 85%);
 }
 /* Chevrons: a single polyline each, drawn 1:1 (viewBox = size) so the stroke stays
-   1.6px, with a soft shadow to read over photos. The button is clear and covers the
+   2.6px, with a soft shadow to read over photos. The button is clear and covers the
    end slice; FilmReel sizes the chevron and insets it from the band's edge, both in
    proportion to the frames. */
 .reel-arrow {
@@ -663,12 +659,12 @@ nav.site-nav.scrolled {
 }
 .reel-arrow polyline {
   stroke: var(--color-paper);
-  stroke-width: 1.6;
+  stroke-width: 2.6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .reel-arrow svg {
-  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.6));
 }
 .reel-arrow:focus-visible {
   outline: 2px solid var(--color-purple);
@@ -676,8 +672,8 @@ nav.site-nav.scrolled {
 }
 .reel-dots {
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 10px;
+  margin-top: 20px;
 }
 .reel-dots span {
   width: 7px;
