@@ -27,7 +27,9 @@ WebSite structured data, permanent redirects for /index.html and
   quote rotation list in src/data/quotes.js.
 - Section order and nav order.
 - The Gallery Option B layout (fixed-height hero + filmstrip), the 
-  filmstrip's visual treatment, and the section counter handoff behavior.
+  filmstrip's 35mm-negative treatment (black band, cream sprocket holes, 
+  cream-matted prints, a purple ring on the active print), and the section 
+  counter handoff behavior.
 - The "play once and persist" animation behavior — entrance animations 
   fire once per element on first view and then stay visible permanently. 
   No reverse-on-scroll-up, no re-triggering.
