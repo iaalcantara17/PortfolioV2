@@ -124,11 +124,10 @@ its reduced-motion gating unchanged:
   reports what it would block.
 - Hero portrait: since Vite 8.3 (PR #28), the portrait's 400w AVIF 
   ships as its own file in dist/assets/ instead of being inlined as a 
-  base64 data: URI in index.html and the main bundle. Vite no longer 
-  inlines the targets of preload links. At 4,088 bytes it is under 
-  Vite's 4 KiB inline limit, so only the preload link in index.html 
-  keeps it a file: without that link it goes back to a data: URI, which 
-  the CSP's img-src blocks.
+  base64 data: URI in index.html and the main bundle. Inlining is now 
+  off for every asset (build.assetsInlineLimit: 0 in vite.config.js), 
+  so the build has no data: URIs whatever a file's size, and the 
+  portrait's preload link is no longer what keeps it a file.
 
 ## Locked — do not change without explicit approval
 

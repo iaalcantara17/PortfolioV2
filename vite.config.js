@@ -72,6 +72,9 @@ function siteSeo() {
 export default defineConfig({
   plugins: [react(), siteSeo()],
   build: {
+    // Every asset ships as its own file, never as a data: URI, so the
+    // Content-Security-Policy never needs data: (vercel.json)
+    assetsInlineLimit: 0,
     rolldownOptions: {
       output: {
         // Libraries go in their own chunks, apart from the site's code, so a deploy
