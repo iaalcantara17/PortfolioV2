@@ -8,8 +8,12 @@ it in full, every session, without being reminded.
 A personal portfolio site for Israel Alcántara. React + Vite, deployed 
 to Vercel at israelalcantara.vercel.app. Currently mid-way through a 
 structured hardening pass before a full relaunch. Phases 0 through 4 
-are complete (read-only audit, architecture refactor, restraint-audit 
-and content decisions, and accessibility/motion safety). Phase 5 
+are done (read-only audit, architecture refactor, the restraint pass 
+and content decisions, and accessibility/motion safety), with two 
+limits: the restraint pass cut some effects but recorded no keep/cut 
+decision for the ones that stayed until "Effects: keep/cut decisions" 
+below, and accessibility still has open items, listed under 
+"Accessibility status". Phase 5 
 (performance and resilience) is complete and on main: the main work in 
 PR #10, and the follow-up fixes in PR #11 (the contact email copies on 
 click instead of opening a mail app, and the Education hover floaters 
@@ -19,6 +23,94 @@ sitemap.xml, heading structure and section anchor fixes, Person and
 WebSite structured data, permanent redirects for /index.html and 
 /resume.pdf, resume PDF metadata, and the Live Demo hover tooltip 
 (PR #13).
+
+## Changes since Phase 6
+
+One line per merged PR. #17 and #18 were closed without merging.
+
+- #14: noted Phase 6 as complete in this file.
+- #15: wheel scrolling eased by Lenis (utils/pageScroll.js). Touch stays 
+  native, and Lenis is off under reduced motion.
+- #16: LinkdUp's capstone certificate, opened in the Lightbox from a 
+  Certificate button in Projects.
+- #19: the Gallery's stage and strip replaced by the looping film reel 
+  (components/FilmReel.jsx).
+- #20: the speed blur, the page blurring slightly while it scrolls fast 
+  (utils/scrollBlur.js).
+- #21: locked the film reel in this file.
+- #22: removed the Life section, moved the Spotify widget from Hero to 
+  About, and restored the period in the nav logo ("I.A.").
+- #23: Open Graph and Twitter card tags, "MBA Candidate" in the title, 
+  the I.A. favicon set, and the share image.
+- #24: a skip link and a <main> landmark, the About quote author on 
+  --color-muted, the film reel's frames named by their photo 
+  descriptions, and a closer description of the friends photo.
+- #25: three security headers in vercel.json, and a static 404 page.
+- #26: a Content-Security-Policy in report-only mode, and the 404 page's 
+  styles moved into 404.css.
+- #27: the film reel's photo size can no longer go negative on very 
+  small windows.
+
+## Accessibility status
+
+- In place: a skip link to <main> (App.jsx), focus trapped in the 
+  Lightbox and the mobile menu with Escape to close, keyboard focus 
+  rings, alt text on every photo, and reduced-motion gating for every 
+  effect in the list below.
+- Open: the page behind the Lightbox and the mobile menu is not inert. 
+  Only Tab is trapped, so a screen reader's virtual cursor can still 
+  reach it.
+- Open, by choice: gold text (stat suffixes, "Scroll", gold pills) 
+  stays below AA contrast (the note on the accent tokens in index.css).
+
+## Effects: keep/cut decisions
+
+The restraint pass (PRs #5 and #6) cut the gold scroll progress bar and 
+dead effect code. Every effect still in the code is kept as it is, with 
+its reduced-motion gating unchanged:
+
+- Custom cursor (Cursor.jsx): KEEP. Fine pointers only.
+- 3D hover tilt (utils/tilt.js, on the Education and Projects cards): 
+  KEEP. Off under reduced motion.
+- Speed blur (utils/scrollBlur.js): KEEP. Fine pointers only, never 
+  under reduced motion.
+- Lenis smooth scrolling (utils/pageScroll.js): KEEP. Not created under 
+  reduced motion.
+- Section counter scramble (SectionCounter.jsx): KEEP. Skipped under 
+  reduced motion.
+- Pointer followers (utils/follower.js: the diploma and certificate 
+  previews, the "In progress" label, the Live Demo note): KEEP. They 
+  follow mouse pointers only; the Live Demo note also shows on keyboard 
+  focus.
+- Hero typewriter and scramble (Hero.jsx): KEEP. A plain fade under 
+  reduced motion.
+- Film reel glide (FilmReel.jsx): KEEP. Instant under reduced motion.
+
+## How things are built
+
+- Head tags: index.html holds the <title> and the meta description. 
+  siteSeo() in vite.config.js reads both from index.html and builds the 
+  Open Graph and Twitter card tags from them, with absolute URLs from 
+  BASE_URL in site.config.js. The share image's size and alt text are 
+  SHARE_IMAGE in site.config.js.
+- Share image and icons: scripts/make-head-images.py writes 
+  public/og-image.png, public/favicon.ico and public/apple-touch-icon.png 
+  with Pillow, from the DM Serif Display file in src/assets/fonts/, 
+  Arial, and photos-src/portrait.jpg. Regenerate them with 
+  `python scripts/make-head-images.py` from the repo root. The script 
+  does not make public/favicon.svg: that file is the same monogram as 
+  vector outlines, drawn once from the font file.
+- 404 page: public/404.html and public/404.css are static files that 
+  Vercel serves with a 404 status for any path that matches nothing 
+  else. Vite copies them untouched, so 404.css carries its own copy of 
+  7 token values from index.css (two font stacks and five colors). A 
+  change to any of those tokens needs the same edit in 404.css by hand.
+- Headers: vercel.json sets X-Content-Type-Options, Referrer-Policy and 
+  Permissions-Policy on /(.*), plus a Content-Security-Policy-Report-Only 
+  header that reports and blocks nothing. Enforcing the policy is a 
+  pending follow-up. Vercel does not apply header rules to redirect 
+  responses, so the /resume.pdf and /index.html redirects carry none of 
+  these headers.
 
 ## Locked — do not change without explicit approval
 
@@ -94,10 +186,17 @@ why, but do not change it unilaterally.
 - Experience centers its content and already touches the nav line at 
   600px and below, same failure class as Hero. Not broken yet, but worth 
   a height sweep before it becomes the next surprise.
+- The Gallery film reel has no room on a desktop-width window below 
+  about 410px tall. Since PR #27 it shows no photo there instead of 
+  logging errors. Fixing it would mean letting the Gallery grow past 
+  one screen, which touches the locked reel.
 
 ## Reference material
 
 - audit/before/ contains the Phase 0 baseline: Lighthouse reports 
   (mobile + desktop) and 25 screenshots at 390/1024/1440px, captured 
   against the live site after the hotfix/live-bugs merge. Use this as 
-  the comparison baseline for any before/after verification.
+  the comparison baseline for any before/after verification. It was 
+  never committed to git and isn't on the Windows machine, so it may 
+  only exist on the other one. Where it's missing, take the "before" 
+  screenshots from a fresh build of main.
