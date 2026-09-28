@@ -10,7 +10,10 @@ Live at https://israelalcantara.vercel.app
 - GSAP for animation, Lenis for smooth wheel scrolling, and framer-motion
   for the Lightbox, whose code is fetched separately once the page has
   loaded and the browser is idle
-- One Vercel function, `api/spotify.js`, for the now-playing widget
+- Two Vercel functions: `api/spotify.js` for the now-playing widget, and
+  `api/track-resume-download.js`, which counts resume downloads in Upstash
+  Redis
+- Vercel Web Analytics, for pageviews
 - ESLint
 
 ## Running it
@@ -20,8 +23,9 @@ npm install
 npm run dev
 ```
 
-`npm run dev` serves the site without the Spotify function, so the widget
-stays hidden. To run the function too, use `npm run dev:vercel`, which
+`npm run dev` serves the site without the functions, so the widget stays
+hidden and resume clicks aren't counted. To run the functions too, use
+`npm run dev:vercel`, which
 needs the Vercel CLI logged in and linked to the project, and the
 environment variables below.
 
@@ -30,7 +34,7 @@ environment variables below.
 | Script | What it does |
 | --- | --- |
 | `npm run dev` | Vite dev server |
-| `npm run dev:vercel` | `vercel dev`, the site plus the `/api` function |
+| `npm run dev:vercel` | `vercel dev`, the site plus the `/api` functions |
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serves `dist/` locally |
 | `npm run lint` | ESLint |
@@ -38,7 +42,7 @@ environment variables below.
 ## Structure
 
 ```
-api/            Vercel function for the Spotify widget
+api/            Vercel functions: the Spotify widget and the resume download counter
 logos-src/      School logo originals (the WebP copies in src/assets/logos/ are made by hand)
 photos-src/     Photo originals, never served
 public/         Copied into the build as is: resume PDF, icons, share image, 404 page
@@ -90,3 +94,15 @@ redirects, the `/api` rewrite and the response headers.
 - `SPOTIFY_CLIENT_ID`
 - `SPOTIFY_CLIENT_SECRET`
 - `SPOTIFY_REFRESH_TOKEN`
+
+`/api/track-resume-download` needs these two, which the Upstash Redis
+integration (Vercel Marketplace) adds to the project for Production and
+Preview:
+
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+
+The count is one Redis key, `resume_downloads_total`. Opening
+`/api/track-resume-download` in a browser shows it as `{ "count": N }`
+without changing it; each click on a resume link sends a POST that adds
+one.
