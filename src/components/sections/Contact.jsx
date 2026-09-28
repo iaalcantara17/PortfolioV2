@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
+import { trackResumeDownload } from '../../utils/trackResumeDownload'
 
 // copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
@@ -209,6 +210,7 @@ export default function Contact({ isVisible }) {
                 href="/Resume_Israel_Alcantara.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={trackResumeDownload}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
