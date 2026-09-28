@@ -1,13 +1,23 @@
-// Site-wide settings for search engines, read at build time by vite.config.js.
+// Site-wide settings for search engines and link previews, read at build time by
+// vite.config.js.
 //
-// BASE_URL is the site's one canonical address. The canonical tag, robots.txt,
-// sitemap.xml and the structured data are all built from it, so moving to a custom
-// domain is a change to this line only. No trailing slash.
+// BASE_URL is the site's one canonical address. The canonical tag, the share tags,
+// robots.txt, sitemap.xml and the structured data are all built from it, so moving to
+// a custom domain is a change to this line only. No trailing slash.
 export const BASE_URL = 'https://israelalcantara.vercel.app'
 
 // Google Search Console, "HTML tag" verification: paste only the content="..." value
 // Search Console gives you. Empty means no tag is added.
 export const GOOGLE_SITE_VERIFICATION = ''
+
+// The link preview image (Open Graph and Twitter cards), made by
+// scripts/make-head-images.py. width and height must match the file.
+export const SHARE_IMAGE = {
+  path: '/og-image.png',
+  width: 1200,
+  height: 630,
+  alt: 'Israel Alcántara, Software Engineer · MBA Candidate, next to a portrait of Israel.',
+}
 
 // schema.org structured data (JSON-LD) for the page: who the site is about, and the
 // site itself. Facts only, as they appear on the site.
