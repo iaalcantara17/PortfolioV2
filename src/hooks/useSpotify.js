@@ -4,10 +4,11 @@ const POLL_MS = 30000
 // A request with no answer by then counts as failed, instead of leaving "Loading..." up
 const TIMEOUT_MS = 8000
 
-// One poll for the whole page, shared by every widget (Hero and About), so they always
-// agree. status: 'loading' until the first answer, 'ready' once a track has loaded
+// One poll for the whole page, kept outside the widget: About has the only one, and
+// a remount (StrictMode in dev) carries on from the last answer instead of fetching
+// again. status: 'loading' until the first answer, 'ready' once a track has loaded
 // (kept through later failures, which leave the last track showing), 'unavailable' if
-// the first request failed: the widgets hide, and polling stops for this visit.
+// the first request failed: the widget hides, and polling stops for this visit.
 let state = { status: 'loading', track: null, artist: null, isPlaying: false }
 const listeners = new Set()
 let widgetsOnScreen = 0

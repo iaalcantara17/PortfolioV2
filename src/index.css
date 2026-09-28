@@ -822,7 +822,7 @@ nav.site-nav.scrolled {
   }
   /* The per-section wrapper in App.jsx is fixed at 100vh/overflow:hidden for the
      desktop full-height layout — without this override, stacked content taller than one
-     viewport (e.g. Hero's Spotify widget) gets silently clipped. */
+     viewport (e.g. the stacked Hero) gets silently clipped. */
   .section-wrapper {
     height: auto !important;
     overflow: visible !important;
