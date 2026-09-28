@@ -152,6 +152,40 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
 }
 
+/* Skip link (App.jsx): the first Tab stop on the page, hidden like .sr-only until it
+   has focus, then shown in the nav bar's top-left corner in the Resume button's type,
+   inverted, with the site's purple focus ring. Above the nav (500), clear of the
+   section counter below it. */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 16px;
+  z-index: 600;
+  padding: 6px 14px;
+  border-radius: 2px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+
+.skip-link:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  outline: none;
+}
+
 /* Visual-only text: characters drawn by CSS from data-glyph instead of written as
    DOM text (the Hero typewriter, Contact's letter drop). The real text sits once in
    a screen-reader copy beside them, so search engines and assistive tech don't also
@@ -219,6 +253,12 @@ h1, h2, h3, h4, h5, h6 {
    (App.jsx), so the next Tab starts inside it. A ring around a whole screen adds
    nothing, so none is drawn; the section's own controls keep theirs. */
 .section-wrapper:focus {
+  outline: none;
+}
+
+/* The same for <main> (.page-content), which the skip link focuses: it's every
+   section at once */
+.page-content:focus {
   outline: none;
 }
 

@@ -80,8 +80,18 @@ export default function App() {
 
   const setRef = (index) => (el) => { sectionRefs.current[index] = el }
 
+  // Focus goes to <main> where the page already is, the way a section jump moves focus
+  // without the browser's own scroll. Followed as a plain #main link, the browser
+  // would jump, and the hash change would send the page back to the Hero (the
+  // popstate handler above).
+  const skipToMain = (e) => {
+    e.preventDefault()
+    contentRef.current?.focus({ preventScroll: true })
+  }
+
   return (
     <>
+      <a href="#main" className="skip-link" onClick={skipToMain}>Skip to main content</a>
       <Cursor />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
       <SectionIndicator current={activeSection} onNavigate={navigateTo} />
@@ -89,8 +99,9 @@ export default function App() {
 
       <div ref={containerRef} className="page-scroller">
         {/* Every section in one box: the scroller stays one screen tall, so this is
-            the element whose size follows the page's full height */}
-        <div ref={contentRef} className="page-content">
+            the element whose size follows the page's full height. It's also the
+            page's <main>, focusable for the skip link. */}
+        <main id="main" ref={contentRef} className="page-content" tabIndex={-1}>
           {sections.map(({ key, anchor, Component }, i) => (
             <div
               key={key}
@@ -107,7 +118,7 @@ export default function App() {
               <SectionLabel index={i + 1} />
             </div>
           ))}
-        </div>
+        </main>
       </div>
     </>
   )
