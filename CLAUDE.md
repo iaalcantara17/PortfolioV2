@@ -52,6 +52,10 @@ One line per merged PR. #17 and #18 were closed without merging.
   small windows.
 - #28: dependencies updated within their version ranges, no major 
   version crossed.
+- #29: brought this file current through #28, and replaced Vite's 
+  starter README with one for this project.
+- #30: the Content-Security-Policy enforced instead of report-only, 
+  with data: dropped from img-src.
 
 ## Accessibility status
 
@@ -108,18 +112,23 @@ its reduced-motion gating unchanged:
   7 token values from index.css (two font stacks and five colors). A 
   change to any of those tokens needs the same edit in 404.css by hand.
 - Headers: vercel.json sets X-Content-Type-Options, Referrer-Policy and 
-  Permissions-Policy on /(.*), plus a Content-Security-Policy-Report-Only 
-  header that reports and blocks nothing. Enforcing the policy is a 
-  pending follow-up. Vercel does not apply header rules to redirect 
-  responses, so the /resume.pdf and /index.html redirects carry none of 
-  these headers.
+  Permissions-Policy on /(.*), plus an enforced Content-Security-Policy 
+  on the same route, so it covers the 404 page and the resume PDF too. 
+  Everything is 'self' or 'none': no inline scripts or styles, no data: 
+  URIs, nothing from another origin. Vercel does not apply header rules 
+  to redirect responses, so the /resume.pdf and /index.html redirects 
+  carry none of these headers.
+- CSP rollback: if the enforced policy breaks something in production, 
+  revert its PR, or set the header key in vercel.json back to 
+  Content-Security-Policy-Report-Only, which keeps the policy but only 
+  reports what it would block.
 - Hero portrait: since Vite 8.3 (PR #28), the portrait's 400w AVIF 
   ships as its own file in dist/assets/ instead of being inlined as a 
   base64 data: URI in index.html and the main bundle. Vite no longer 
-  inlines the targets of preload links.
-- data: in the CSP's img-src: nothing in the build uses a data: URI any 
-  more (none in dist/index.html or any JS file), so img-src no longer 
-  needs data:. It can come out when the policy is enforced.
+  inlines the targets of preload links. At 4,088 bytes it is under 
+  Vite's 4 KiB inline limit, so only the preload link in index.html 
+  keeps it a file: without that link it goes back to a data: URI, which 
+  the CSP's img-src blocks.
 
 ## Locked — do not change without explicit approval
 
