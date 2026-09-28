@@ -52,6 +52,10 @@ One line per merged PR. #17 and #18 were closed without merging.
   small windows.
 - #28: dependencies updated within their version ranges, no major 
   version crossed.
+- #29: brought this file current through #28, and replaced Vite's 
+  starter README with one for this project.
+- #30: the Content-Security-Policy enforced instead of report-only, 
+  with data: dropped from img-src.
 
 ## Accessibility status
 
