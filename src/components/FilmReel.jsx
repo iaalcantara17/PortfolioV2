@@ -352,6 +352,7 @@ export default function FilmReel({ photos, descriptions, isVisible, index, onInd
               // photo's description is the button's name.
               tabIndex={isActive ? 0 : -1}
               aria-hidden={isActive ? undefined : true}
+              aria-haspopup="dialog"
               onClick={() => (isActive ? onOpen(i) : goTo(k))}
             >
               <Photo
