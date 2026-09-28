@@ -69,8 +69,8 @@ function coverSizes(photo, frame) {
 // The reel across a band `width` wide: photos `frame` px, `neighbors` each side, and
 // the end slivers taking up what's left
 function sized(neighbors, frameSize, width) {
-  const frame = Math.floor(frameSize)
-  const edge = (width - (2 * neighbors + 1) * frame - (2 * neighbors + 2) * GAP) / 2
+  const frame = Math.max(0, Math.floor(frameSize))
+  const edge = Math.max(0, (width - (2 * neighbors + 1) * frame - (2 * neighbors + 2) * GAP) / 2)
   const chevron = Math.round(frame * CHEVRON_RATIO)
   const chevronWidth = (chevron * 34) / 128
   return {
