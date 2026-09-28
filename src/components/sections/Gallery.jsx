@@ -6,7 +6,7 @@ import { galleryPhotos, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
 // Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
-// are the same files Hero, About and Life show, so they borrow those descriptions.
+// are the same files Hero and About show, so they borrow those descriptions.
 const stopgapAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
 
 export default function Gallery({ isVisible }) {

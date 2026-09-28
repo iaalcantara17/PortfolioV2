@@ -760,7 +760,7 @@ nav.site-nav.scrolled {
 }
 
 /* Hover label on a card that opens nothing (Montclair's "In progress"): a follower
-   styled like the photo caption chips in About and Life */
+   styled like the photo caption chip in About */
 .card-hover-label {
   white-space: nowrap;
   background: var(--color-paper);
@@ -833,7 +833,6 @@ nav.site-nav.scrolled {
   /* Stack two-column layouts */
   .page-section > div[style*="grid-template-columns: 1fr 1fr"],
   .page-section > div[style*="grid-template-columns: 200px"],
-  .page-section > div[style*="grid-template-columns: 1fr 340px"],
   .page-section div:has(> .grid-card),
   .hero-grid {
     display: flex !important;
@@ -958,65 +957,7 @@ nav.site-nav.scrolled {
     align-items: center !important;
     gap: 8px 12px !important;
   }
-  /* HumanIsrael — sidebar spacing once stacked below the gallery, and photo cells
-     scale by aspect-ratio instead of the desktop-tuned fixed pixel heights */
-  .human-sidebar {
-    margin-top: 40px;
-  }
-  .gallery-cell-streetwear,
-  .gallery-cell-city,
-  .gallery-cell-nature,
-  .gallery-cell-friends {
-    height: auto !important;
-  }
-  .gallery-cell-streetwear {
-    aspect-ratio: 3 / 4;
-  }
-  .gallery-cell-city,
-  .gallery-cell-nature {
-    aspect-ratio: 4 / 3;
-  }
-  .gallery-cell-friends {
-    aspect-ratio: 16 / 9;
-  }
 
-}
-
-/* HumanIsrael — the sidebar's Spotify slot. SpotifyWidget renders nothing when
-   Spotify never loaded, which left this wrapper empty but still spaced by the
-   sidebar's gap; taking it out of the layout closes that gap. */
-.human-spotify:empty {
-  display: none;
-}
-
-/* HumanIsrael — desktop: the photo grid's fixed pixel heights stacked to 1248px,
-   overflowing the 100vh section (overflow: hidden) and clipping the People photo.
-   Fit the grid to the space under the header, keeping the same 676:560 row and
-   284:380 city/nature proportions. */
-@media (min-width: 1024px) {
-  .human-photo-grid {
-    flex: 1;
-    min-height: 0;
-    grid-template-rows: minmax(0, 676fr) minmax(0, 560fr);
-  }
-  .gallery-cell-streetwear,
-  .gallery-cell-friends {
-    height: 100% !important;
-  }
-  .human-photo-stack {
-    height: 100%;
-    min-height: 0;
-  }
-  .gallery-cell-city {
-    flex: 284 1 0;
-    min-height: 0;
-    height: auto !important;
-  }
-  .gallery-cell-nature {
-    flex: 380 1 0;
-    min-height: 0;
-    height: auto !important;
-  }
 }
 
 /* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
