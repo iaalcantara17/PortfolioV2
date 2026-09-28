@@ -2,10 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- The nav logo, "I.A.", on a paper tile (scripts/make-head-images.py). The ICO's
+         sizes keeps browsers that can show the SVG on the SVG -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- --color-paper in index.css -->
+    <meta name="theme-color" content="#f5f2ec" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The title and description are also the share tags' (siteSeo in vite.config.js) -->
     <meta name="description" content="Israel Alcántara — Software Engineer, AWS alum, NJIT CS Grad, Montclair State MBA Candidate. Builder. Bilingual." />
-    <title>Israel Alcántara — Software Engineer</title>
+    <title>Israel Alcántara — Software Engineer · MBA Candidate</title>
     <!-- DM Serif Display, upright: the Hero name's font. Must match the src in index.css -->
     <link rel="preload" as="font" type="font/woff2" href="/src/assets/fonts/dm-serif-display-latin-400.woff2" crossorigin />
     <!-- Hero portrait (LCP). imagesizes must match HERO_PHOTO_SIZES in Hero.jsx -->
