@@ -1,7 +1,7 @@
 """Generate the images index.html's head points to, into public/:
 
-- og-image.png (1200x630): the link preview. Paper background, the Hero's eyebrow
-  and name on the left, the Hero portrait on the right.
+- og-image.png (1200x630): the link preview. Paper background, the Hero's name and
+  eyebrow on the left, the Hero portrait bleeding off the right.
 - favicon.ico (16/32/48) and apple-touch-icon.png (180x180): the nav logo, "I.A.",
   on a paper tile. public/favicon.svg is the same monogram as vector outlines.
 
@@ -35,12 +35,11 @@ PAPER = '#f5f2ec'
 INK = '#0d0d0d'
 MUTED = '#666666'
 PURPLE = '#7F77DD'
-LINE = '#d4cfc5'
 
 # Link preview
 OG_SIZE = (1200, 630)
-OG_MARGIN = 60
 OG_TEXT_LEFT = 72
+# Between the text block and the portrait
 OG_GUTTER = 64
 EYEBROW = 'Software Engineer · MBA Candidate'
 NAME_LINES = ('Israel', 'Alcántara')
@@ -49,9 +48,12 @@ NAME_LINES = ('Israel', 'Alcántara')
 EYEBROW_PX = 26
 EYEBROW_LEADING = 1.5
 NAME_PX = 120
-# Where the column is too narrow for the eyebrow or the name, the portrait gives way,
-# this much at a time
-PORTRAIT_STEP = 10
+# From the name's last baseline to the eyebrow's cap top, in the name's cap heights
+EYEBROW_GAP = 0.4
+# The face's center across the portrait original, as a share of its width. The crop is
+# the original's full height, which puts the face just above center (brows to chin
+# span about 30-64% of it; the hair nearly touches the top, so it isn't cropped).
+FACE_X = 0.47
 
 # Monogram, as the nav logo sets it: letter-spacing -0.01em, all ink
 MONOGRAM = 'I.A.'
@@ -86,60 +88,59 @@ def og_image():
     draw = ImageDraw.Draw(im)
     w, h = OG_SIZE
 
-    # Text column: the Hero's eyebrow row (purple rule, uppercase tracked label) over the
-    # name. The eyebrow takes two lines where one doesn't fit, broken after the "·", the
-    # second line under the first's text. The portrait shrinks until both fit.
+    # Text block: the name, then the Hero's eyebrow row (purple rule, uppercase tracked
+    # label) under it. The eyebrow never makes the block wider than the name: where one
+    # line would, it breaks after the "·", the second line under the first's text.
     eyebrow_font = ImageFont.truetype(str(sans_path()), EYEBROW_PX)
     name_font = ImageFont.truetype(str(SERIF), NAME_PX)
     rule_w, rule_gap = 48, 18
     eyebrow = EYEBROW.upper()
-    side = h - 2 * OG_MARGIN
-    while True:
-        photo_x = w - OG_MARGIN - side
-        column = photo_x - OG_GUTTER - OG_TEXT_LEFT
-        room = column - rule_w - rule_gap
-        if tracked_width(eyebrow, eyebrow_font, 0.14) <= room:
-            eyebrow_lines = [eyebrow]
-        else:
-            first, second = eyebrow.split(' · ')
-            eyebrow_lines = [f'{first} ·', second]
-        fits = max(tracked_width(line, eyebrow_font, 0.14) for line in eyebrow_lines) <= room
-        if fits and max(tracked_width(line, name_font, -0.03) for line in NAME_LINES) <= column:
-            break
-        side -= PORTRAIT_STEP
+    name_w = max(tracked_width(line, name_font, -0.03) for line in NAME_LINES)
+    eyebrow_lines = [eyebrow]
+    if rule_w + rule_gap + tracked_width(eyebrow, eyebrow_font, 0.14) > name_w:
+        first, second = eyebrow.split(' · ')
+        eyebrow_lines = [f'{first} ·', second]
+    block_w = max(name_w, rule_w + rule_gap + max(tracked_width(line, eyebrow_font, 0.14) for line in eyebrow_lines))
 
-    # Portrait: the Hero's square crop (centered), with its hairline border and 4px
-    # corners, centered vertically
-    photo_y = (h - side) // 2
+    # Portrait: the rest of the width, full height, off the right, top and bottom edges,
+    # no frame. Cropped from the original's full height, centered on the face across.
+    photo_x = OG_TEXT_LEFT + round(block_w) + OG_GUTTER
     with Image.open(PORTRAIT) as original:
-        photo = ImageOps.fit(ImageOps.exif_transpose(original).convert('RGB'), (side, side), Image.LANCZOS, centering=(0.5, 0.2))
-    mask = Image.new('L', (side * SS, side * SS), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, side * SS - 1, side * SS - 1), radius=4 * SS, fill=255)
-    im.paste(photo, (photo_x, photo_y), mask.resize((side, side), Image.LANCZOS))
-    draw.rounded_rectangle((photo_x, photo_y, photo_x + side - 1, photo_y + side - 1), radius=4, outline=LINE, width=1)
+        source = ImageOps.exif_transpose(original).convert('RGB')
+    crop_w = round(source.height * (w - photo_x) / h)
+    crop_x = min(max(round(source.width * FACE_X - crop_w / 2), 0), source.width - crop_w)
+    photo = source.crop((crop_x, 0, crop_x + crop_w, source.height)).resize((w - photo_x, h), Image.LANCZOS)
+    im.paste(photo, (photo_x, 0))
 
-    eyebrow_cap = eyebrow_font.getbbox('H', anchor='ls')[1] * -1
-    eyebrow_leading = round(EYEBROW_PX * EYEBROW_LEADING)
-    name_cap = name_font.getbbox('H', anchor='ls')[1] * -1
+    # Centered on the canvas by its ink: the top of "Israel" to the eyebrow's last baseline
+    name_cap = -name_font.getbbox('H', anchor='ls')[1]
+    name_top = -name_font.getbbox(NAME_LINES[0], anchor='ls')[1]
+    eyebrow_cap = -eyebrow_font.getbbox('H', anchor='ls')[1]
     leading = round(NAME_PX * 0.92)
-    gap = round(NAME_PX * 0.45)
-    block = eyebrow_cap + eyebrow_leading * (len(eyebrow_lines) - 1) + gap + name_cap + leading * (len(NAME_LINES) - 1)
-    top = (h - block) // 2
+    eyebrow_leading = round(EYEBROW_PX * EYEBROW_LEADING)
+    gap = round(name_cap * EYEBROW_GAP)
+    block_h = name_top + leading * (len(NAME_LINES) - 1) + gap + eyebrow_cap + eyebrow_leading * (len(eyebrow_lines) - 1)
+    baseline = (h - block_h) // 2 + name_top
 
-    baseline = top + eyebrow_cap
+    for line in NAME_LINES:
+        draw_tracked(draw, (OG_TEXT_LEFT, baseline), line, name_font, -0.03, INK)
+        baseline += leading
+    baseline += gap + eyebrow_cap - leading
+
     rule_y = baseline - eyebrow_cap // 2
     draw.rectangle((OG_TEXT_LEFT, rule_y - 1, OG_TEXT_LEFT + rule_w - 1, rule_y), fill=PURPLE)
     for line in eyebrow_lines:
         draw_tracked(draw, (OG_TEXT_LEFT + rule_w + rule_gap, baseline), line, eyebrow_font, 0.14, MUTED)
         baseline += eyebrow_leading
-    baseline -= eyebrow_leading
 
-    baseline += gap + name_cap
-    for line in NAME_LINES:
-        draw_tracked(draw, (OG_TEXT_LEFT, baseline), line, name_font, -0.03, INK)
-        baseline += leading
-
-    return im, {'eyebrow px': EYEBROW_PX, 'eyebrow lines': len(eyebrow_lines), 'name px': NAME_PX, 'portrait px': side}
+    return im, {
+        'eyebrow px': EYEBROW_PX,
+        'eyebrow lines': len(eyebrow_lines),
+        'name px': NAME_PX,
+        'gap px': gap,
+        'text to portrait px': photo_x - OG_TEXT_LEFT - round(block_w),
+        'portrait': f'{w - photo_x}x{h} at x={photo_x}',
+    }
 
 
 def monogram(size, ink_width, radius, transparent_corners):
