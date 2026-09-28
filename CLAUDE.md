@@ -50,6 +50,8 @@ One line per merged PR. #17 and #18 were closed without merging.
   styles moved into 404.css.
 - #27: the film reel's photo size can no longer go negative on very 
   small windows.
+- #28: dependencies updated within their version ranges, no major 
+  version crossed.
 
 ## Accessibility status
 
@@ -111,6 +113,13 @@ its reduced-motion gating unchanged:
   pending follow-up. Vercel does not apply header rules to redirect 
   responses, so the /resume.pdf and /index.html redirects carry none of 
   these headers.
+- Hero portrait: since Vite 8.3 (PR #28), the portrait's 400w AVIF 
+  ships as its own file in dist/assets/ instead of being inlined as a 
+  base64 data: URI in index.html and the main bundle. Vite no longer 
+  inlines the targets of preload links.
+- data: in the CSP's img-src: nothing in the build uses a data: URI any 
+  more (none in dist/index.html or any JS file), so img-src no longer 
+  needs data:. It can come out when the policy is enforced.
 
 ## Locked — do not change without explicit approval
 

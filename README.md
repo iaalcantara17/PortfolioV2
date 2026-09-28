@@ -1,6 +1,6 @@
 # Portfolio V2
 
-[PROJECT DESCRIPTION: one sentence, pending approval]
+The source for my personal site, israelalcantara.vercel.app.
 
 Live at https://israelalcantara.vercel.app
 
@@ -8,7 +8,8 @@ Live at https://israelalcantara.vercel.app
 
 - React 19 and Vite 8
 - GSAP for animation, Lenis for smooth wheel scrolling, and framer-motion
-  for the Lightbox (loaded only when it opens)
+  for the Lightbox, whose code is fetched separately once the page has
+  loaded and the browser is idle
 - One Vercel function, `api/spotify.js`, for the now-playing widget
 - ESLint
 
