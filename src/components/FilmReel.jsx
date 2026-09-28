@@ -110,7 +110,8 @@ function frameAt(d, layout) {
   }
 }
 
-export default function FilmReel({ photos, isVisible, index, onIndexChange, onOpen }) {
+// descriptions: each photo's alt text, by index, the same as the Lightbox's
+export default function FilmReel({ photos, descriptions, isVisible, index, onIndexChange, onOpen }) {
   const n = photos.length
   const containerRef = useRef(null)
   const bandRef = useRef(null)
@@ -347,16 +348,16 @@ export default function FilmReel({ photos, isVisible, index, onIndexChange, onOp
               className="reel-frame"
               style={{ width: layout.frame, height: layout.frame }}
               // The middle frame is the one control; side frames are for mouse and
-              // touch, and repeat photos, so screen readers and Tab skip them
+              // touch, and repeat photos, so screen readers and Tab skip them. The
+              // photo's description is the button's name.
               tabIndex={isActive ? 0 : -1}
               aria-hidden={isActive ? undefined : true}
-              aria-label={isActive ? `Open photo ${i + 1} of ${n}` : undefined}
               onClick={() => (isActive ? onOpen(i) : goTo(k))}
             >
               <Photo
                 photo={photos[i]}
                 sizes={coverSizes(photos[i], layout.frame)}
-                alt=""
+                alt={descriptions[i]}
                 loading="lazy"
                 draggable={false}
               />

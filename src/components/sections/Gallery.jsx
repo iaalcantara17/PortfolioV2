@@ -22,6 +22,8 @@ export default function Gallery({ isVisible }) {
     () => galleryPhotos.map((image, i) => ({ image, alt: stopgapAlt(image, i, total) })),
     [total],
   )
+  // The reel describes each photo the same way the Lightbox does
+  const descriptions = useMemo(() => lightboxPhotos.map((photo) => photo.alt), [lightboxPhotos])
 
   // Fix 1 — set initial hidden state on mount
   useEffect(() => {
@@ -86,6 +88,7 @@ export default function Gallery({ isVisible }) {
         {/* The reel, centered in the space under the header */}
         <FilmReel
           photos={galleryPhotos}
+          descriptions={descriptions}
           isVisible={isVisible}
           index={index}
           onIndexChange={setIndex}
