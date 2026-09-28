@@ -190,7 +190,7 @@ export default function About({ isVisible }) {
                 fontSize: 11,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: '#999', /* one-off: review */
+                color: 'var(--color-muted)',
               }}
             >
               — {quote.author}
