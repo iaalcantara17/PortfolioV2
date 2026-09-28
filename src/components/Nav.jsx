@@ -63,7 +63,7 @@ export default function Nav({ containerRef, onNavigate }) {
           onClick={(e) => followLink(e, 0)}
           style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', textDecoration: 'none' }}
         >
-          I.A
+          I.A.
         </a>
 
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>

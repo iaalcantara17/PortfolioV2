@@ -8,7 +8,6 @@ import Skills from '../components/sections/Skills'
 import Experience from '../components/sections/Experience'
 import Education from '../components/sections/Education'
 import Projects from '../components/sections/Projects'
-import HumanIsrael from '../components/sections/HumanIsrael'
 import Gallery from '../components/sections/Gallery'
 import Contact from '../components/sections/Contact'
 
@@ -19,7 +18,6 @@ export const sections = [
   { key: 'experience', anchor: 'experience', label: 'Experience', Component: Experience, inNav: true },
   { key: 'education', anchor: 'education', label: 'Education', Component: Education, inNav: true },
   { key: 'projects', anchor: 'projects', label: 'Projects', Component: Projects, inNav: true },
-  { key: 'human', anchor: 'life', label: 'Life', Component: HumanIsrael, inNav: true },
   { key: 'gallery', anchor: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
   { key: 'contact', anchor: 'contact', label: 'Contact', Component: Contact, inNav: true },
 ]

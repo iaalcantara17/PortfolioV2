@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import SpotifyWidget from '../SpotifyWidget'
 import Photo from '../Photo'
 import { photoByName, photoAlt } from '../../data/photos'
 import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
@@ -208,7 +207,6 @@ export default function Hero({ isVisible }) {
   const eyebrowRef = useRef(null)
   const bottomRef = useRef(null)
   const statsRef = useRef(null)
-  const spotifyRef = useRef(null)
   const statusRef = useRef(null)
   const completedRef = useRef(false)
 
@@ -218,7 +216,7 @@ export default function Hero({ isVisible }) {
   useLayoutEffect(() => {
     if (completedRef.current) return
     gsap.set(eyebrowRef.current, { opacity: 0 })
-    gsap.set([statsRef.current, spotifyRef.current], entranceStart({ opacity: 0, x: 20 }))
+    gsap.set(statsRef.current, entranceStart({ opacity: 0, x: 20 }))
     gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
     gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
@@ -229,7 +227,7 @@ export default function Hero({ isVisible }) {
 
     // Always-rendered nodes, captured so the cleanup below acts on the same elements
     const eyebrow = eyebrowRef.current
-    const rightFade = [statsRef.current, spotifyRef.current]
+    const stats = statsRef.current
     const status = statusRef.current
     const bottom = bottomRef.current
 
@@ -243,7 +241,7 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, ...rightFade, status, bottom], {
+      gsap.to([eyebrow, stats, status, bottom], {
         opacity: 1, duration: 0.6, ease: 'power2.out',
         onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
       })
@@ -265,12 +263,12 @@ export default function Hero({ isVisible }) {
     offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
     const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
 
-    // Right column's stats and Spotify fade in right after name resolves — not gated
-    // on full animation. The portrait above them is shown from the start.
-    const rightFadeT = setTimeout(() => {
-      gsap.to(rightFade, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
+    // Right column's stats fade in right after name resolves — not gated on full
+    // animation. The portrait above them is shown from the start.
+    const statsFadeT = setTimeout(() => {
+      gsap.to(stats, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' })
     }, nameDoneAt + 150)
-    timers.push(rightFadeT)
+    timers.push(statsFadeT)
 
     // Subtext after 400ms pause from name end
     const subtextDoneAt = scheduleChars(
@@ -306,7 +304,7 @@ export default function Hero({ isVisible }) {
       if (!completedRef.current) {
         resolvers.forEach((finishNow) => finishNow())
         gsap.set(eyebrow, { opacity: 1 })
-        gsap.set(rightFade, { opacity: 1, x: 0 })
+        gsap.set(stats, { opacity: 1, x: 0 })
         gsap.set(status, { opacity: 1, y: 0 })
         gsap.set(bottom, { opacity: 1 })
         completedRef.current = true
@@ -409,8 +407,8 @@ export default function Hero({ isVisible }) {
         </div>
 
         {/* Right column — always rendered. The portrait (the page's largest image, so
-            its LCP) shows from the first paint; the stats and Spotify fade in after
-            the name resolves. */}
+            its LCP) shows from the first paint; the stats fade in after the name
+            resolves. */}
         <div
           className="hero-right"
           style={{
@@ -471,11 +469,6 @@ export default function Hero({ isVisible }) {
                 <div className="eyebrow">{item.label}</div>
               </div>
             ))}
-          </div>
-
-          {/* Spotify */}
-          <div ref={spotifyRef} style={{ width: '100%', maxWidth: 420 }}>
-            <SpotifyWidget />
           </div>
         </div>
       </div>

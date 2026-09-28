@@ -45,9 +45,8 @@ export const containSizes = (photo, boxWidth, boxHeight) => {
   return `${Math.ceil(Math.min(boxWidth, boxHeight * (width / height)))}px`
 }
 
-// Approved descriptions, by photo file. A file reused in several places (streetwear
-// in About and Life) gets the same description everywhere. Gallery shows the same
-// files and borrows these until it has descriptions of its own.
+// Approved descriptions, by photo file. Gallery shows the same files and borrows
+// these until it has descriptions of its own.
 export const photoAlt = {
   city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
   friends: 'Two friends standing together outdoors at night.',
