@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { quotes } from '../../data/quotes'
 import Photo from '../Photo'
+import SpotifyWidget from '../SpotifyWidget'
 import { photoByName, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
@@ -194,6 +195,11 @@ export default function About({ isVisible }) {
             >
               — {quote.author}
             </div>
+          </div>
+
+          {/* Spotify */}
+          <div className="about-spotify" data-animate>
+            <SpotifyWidget />
           </div>
         </div>
       </div>

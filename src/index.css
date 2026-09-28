@@ -960,6 +960,13 @@ nav.site-nav.scrolled {
 
 }
 
+/* About — the Spotify slot under the quote. SpotifyWidget renders nothing when
+   Spotify never loaded, which would leave this wrapper empty but still spaced by
+   the column's gap; taking it out of the layout closes that gap. */
+.about-spotify:empty {
+  display: none;
+}
+
 /* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
    their content is taller than one screen. The section grows to fit instead of
    scrolling inside a column, which only a mouse wheel could reach. Where it fits
