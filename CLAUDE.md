@@ -138,9 +138,12 @@ its reduced-motion gating unchanged:
   changes, so section jumps (#projects) and Back between them don't 
   count. It skips headless and webdriver browsers.
 - Resume download counter: api/track-resume-download.js keeps one 
-  Upstash Redis key, resume_downloads_total, through KV_REST_API_URL 
-  and KV_REST_API_TOKEN (the Upstash integration, Production and 
-  Preview). POST adds one, GET only reads. Both resume links (Nav, 
+  Upstash Redis key per Vercel environment, 
+  resume_downloads_total:<VERCEL_ENV> (:production, :preview, or 
+  :development when VERCEL_ENV is unset), through KV_REST_API_URL and 
+  KV_REST_API_TOKEN (the Upstash integration, one database for 
+  Production and Preview). Preview clicks never touch production's 
+  count. POST adds one, GET only reads. Both resume links (Nav, 
   Contact) POST to it on click through utils/trackResumeDownload.js, 
   fire and forget. Only clicks count: not middle-clicks, "Open in new 
   tab", the noscript link, or direct visits to the PDF or /resume.pdf. 

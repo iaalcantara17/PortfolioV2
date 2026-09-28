@@ -102,7 +102,10 @@ Preview:
 - `KV_REST_API_URL`
 - `KV_REST_API_TOKEN`
 
-The count is one Redis key, `resume_downloads_total`. Opening
-`/api/track-resume-download` in a browser shows it as `{ "count": N }`
-without changing it; each click on a resume link sends a POST that adds
-one.
+Each environment keeps its own count, in the Redis key
+`resume_downloads_total:<VERCEL_ENV>`: `resume_downloads_total:production`,
+`resume_downloads_total:preview`, or `resume_downloads_total:development`
+outside Vercel. Clicks on a preview deployment never touch production's
+count. Opening `/api/track-resume-download` in a browser shows that
+deployment's count as `{ "count": N }` without changing it; each click on
+a resume link sends a POST that adds one.
