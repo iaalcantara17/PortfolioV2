@@ -4,7 +4,9 @@ import { test, expect } from './fixtures'
 // choice kept in localStorage ("theme"). Each test sets the system setting itself,
 // so it runs the same in the light and dark projects.
 const html = (page) => page.locator('html')
-const toggle = (page) => page.getByRole('button', { name: 'Dark mode' })
+const toggle = (page) => page.locator('.theme-toggle')
+// The toggle's name says what it will do
+const LABEL = { light: 'Switch to dark mode', dark: 'Switch to light mode' }
 const pageColor = (page) => page.evaluate(() => getComputedStyle(document.body).backgroundColor)
 const LIGHT = 'rgb(245, 242, 236)'
 const DARK = 'rgb(14, 14, 16)'
@@ -15,7 +17,7 @@ test.describe('with no choice stored', () => {
       await page.emulateMedia({ colorScheme: scheme })
       await page.goto('/')
       await expect(html(page)).toHaveAttribute('data-theme', scheme)
-      await expect(toggle(page)).toHaveAttribute('aria-pressed', String(scheme === 'dark'))
+      await expect(page.getByRole('button', { name: LABEL[scheme] })).toBeVisible()
       expect(await pageColor(page)).toBe(scheme === 'dark' ? DARK : LIGHT)
     })
   }
@@ -38,7 +40,7 @@ test.describe('the toggle', () => {
 
     await toggle(page).click()
     await expect(html(page)).toHaveAttribute('data-theme', 'dark')
-    await expect(toggle(page)).toHaveAttribute('aria-pressed', 'true')
+    await expect(toggle(page)).toHaveAccessibleName(LABEL.dark)
     expect(await page.evaluate(() => localStorage.getItem('theme'))).toBe('dark')
     expect(await pageColor(page)).toBe(DARK)
 
@@ -51,6 +53,7 @@ test.describe('the toggle', () => {
 
     await toggle(page).click()
     await expect(html(page)).toHaveAttribute('data-theme', 'light')
+    await expect(toggle(page)).toHaveAccessibleName(LABEL.light)
     await page.reload()
     await expect(html(page)).toHaveAttribute('data-theme', 'light')
     expect(await pageColor(page)).toBe(LIGHT)

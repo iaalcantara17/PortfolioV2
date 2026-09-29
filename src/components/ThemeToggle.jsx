@@ -13,7 +13,8 @@ const RAYS = Array.from({ length: 8 }, (_, i) => {
 // sun turns into the moon by its rays drawing in, its disc growing, and a second disc
 // (in the mask, so it bites out of whatever is behind the icon) sliding across to
 // leave a crescent; the moon turns back the same way in reverse (.theme-toggle in
-// index.css). Under reduced motion it just switches. A toggle button: pressed is dark.
+// index.css). Under reduced motion it just switches. Its label says what it will do,
+// which carries the state, so it has no aria-pressed as well.
 export default function ThemeToggle() {
   const theme = useSyncExternalStore(subscribeTheme, currentTheme)
   const dark = theme === 'dark'
@@ -22,8 +23,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       className={`theme-toggle${dark ? ' is-dark' : ''}`}
-      aria-label="Dark mode"
-      aria-pressed={dark}
+      aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
       onClick={() => setTheme(dark ? 'light' : 'dark')}
     >
       <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
