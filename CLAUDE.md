@@ -67,6 +67,11 @@ One line per merged PR. #17 and #18 were closed without merging.
   hover previews and the Education logos.
 - #35: the page inert behind the Lightbox and the mobile menu, so a 
   screen reader's virtual cursor stays in them (utils/inertOutside.js).
+- #36: the section counter under the Lightbox's backdrop, a visible 
+  cursor dot on the LinkdUp card, a print stylesheet (src/print.css), 
+  the Gallery's alt text made permanent, a meta description that starts 
+  with the role, and an "Updated" month in the Contact footer, set at 
+  build time (buildDate in vite.config.js) along with its year.
 
 ## Accessibility status
 
