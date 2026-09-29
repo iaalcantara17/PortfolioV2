@@ -7,7 +7,7 @@ import Photo from './Photo'
 export default function HoverPreview({ image }) {
   return (
     <span className="card-follower card-hover-preview" aria-hidden="true">
-      <Photo photo={image} thumb sizes="140px" alt="" loading="lazy" />
+      <Photo photo={image} thumb sizes="140px" alt="" loading="lazy" showMissing />
     </span>
   )
 }

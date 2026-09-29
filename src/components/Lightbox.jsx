@@ -120,6 +120,17 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
               // Fitted inside 90vw × 90vh (maxWidth/maxHeight below)
               sizes={containSizes(photo.image, window.innerWidth * 0.9, window.innerHeight * 0.9)}
               alt={photo.alt}
+              showMissing
+              // A photo that didn't load: its tile at the photo's proportions, fitted
+              // inside the same 90vw × 90vh (see MissingImage). Solid ink with the
+              // controls' hairline, so it stays quiet on the dark backdrop and hides
+              // the page behind it the way the photo would.
+              missingStyle={{
+                width: 'min(90vw, calc(90vh * var(--aspect)))',
+                background: 'var(--color-ink)',
+                border: '0.5px solid var(--color-white-a30)',
+                color: 'var(--color-white-a30)',
+              }}
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}

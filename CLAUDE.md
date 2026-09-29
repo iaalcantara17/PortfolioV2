@@ -62,6 +62,9 @@ One line per merged PR. #17 and #18 were closed without merging.
   counter in Upstash Redis, one count per Vercel environment.
 - #33: photo originals stripped of their metadata, automatically by 
   both photo scripts from now on, and stored in Git LFS.
+- #34: .env files and audit/ ignored, and a quiet tile (MissingImage) 
+  shown where an image fails to load: the film reel, the Lightbox, the 
+  hover previews and the Education logos.
 
 ## Accessibility status
 

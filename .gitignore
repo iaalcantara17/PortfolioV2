@@ -28,3 +28,11 @@ dist-ssr
 
 # Python's bytecode cache, written when a photo script imports strip_metadata.py
 __pycache__/
+
+# Environment files hold secrets. *.local above already covers .env.local; these
+# catch the rest (.env, .env.production and so on).
+.env
+.env.*
+
+# Local audit captures (screenshots, Lighthouse reports). Kept out of the repo.
+audit/

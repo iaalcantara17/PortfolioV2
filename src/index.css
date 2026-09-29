@@ -592,6 +592,25 @@ nav.site-nav.scrolled {
   font-family: var(--font-sans);
 }
 
+/* Missing image (MissingImage.jsx): what shows where an image's file didn't load.
+   The photo placeholder's color and faint gray, at the image's proportions, with a
+   small picture outline in the middle. As wide as its box, unless the caller sizes
+   it (the Lightbox, the Education logos) or a rule below does (the film reel). */
+.missing-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--color-placeholder);
+  color: var(--color-faint);
+}
+.missing-image svg {
+  width: 22%;
+  min-width: 16px;
+  max-width: 32px;
+  height: auto;
+}
+
 /* Gallery film reel (FilmReel.jsx) — a 35mm band that is both the viewer and the
    thumbnails. FilmReel sizes the band, its frames and chevrons for the space it has,
    and places each frame as the reel moves; here is what doesn't move.
@@ -645,6 +664,10 @@ nav.site-nav.scrolled {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* A photo that didn't load fills the square as the photo would */
+.reel-frame .missing-image {
+  height: 100%;
 }
 .reel-frame::after {
   content: "";

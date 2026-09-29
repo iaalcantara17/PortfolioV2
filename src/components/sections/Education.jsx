@@ -3,6 +3,8 @@ import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
 import LazyLightbox from '../LazyLightbox'
 import HoverPreview from '../HoverPreview'
+import MissingImage from '../MissingImage'
+import { useLoadFailed } from '../../hooks/useLoadFailed'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
@@ -64,6 +66,27 @@ function DiplomaButton({ school, onOpen }) {
         resetTilt(e.currentTarget.parentElement)
         onOpen()
       }}
+    />
+  )
+}
+
+// A school's logo, fitted inside the card's logo box (.edu-logo). Decorative: the card
+// names the school. A logo that fails to load leaves a MissingImage at the logo's
+// proportions, as tall as the box.
+function SchoolLogo({ logo }) {
+  const [failed, onError] = useLoadFailed(logo.src)
+  if (failed) {
+    return <MissingImage width={logo.width} height={logo.height} alt="" style={{ width: 'auto', height: '100%' }} />
+  }
+  return (
+    <img
+      src={logo.src}
+      width={logo.width}
+      height={logo.height}
+      alt=""
+      loading="lazy"
+      onError={onError}
+      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'block' }}
     />
   )
 }
@@ -180,14 +203,7 @@ export default function Education({ isVisible }) {
               }}
             >
               <div className="edu-logo" style={{ height: 72, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={s.logo.src}
-                  width={s.logo.width}
-                  height={s.logo.height}
-                  alt=""
-                  loading="lazy"
-                  style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'block' }}
-                />
+                <SchoolLogo logo={s.logo} />
               </div>
 
               <div>
