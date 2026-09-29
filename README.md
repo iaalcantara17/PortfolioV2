@@ -49,10 +49,15 @@ environment variables below.
 - the resume links are served;
 - new-tab links carry `rel="noopener noreferrer"`;
 - the skip link reaches `<main>`;
-- a failed image shows its fallback tile.
+- a failed image shows its fallback tile;
+- the theme follows the system setting until the toggle sets one, which lasts
+  across reloads and applies before the first paint, and the toggle's icon morphs
+  (or, under reduced motion, just switches).
 
 `npm test` builds the site, serves it with `vite preview` on port 4173, and runs
-every test in Chromium, Firefox and WebKit. Each machine needs the browsers once:
+every test in Chromium, Firefox and WebKit, each with the system set to light and
+then to dark (`--project=chromium-dark` and so on). Each machine needs the browsers
+once:
 
 ```sh
 npx playwright install chromium firefox webkit
