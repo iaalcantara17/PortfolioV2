@@ -72,6 +72,8 @@ One line per merged PR. #17 and #18 were closed without merging.
   the Gallery's alt text made permanent, a meta description that starts 
   with the role, and an "Updated" month in the Contact footer, set at 
   build time (buildDate in vite.config.js) along with its year.
+- #37: Playwright smoke tests (e2e/, npm test) against a preview build, 
+  in Chromium, Firefox and WebKit.
 
 ## Accessibility status
 

@@ -36,3 +36,8 @@ __pycache__/
 
 # Local audit captures (screenshots, Lighthouse reports). Kept out of the repo.
 audit/
+
+# Playwright's reports and per-run output (npm test)
+/playwright-report/
+/test-results/
+/blob-report/
