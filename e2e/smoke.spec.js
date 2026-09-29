@@ -109,6 +109,37 @@ test.describe('lightbox', () => {
     await expect(page.getByRole('dialog')).toHaveCount(0)
     await expect(frame).toBeFocused()
   })
+
+  // Opened before its chunk has arrived, the Lightbox shows through Suspense. It must be
+  // ready the moment it's on the page: focus on Close and the page behind it inert,
+  // or a key pressed right away still goes to the page.
+  test('is ready as soon as it appears, even when its chunk arrives late', async ({ page }) => {
+    let releaseChunk
+    const chunkHeld = new Promise((resolve) => { releaseChunk = resolve })
+    await page.route(/\/assets\/Lightbox-[^/]+\.js$/, async (route) => {
+      await chunkHeld
+      await route.continue()
+    })
+    await page.goto('/#gallery')
+    const frame = page.locator('.reel-frame[tabindex="0"]')
+    await frame.focus()
+    // Read once, right after the task that puts the dialog on the page
+    await page.evaluate(() => {
+      window.lightboxOnInsert = new Promise((resolve) => {
+        new MutationObserver((_, observer) => {
+          if (!document.querySelector('[role="dialog"]')) return
+          observer.disconnect()
+          resolve({
+            focused: document.activeElement?.getAttribute('aria-label') ?? null,
+            pageInert: document.querySelector('.reel-band').closest('[inert]') !== null,
+          })
+        }).observe(document.body, { childList: true, subtree: true })
+      })
+    })
+    await page.keyboard.press('Enter')
+    releaseChunk()
+    expect(await page.evaluate(() => window.lightboxOnInsert)).toEqual({ focused: 'Close', pageInert: true })
+  })
 })
 
 test.describe('resume', () => {
