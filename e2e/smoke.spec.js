@@ -128,6 +128,9 @@ test.describe('resume', () => {
 test.describe('external links', () => {
   test('every link that opens a new tab has rel="noopener noreferrer"', async ({ page }) => {
     await page.goto('/')
+    // The links are read once, not retried, so the app has to have rendered first. The
+    // whole page renders in one go, so once the Hero's heading is there, every link is.
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcántara')
     const links = await page.locator('a[target="_blank"]').evaluateAll((els) =>
       els.map((a) => ({ href: a.getAttribute('href'), rel: (a.getAttribute('rel') ?? '').split(/\s+/) })),
     )

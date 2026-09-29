@@ -88,7 +88,7 @@ export default function About({ isVisible }) {
             I'm not just someone who builds things.
             <br />
             I'm someone who{' '}
-            <em style={{ color: 'var(--color-purple)' }}>notices</em> things.
+            <em style={{ color: 'var(--color-purple-deep)' }}>notices</em> things.
           </div>
 
           {/* Body paragraphs */}

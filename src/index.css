@@ -494,6 +494,26 @@ nav.site-nav.scrolled {
   border-bottom: 0.5px solid var(--color-line);
 }
 
+/* Tap area for the nav's small controls (the logo, the theme toggle, the menu button),
+   which are drawn smaller than a fingertip: an invisible ::after centered on each makes
+   what can be tapped at least 44px square, past the WCAG 2.2 minimum of 24px, without
+   changing how anything looks or where it sits. It fits the 56px nav, and no two
+   overlap: the toggle and the menu button sit 16px either side of the Resume button
+   and reach at most 8px toward it. */
+.hit-area {
+  position: relative;
+}
+
+.hit-area::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
 /* Hamburger toggle — hidden by default, shown only at phone widths */
 .hamburger-btn {
   display: none;

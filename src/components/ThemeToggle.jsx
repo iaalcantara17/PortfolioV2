@@ -22,7 +22,7 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      className={`theme-toggle${dark ? ' is-dark' : ''}`}
+      className={`theme-toggle hit-area${dark ? ' is-dark' : ''}`}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
       onClick={() => setTheme(dark ? 'light' : 'dark')}
     >
