@@ -25,16 +25,16 @@ npm run dev
 
 `npm run dev` serves the site without the functions, so the widget stays
 hidden and resume clicks aren't counted. To run the functions too, use
-`npm run dev:vercel`, which
-needs the Vercel CLI logged in and linked to the project, and the
-environment variables below.
+`npm run dev:vercel`. It runs the Vercel CLI through npx, which downloads
+it the first time. The CLI needs to be logged in and linked to the
+project, and you need the environment variables below.
 
 ## Scripts
 
 | Script | What it does |
 | --- | --- |
 | `npm run dev` | Vite dev server |
-| `npm run dev:vercel` | `vercel dev`, the site plus the `/api` functions |
+| `npm run dev:vercel` | `vercel dev` through npx, the site plus the `/api` functions |
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serves `dist/` locally |
 | `npm run lint` | ESLint |
