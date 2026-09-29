@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import Cursor from './components/Cursor'
 import Nav from './components/Nav'
 import SectionIndicator from './components/SectionIndicator'
@@ -120,6 +121,10 @@ export default function App() {
           ))}
         </main>
       </div>
+
+      {/* Vercel Web Analytics: pageviews only. Its script and beacon are same-origin
+          (/_vercel/insights/), and a section jump (#projects) isn't a new pageview. */}
+      <Analytics />
     </>
   )
 }

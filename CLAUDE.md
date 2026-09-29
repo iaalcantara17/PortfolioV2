@@ -58,6 +58,8 @@ One line per merged PR. #17 and #18 were closed without merging.
   with data: dropped from img-src.
 - #31: asset inlining turned off (build.assetsInlineLimit: 0), so no 
   asset can end up as a data: URI.
+- #32: Vercel Web Analytics for pageviews, and a resume download 
+  counter in Upstash Redis, one count per Vercel environment.
 
 ## Accessibility status
 
@@ -130,6 +132,24 @@ its reduced-motion gating unchanged:
   off for every asset (build.assetsInlineLimit: 0 in vite.config.js), 
   so the build has no data: URIs whatever a file's size, and the 
   portrait's preload link is no longer what keeps it a file.
+- Analytics: <Analytics /> from @vercel/analytics, at the end of 
+  App.jsx. Pageviews only (custom events are a paid feature). In a 
+  build it loads /_vercel/insights/script.js and posts to 
+  /_vercel/insights/view, both same-origin, so the CSP needs nothing 
+  for it. Vercel's script counts a pageview only when the pathname 
+  changes, so section jumps (#projects) and Back between them don't 
+  count. It skips headless and webdriver browsers.
+- Resume download counter: api/track-resume-download.js keeps one 
+  Upstash Redis key per Vercel environment, 
+  resume_downloads_total:<VERCEL_ENV> (:production, :preview, or 
+  :development when VERCEL_ENV is unset), through KV_REST_API_URL and 
+  KV_REST_API_TOKEN (the Upstash integration, one database for 
+  Production and Preview). Preview clicks never touch production's 
+  count. POST adds one, GET only reads. Both resume links (Nav, 
+  Contact) POST to it on click through utils/trackResumeDownload.js, 
+  fire and forget. Only clicks count: not middle-clicks, "Open in new 
+  tab", the noscript link, or direct visits to the PDF or /resume.pdf. 
+  The endpoint is public, so anyone can read the count or add to it.
 
 ## Locked — do not change without explicit approval
 

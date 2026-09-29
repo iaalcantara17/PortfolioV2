@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { sections } from '../data/sections'
 import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
+import { trackResumeDownload } from '../utils/trackResumeDownload'
 
 // section = index in the full registry, so links stay correct if sections reorder
 const links = sections
@@ -84,6 +85,7 @@ export default function Nav({ containerRef, onNavigate }) {
             href="/Resume_Israel_Alcantara.pdf"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackResumeDownload}
             style={{ border: '0.5px solid var(--color-line)', borderRadius: 2, padding: '6px 14px', background: 'none', color: 'var(--color-ink)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'var(--font-sans)', textDecoration: 'none' }}
           >
             Resume
