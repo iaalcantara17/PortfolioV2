@@ -1,0 +1,6 @@
+# Photo originals are stored in Git LFS, so adding or changing one doesn't grow the
+# repo's history. Versions committed before this file stay in normal history. Each
+# machine needs Git LFS set up once (README, "Photos").
+photos-src/*.jpg filter=lfs diff=lfs merge=lfs -text
+photos-src/*.jpeg filter=lfs diff=lfs merge=lfs -text
+photos-src/*.png filter=lfs diff=lfs merge=lfs -text

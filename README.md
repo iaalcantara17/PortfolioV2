@@ -44,7 +44,7 @@ environment variables below.
 ```
 api/            Vercel functions: the Spotify widget and the resume download counter
 logos-src/      School logo originals (the WebP copies in src/assets/logos/ are made by hand)
-photos-src/     Photo originals, never served
+photos-src/     Photo originals, never served, stored in Git LFS
 public/         Copied into the build as is: resume PDF, icons, share image, 404 page
 scripts/        Photo and share-image generators (Python, Pillow)
 src/
@@ -70,6 +70,26 @@ python scripts/optimize-photos.py
 It writes AVIF and WebP variants at 400, 1200 and 2400px on the long edge
 into `src/assets/photos/`, plus `manifest.json` with each variant's size,
 and drops EXIF, XMP and ICC metadata. It needs Pillow 11.2 or later.
+
+Before any of that, it strips each original's own metadata in place
+(`scripts/strip_metadata.py`): EXIF (camera, serial number, lens, dates,
+GPS), XMP, IPTC, C2PA credentials and anything appended after the image.
+The pixels and the ICC color profile stay exactly as they were, and a file
+with nothing to strip is left alone. There's no extra step: drop the photo
+in and run the script. `make-head-images.py` does the same to the portrait.
+
+The originals are stored in Git LFS (`.gitattributes`), so a new or
+changed photo doesn't grow the repo's history. Each machine needs Git LFS
+set up once, from inside the repo:
+
+```sh
+git lfs install
+```
+
+Git for Windows includes Git LFS; on macOS, run `brew install git-lfs`
+first. Without it, a clone or pull puts small text pointer files in
+`photos-src/` instead of the photos, and a push can't upload new ones. If
+that already happened, run `git lfs install` and then `git lfs pull`.
 
 The share image and the raster icons come from a second script:
 
