@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import Photo from './Photo'
 import { containSizes } from '../data/photos'
@@ -26,6 +26,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
   const isOpen = index != null
   const dialogRef = useRef(null)
   const closeRef = useRef(null)
+  const openerRef = useRef(null)
   useScrollLock(isOpen)
 
   const showPrev = () => onNavigate((index - 1 + photos.length) % photos.length)
@@ -41,18 +42,21 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
   // Focus moves into the dialog when it opens, and back to whatever opened it (the
   // photo) when it closes. While it's open the rest of the page is inert, so a screen
   // reader stays in the dialog too; the page comes back before focus returns to it.
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isOpen) return
-    const opener = document.activeElement
+    openerRef.current = document.activeElement
     closeRef.current?.focus()
-    const releasePage = inertOutside(dialogRef.current)
-    return () => {
-      releasePage()
-      opener?.focus({ preventScroll: true })
-    }
+    return inertOutside(dialogRef.current)
   }, [isOpen])
 
+  // Focus goes back after React's commit, not inside it: React refocuses whatever held
+  // focus before a commit's DOM changes, which would undo it.
   useEffect(() => {
+    if (!isOpen) return
+    return () => openerRef.current?.focus({ preventScroll: true })
+  }, [isOpen])
+
+  useLayoutEffect(() => {
     if (!isOpen) return
     const onKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
