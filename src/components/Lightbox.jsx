@@ -4,6 +4,7 @@ import Photo from './Photo'
 import { containSizes } from '../data/photos'
 import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
+import { inertOutside } from '../utils/inertOutside'
 
 // Round control on the dark backdrop; each control adds its own position
 const CONTROL_STYLE = {
@@ -38,12 +39,17 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
   }, [isOpen])
 
   // Focus moves into the dialog when it opens, and back to whatever opened it (the
-  // photo) when it closes
+  // photo) when it closes. While it's open the rest of the page is inert, so a screen
+  // reader stays in the dialog too; the page comes back before focus returns to it.
   useEffect(() => {
     if (!isOpen) return
     const opener = document.activeElement
     closeRef.current?.focus()
-    return () => opener?.focus({ preventScroll: true })
+    const releasePage = inertOutside(dialogRef.current)
+    return () => {
+      releasePage()
+      opener?.focus({ preventScroll: true })
+    }
   }, [isOpen])
 
   useEffect(() => {
