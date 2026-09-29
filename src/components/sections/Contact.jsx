@@ -234,8 +234,10 @@ export default function Contact({ isVisible }) {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Footer. The year and the updated month are the build's (buildDate in
+          vite.config.js), so they move together with every deploy. */}
       <div
+        className="contact-footer"
         style={{
           borderTop: '0.5px solid var(--color-line)',
           padding: '16px 48px',
@@ -244,8 +246,11 @@ export default function Contact({ isVisible }) {
           alignItems: 'center',
         }}
       >
-        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, 2026</span>
-        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Built with craft.</span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, {import.meta.env.BUILD_YEAR}</span>
+        <span className="contact-footer-notes" style={{ display: 'flex', justifyContent: 'flex-end', gap: 24 }}>
+          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Built with craft.</span>
+          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
+        </span>
       </div>
     </section>
   )
