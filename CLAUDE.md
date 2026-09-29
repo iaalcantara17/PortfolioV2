@@ -74,6 +74,10 @@ One line per merged PR. #17 and #18 were closed without merging.
   build time (buildDate in vite.config.js) along with its year.
 - #37: Playwright smoke tests (e2e/, npm test) against a preview build, 
   in Chromium, Firefox and WebKit.
+- #38: a dark theme, the system setting by default with a sun/moon 
+  toggle in the nav to choose (public/theme.js, src/utils/theme.js), 
+  the LinkdUp card and Download Resume inverting to light, and the 
+  smoke tests run in both themes.
 
 ## Accessibility status
 
