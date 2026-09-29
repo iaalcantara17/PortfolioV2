@@ -79,6 +79,7 @@ export default function Nav({ containerRef, onNavigate }) {
       <div className="site-nav-inner">
         <a
           href={`#${sections[0].anchor}`}
+          className="hit-area"
           onClick={(e) => followLink(e, 0)}
           style={{ fontFamily: 'var(--font-serif)', fontSize: 15, letterSpacing: '-0.01em', color: 'var(--color-ink)', textDecoration: 'none' }}
         >
@@ -113,7 +114,7 @@ export default function Nav({ containerRef, onNavigate }) {
 
           <button
             ref={toggleRef}
-            className="hamburger-btn"
+            className="hamburger-btn hit-area"
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMenuOpen}
