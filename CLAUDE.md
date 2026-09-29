@@ -60,6 +60,8 @@ One line per merged PR. #17 and #18 were closed without merging.
   asset can end up as a data: URI.
 - #32: Vercel Web Analytics for pageviews, and a resume download 
   counter in Upstash Redis, one count per Vercel environment.
+- #33: photo originals stripped of their metadata, automatically by 
+  both photo scripts from now on, and stored in Git LFS.
 
 ## Accessibility status
 
