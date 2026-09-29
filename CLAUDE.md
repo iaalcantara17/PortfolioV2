@@ -58,6 +58,8 @@ One line per merged PR. #17 and #18 were closed without merging.
   with data: dropped from img-src.
 - #31: asset inlining turned off (build.assetsInlineLimit: 0), so no 
   asset can end up as a data: URI.
+- #32: Vercel Web Analytics for pageviews, and a resume download 
+  counter in Upstash Redis, one count per Vercel environment.
 
 ## Accessibility status
 
