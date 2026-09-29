@@ -68,6 +68,21 @@ function DiplomaButton({ school, onOpen }) {
   )
 }
 
+// A school's logo, fitted inside the card's logo box (.edu-logo). Decorative: the card
+// names the school.
+function SchoolLogo({ logo }) {
+  return (
+    <img
+      src={logo.src}
+      width={logo.width}
+      height={logo.height}
+      alt=""
+      loading="lazy"
+      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'block' }}
+    />
+  )
+}
+
 // A card that opens nothing gets the same hover tilt, for consistency with the NJIT
 // card, but no data-cursor: the cursor dot doesn't grow, since there is nothing to
 // click. Its hover label follows the pointer like a tooltip (utils/follower.js).
@@ -180,14 +195,7 @@ export default function Education({ isVisible }) {
               }}
             >
               <div className="edu-logo" style={{ height: 72, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={s.logo.src}
-                  width={s.logo.width}
-                  height={s.logo.height}
-                  alt=""
-                  loading="lazy"
-                  style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'block' }}
-                />
+                <SchoolLogo logo={s.logo} />
               </div>
 
               <div>
