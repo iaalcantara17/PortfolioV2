@@ -110,6 +110,39 @@
   --color-feature: var(--color-night);
 }
 
+/* Dark theme: <html data-theme="dark">, set before the first paint by public/theme.js
+   from the visitor's choice (the nav's toggle) or, without one, their system setting,
+   and kept current by src/utils/theme.js. Only the tokens change. Near-black paper
+   with lighter tones for cards and layers, off-white ink, and the same purples
+   brightened to read on the dark (every text color here meets WCAG AA on the paper
+   and on cards). Gold keeps its light-theme values: its contrast is a standing
+   decision (the note on the accents above). The night tokens and the tints used only
+   on them don't change. Screen only, so a print always comes out light. */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-paper: #0e0e10;
+    --color-surface: #17171a;
+    --color-placeholder: #202024;
+    --color-line: #2e2e34;
+    --color-ink: #ecebe7;
+    --color-muted: #9a9791;
+    --color-faint: #85827d;
+
+    --color-purple: #8b84e8;
+    --color-purple-deep: #a59ef2;
+    --color-purple-ink: #bdb7f7;
+    --color-green-deep: #3cc496;
+
+    --color-paper-a72: rgba(14, 14, 16, 0.72);
+    --color-black-a04: rgba(255, 255, 255, 0.04);
+    --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.5);
+
+    --color-feature: #1d1d22;
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -353,6 +386,13 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: normal;
 }
 
+/* In the dark theme multiply would sink the dot into the dark page everywhere. screen
+   is its dark counterpart: purple on the dark page, while light things under the dot
+   (text, the theme toggle's icon) show through it, as dark things do with multiply */
+:root[data-theme="dark"] #custom-cursor {
+  mix-blend-mode: screen;
+}
+
 /* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
    with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
    adds, so the dots keep their horizontal position; they sit 24px apart so no two
@@ -433,6 +473,63 @@ nav.site-nav.scrolled {
   display: none;
   align-items: center;
   justify-content: center;
+}
+
+/* Light/dark toggle (ThemeToggle.jsx), beside the Resume button and framed like it.
+   The icon is a sun in the light theme and a moon in the dark one. Sun to moon: the
+   rays turn and draw in, then the disc grows and the bite slides across it, leaving a
+   crescent. Moon to sun runs the other way: the bite slides off, the disc shrinks and
+   the rays come back out. Each state's transitions are the ones used to arrive at it,
+   which is what orders the steps. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0.5px solid var(--color-line);
+  border-radius: 2px;
+  background: none;
+  color: var(--color-ink);
+}
+.theme-toggle svg {
+  overflow: visible;
+}
+.theme-toggle-disc,
+.theme-toggle-rays {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Sun */
+.theme-toggle-disc {
+  transform: scale(0.55);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+.theme-toggle-bite {
+  transform: translate(7px, -7px);
+  transition: transform 0.3s ease-in;
+}
+.theme-toggle-rays {
+  transform: none;
+  opacity: 1;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s, opacity 0.25s ease 0.25s;
+}
+
+/* Moon */
+.theme-toggle.is-dark .theme-toggle-rays {
+  transform: rotate(-60deg) scale(0.4);
+  opacity: 0;
+  transition: transform 0.3s ease-in, opacity 0.2s ease-in;
+}
+.theme-toggle.is-dark .theme-toggle-disc {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+.theme-toggle.is-dark .theme-toggle-bite {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
 /* Mobile nav menu overlay */
@@ -1099,9 +1196,9 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, and the section
-   dot's scaled active state switches without animating. (The Gallery reel moves
-   instantly, in FilmReel.jsx.) */
+   no smooth scrolling, the mobile menu only fades, no hover tilt, the section dot's
+   scaled active state switches without animating, and the theme toggle's sun and
+   moon swap without the morph. (The Gallery reel moves instantly, in FilmReel.jsx.) */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1123,5 +1220,9 @@ nav.site-nav.scrolled {
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {
     animation-play-state: paused;
+  }
+  /* !important: the toggle's per-state transitions are more specific */
+  .theme-toggle svg * {
+    transition: none !important;
   }
 }
