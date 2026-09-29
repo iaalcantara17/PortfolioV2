@@ -7,18 +7,15 @@
 // Tuning. Speeds are how fast the page is moving, in px per second.
 
 // Below this, no blur at all (reading speed)
-export const BLUR_START = 1500
+const BLUR_START = 1500
 // At and above this, the full MAX_BLUR
-export const BLUR_FULL = 5000
+const BLUR_FULL = 5000
 // The most blur there ever is, in px
-export const MAX_BLUR = 2.5
+const MAX_BLUR = 2.5
 // How long the blur takes to catch up as the page speeds up, in ms
-export const RISE_MS = 60
+const RISE_MS = 60
 // How long it takes to fade back to nothing once the page slows or stops, in ms
-export const DECAY_MS = 130
-// Off on touch screens for now: phones and tablets scroll natively, and blurring the
-// whole page during a momentum scroll there is the likeliest place for it to stutter
-export const ON_TOUCH_SCREENS = false
+const DECAY_MS = 130
 
 // Below this the filter comes off entirely (not blur(0)): a filter on .page-content
 // makes it what position: fixed inside it is placed against, and the Lightboxes are
@@ -30,7 +27,7 @@ const OFF = 0.05
 const CONTINUOUS_MS = 100
 
 export function initScrollBlur(lenis, content) {
-  if (!ON_TOUCH_SCREENS && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return null
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return null
 
   let speed = 0
   let blur = 0
