@@ -3,6 +3,8 @@ import { gsap } from 'gsap'
 import StatusPill from '../StatusPill'
 import LazyLightbox from '../LazyLightbox'
 import HoverPreview from '../HoverPreview'
+import MissingImage from '../MissingImage'
+import { useLoadFailed } from '../../hooks/useLoadFailed'
 import { photoByName } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
@@ -69,8 +71,13 @@ function DiplomaButton({ school, onOpen }) {
 }
 
 // A school's logo, fitted inside the card's logo box (.edu-logo). Decorative: the card
-// names the school.
+// names the school. A logo that fails to load leaves a MissingImage at the logo's
+// proportions, as tall as the box.
 function SchoolLogo({ logo }) {
+  const [failed, onError] = useLoadFailed(logo.src)
+  if (failed) {
+    return <MissingImage width={logo.width} height={logo.height} alt="" style={{ width: 'auto', height: '100%' }} />
+  }
   return (
     <img
       src={logo.src}
@@ -78,6 +85,7 @@ function SchoolLogo({ logo }) {
       height={logo.height}
       alt=""
       loading="lazy"
+      onError={onError}
       style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'block' }}
     />
   )

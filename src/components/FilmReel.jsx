@@ -361,6 +361,7 @@ export default function FilmReel({ photos, descriptions, isVisible, index, onInd
                 alt={descriptions[i]}
                 loading="lazy"
                 draggable={false}
+                showMissing
               />
             </button>
           )
