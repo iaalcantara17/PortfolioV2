@@ -227,7 +227,7 @@ export default function Education({ isVisible }) {
 
               <div className="edu-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                 <StatusPill status={s.status} />
-                <span className="eyebrow" style={{ color: 'var(--color-faint)', whiteSpace: 'nowrap' }}>{s.period}</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{s.period}</span>
               </div>
 
               {s.diploma && (
