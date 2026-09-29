@@ -9,7 +9,8 @@
      resume button (it opens a file) and the Gallery, whose film reel is laid out
      for the screen.
    Entrances that haven't played yet (sections not scrolled to) print in their end
-   state, hover tilt is flattened, and the photos print smaller. The LinkdUp card
+   state, hover tilt is flattened, the photos print smaller, and project links print
+   their address after their label. The LinkdUp card
    keeps its dark background, since browsers leave backgrounds out of prints by
    default and its light text would vanish on white paper. */
 @media print {
@@ -84,6 +85,22 @@
   .featured-card {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  /* Project links print as their label and address, "Live Demo (linkdup.app)", the
+     way Contact shows its addresses. The button styling (set inline) comes off so a
+     long address wraps like text, and the ↗ goes, since nothing opens on paper. */
+  a[data-print-url] {
+    display: inline !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+  }
+  a[data-print-url]::after {
+    content: " (" attr(data-print-url) ")";
+  }
+  .link-arrow {
+    display: none;
   }
 
   .featured-card,
