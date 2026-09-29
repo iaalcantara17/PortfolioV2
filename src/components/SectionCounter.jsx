@@ -76,6 +76,7 @@ export default function SectionCounter({ active, containerRef }) {
 
   return (
     <div
+      className="section-counter"
       style={{
         position: 'fixed',
         top: COUNTER_TOP,
