@@ -95,6 +95,19 @@
   /* Shadow — only for things that float over the page (the diploma hover preview);
      cards sit flush with a hairline border instead */
   --shadow-float: 0 1px 2px rgba(13, 13, 13, 0.06), 0 6px 18px rgba(13, 13, 13, 0.08);
+
+  /* Night — for what is dark in both themes, so its colors never follow the page's:
+     the film reel (its black band, cream sprockets and chevrons, and the current
+     photo's ring), the Lightbox (its controls and missing-photo tile), and the
+     LinkdUp card's text and Live Demo button. The paper-, white- and ink-a92 tints
+     above are only used on these, so they stay put too. */
+  --color-night: #0d0d0d;
+  --color-night-text: #f5f2ec;
+  --color-night-purple: #534AB7;
+  --color-night-ring: #403B6E;
+  /* The LinkdUp card's background: the night black here, a raised dark tone in the
+     dark theme, where the page itself is near-black */
+  --color-feature: var(--color-night);
 }
 
 *, *::before, *::after {
@@ -511,7 +524,7 @@ nav.site-nav.scrolled {
 .pill-dark {
   background: var(--color-white-a08);
   border-color: var(--color-white-a15);
-  color: var(--color-paper);
+  color: var(--color-night-text);
 }
 
 /* Spotify bars animation */
@@ -627,7 +640,7 @@ nav.site-nav.scrolled {
      14px, 3px in from each edge) as its own background. It spans the content width.
    - Frames: square photos straight on the black, no matte, square corners. --ring (1
      in the middle, fading as a frame leaves it) draws the current photo's 3px ring,
-     in the deep purple (--color-purple-ink): the lilac accent reads too close to the
+     in the deep purple (--color-night-ring): the lilac accent reads too close to the
      site's links to mark it here.
    - Ends: the photo past each neighbor, cut off by the band's edge, under a fade
      into the black and a chevron.
@@ -646,10 +659,10 @@ nav.site-nav.scrolled {
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 2px;
-  background-color: var(--color-ink);
+  background-color: var(--color-night);
   background-image:
-    linear-gradient(to right, var(--color-paper) 6px, transparent 6px),
-    linear-gradient(to right, var(--color-paper) 6px, transparent 6px);
+    linear-gradient(to right, var(--color-night-text) 6px, transparent 6px),
+    linear-gradient(to right, var(--color-night-text) 6px, transparent 6px);
   background-size: 14px 6px;
   background-repeat: repeat-x;
   background-position: 4px 3px, 4px calc(100% - 3px);
@@ -680,7 +693,7 @@ nav.site-nav.scrolled {
   content: "";
   position: absolute;
   inset: 0;
-  box-shadow: 0 0 0 3px var(--color-purple-ink);
+  box-shadow: 0 0 0 3px var(--color-night-ring);
   opacity: var(--ring, 0);
   pointer-events: none;
 }
@@ -728,7 +741,7 @@ nav.site-nav.scrolled {
   justify-content: flex-end;
 }
 .reel-arrow polyline {
-  stroke: var(--color-paper);
+  stroke: var(--color-night-text);
   stroke-width: 2.6;
   stroke-linecap: round;
   stroke-linejoin: round;
