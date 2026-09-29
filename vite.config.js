@@ -69,8 +69,28 @@ function siteSeo() {
   }
 }
 
+// The build's month and year, for the Contact footer ("Updated September 2026",
+// "Israel Alcántara, 2026"), fixed when the site is built so they can't go stale or
+// be forgotten. In New York time: Vercel builds in UTC, which would already show the
+// next month for the last hours of each month.
+function buildDate() {
+  const inNewYork = (options) =>
+    new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'America/New_York' }).format(new Date())
+  return {
+    name: 'build-date',
+    config() {
+      return {
+        define: {
+          'import.meta.env.BUILD_MONTH': JSON.stringify(inNewYork({ month: 'long', year: 'numeric' })),
+          'import.meta.env.BUILD_YEAR': JSON.stringify(inNewYork({ year: 'numeric' })),
+        },
+      }
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), siteSeo()],
+  plugins: [react(), siteSeo(), buildDate()],
   build: {
     // Every asset ships as its own file, never as a data: URI, so the
     // Content-Security-Policy never needs data: (vercel.json)

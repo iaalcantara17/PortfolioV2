@@ -5,9 +5,10 @@ import LazyLightbox from '../LazyLightbox'
 import { galleryPhotos, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
-// Stopgap alt text until the Gallery gets its own approved descriptions. Its photos
-// are the same files Hero and About show, so they borrow those descriptions.
-const stopgapAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
+// Each photo's alt text: its approved description in data/photos.js. City, friends
+// and nature appear only here; streetwear is also About's photo, with the same
+// description. A photo added without one is named by its place in the set.
+const galleryAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
@@ -19,7 +20,7 @@ export default function Gallery({ isVisible }) {
 
   const total = galleryPhotos.length
   const lightboxPhotos = useMemo(
-    () => galleryPhotos.map((image, i) => ({ image, alt: stopgapAlt(image, i, total) })),
+    () => galleryPhotos.map((image, i) => ({ image, alt: galleryAlt(image, i, total) })),
     [total],
   )
   // The reel describes each photo the same way the Lightbox does

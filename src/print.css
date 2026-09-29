@@ -1,0 +1,114 @@
+/* Print. On screen the page scrolls inside .page-scroller, one screen tall, so
+   printing it gave a single page: the Hero, cut off mid-portrait. Here the sections
+   run on as one document at their natural height, and what only works on a screen
+   is left out:
+   - Chrome: the cursor dot, the nav, the section dots and counters, the skip link,
+     and anything that only appears on hover or tap (previews, tips, hints).
+   - Overlays: the Lightbox and the mobile menu, if either was open.
+   - The Hero's "Scroll" cue, the Spotify widget (live, so stale on paper), the
+     resume button (it opens a file) and the Gallery, whose film reel is laid out
+     for the screen.
+   Entrances that haven't played yet (sections not scrolled to) print in their end
+   state, hover tilt is flattened, the photos print smaller, and project links print
+   their address after their label. The LinkdUp card
+   keeps its dark background, since browsers leave backgrounds out of prints by
+   default and its light text would vanish on white paper. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body,
+  .page-scroller {
+    height: auto;
+    overflow: visible;
+  }
+  /* Each section wrapper's 100vh height is set inline */
+  .section-wrapper {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .page-section {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  #custom-cursor,
+  .skip-link,
+  nav.site-nav,
+  #section-indicator,
+  .section-counter,
+  [data-fixed-counter],
+  .mobile-menu-overlay,
+  [role="dialog"],
+  .card-follower,
+  .link-tip-bubble,
+  .tap-hint,
+  .hero-bottom,
+  .about-spotify,
+  .page-content a[href$=".pdf"],
+  #gallery {
+    display: none !important;
+  }
+
+  /* GSAP sets these inline (utils/motion.js), hence !important */
+  [data-animate],
+  .pull-quote,
+  .about-quote,
+  .body-para,
+  .interest-pill,
+  .skill-pill,
+  .category-line,
+  .exp-card,
+  .timeline-dot,
+  .edu-card,
+  .featured-card,
+  .grid-card,
+  .headline-char,
+  .link-row,
+  .hero-status {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+
+  /* The Hero and About frames size themselves inline */
+  .photo-placeholder {
+    max-width: 260px !important;
+    max-height: 260px !important;
+  }
+
+  .featured-card {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Project links print as their label and address, "Live Demo (linkdup.app)", the
+     way Contact shows its addresses. The button styling (set inline) comes off so a
+     long address wraps like text, and the ↗ goes, since nothing opens on paper. */
+  a[data-print-url] {
+    display: inline !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+  }
+  a[data-print-url]::after {
+    content: " (" attr(data-print-url) ")";
+  }
+  .link-arrow {
+    display: none;
+  }
+
+  .featured-card,
+  .grid-card,
+  .edu-card,
+  .exp-card,
+  .photo-placeholder,
+  .link-row {
+    break-inside: avoid;
+  }
+}

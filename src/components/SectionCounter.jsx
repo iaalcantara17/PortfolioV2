@@ -76,11 +76,14 @@ export default function SectionCounter({ active, containerRef }) {
 
   return (
     <div
+      className="section-counter"
       style={{
         position: 'fixed',
         top: COUNTER_TOP,
         left: 28,
-        zIndex: 9999,
+        // Above the nav (500) and the mobile menu (450), under the Lightbox (1000),
+        // whose backdrop covers it like the rest of the page
+        zIndex: 999,
         pointerEvents: 'none',
         background: 'var(--color-paper-a72)',
         backdropFilter: 'blur(8px)',

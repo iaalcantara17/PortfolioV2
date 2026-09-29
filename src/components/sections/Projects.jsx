@@ -7,6 +7,13 @@ import { entranceStart, entranceEnd } from '../../utils/motion'
 import { handleTilt, resetTilt } from '../../utils/tilt'
 import { placeFollower, followPointer, hideFollower } from '../../utils/follower'
 
+// A project link's address as printed after its label (data-print-url, print.css):
+// "linkdup.app", without the https:// or a trailing slash. The ↗ on each link sits in
+// its own span (.link-arrow) so print can leave it out, inside one span with the label:
+// the links are inline-flex, and a label and arrow as two flex items would lose the
+// space between them.
+const printUrl = (url) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+
 // A project link with a note in a small bubble (.link-tip-bubble, styled like
 // Montclair's "In progress" chip) that overlays its card:
 // - Shows on mouse hover (by pointer type, like the Education floaters, so a tap
@@ -64,6 +71,7 @@ function NoteLink({ link, style }) {
     >
       <a
         href={link.url}
+        data-print-url={printUrl(link.url)}
         target="_blank"
         rel="noopener noreferrer"
         style={style}
@@ -78,7 +86,7 @@ function NoteLink({ link, style }) {
           if (!hovered) setDismissed(false)
         }}
       >
-        {link.label} ↗
+        <span>{link.label} <span className="link-arrow">↗</span></span>
       </a>
       <span id={noteId} hidden>{link.note}</span>
       <span ref={bubbleRef} className="eyebrow link-tip-bubble" aria-hidden="true">{link.note}</span>
@@ -256,6 +264,7 @@ export default function Projects({ isVisible }) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               <a
                 href="https://linkdup.app"
+                data-print-url={printUrl('https://linkdup.app')}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -272,10 +281,11 @@ export default function Projects({ isVisible }) {
                   fontFamily: 'var(--font-sans)',
                 }}
               >
-                Live Demo ↗
+                <span>Live Demo <span className="link-arrow">↗</span></span>
               </a>
               <a
                 href="https://github.com/iaalcantara17/LinkdUp"
+                data-print-url={printUrl('https://github.com/iaalcantara17/LinkdUp')}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -292,7 +302,7 @@ export default function Projects({ isVisible }) {
                   fontFamily: 'var(--font-sans)',
                 }}
               >
-                GitHub ↗
+                <span>GitHub <span className="link-arrow">↗</span></span>
               </a>
               {/* Opens the certificate in the Lightbox, not a new tab, so no ↗ */}
               <button
@@ -370,6 +380,7 @@ export default function Projects({ isVisible }) {
                   <a
                     key={l.label}
                     href={l.url}
+                    data-print-url={printUrl(l.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -384,7 +395,7 @@ export default function Projects({ isVisible }) {
                       fontFamily: 'var(--font-sans)',
                     }}
                   >
-                    {l.label} ↗
+                    <span>{l.label} <span className="link-arrow">↗</span></span>
                   </a>
                 ))}
               </div>
@@ -447,8 +458,8 @@ export default function Projects({ isVisible }) {
                   return l.note ? (
                     <NoteLink key={l.label} link={l} style={style} />
                   ) : (
-                    <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" style={style}>
-                      {l.label} ↗
+                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={style}>
+                      <span>{l.label} <span className="link-arrow">↗</span></span>
                     </a>
                   )
                 })}

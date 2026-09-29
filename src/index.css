@@ -333,6 +333,13 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: normal;
 }
 
+/* The same on the LinkdUp card's near-black, where the purple dot would vanish: a
+   translucent paper-white dot instead, unblended */
+:root:has(.featured-card:hover) #custom-cursor {
+  background: var(--color-paper-a50);
+  mix-blend-mode: normal;
+}
+
 /* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
    with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
    adds, so the dots keep their horizontal position; they sit 24px apart so no two
@@ -1067,6 +1074,14 @@ nav.site-nav.scrolled {
 @media (max-width: 600px) {
   .site-nav-inner {
     padding: 0 16px;
+  }
+  /* The Contact footer's three notes don't fit on one line here: they stack,
+     left-aligned (their row layout is set inline, hence !important) */
+  .contact-footer,
+  .contact-footer-notes {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
   }
 }
 
