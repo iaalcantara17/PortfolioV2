@@ -110,6 +110,17 @@ its reduced-motion gating unchanged:
   `python scripts/make-head-images.py` from the repo root. The script 
   does not make public/favicon.svg: that file is the same monogram as 
   vector outlines, drawn once from the font file.
+- Photo originals: photos-src/ holds the originals the two photo 
+  scripts read. Both first strip each original's metadata in place 
+  with scripts/strip_metadata.py: EXIF, XMP, IPTC, C2PA and anything 
+  appended after the image go; the image data, the ICC profile and a 
+  lone orientation tag stay, and a clean file isn't rewritten. The 
+  originals are in Git LFS (.gitattributes); the versions from before 
+  that, metadata included, are still in normal history, which was 
+  kept as is. Each machine needs `git lfs install` once. Re-running 
+  optimize-photos.py re-encodes every AVIF, and this Windows machine's 
+  encoder output differs from the committed files, so commit only a 
+  new photo's own variants and its manifest entry.
 - 404 page: public/404.html and public/404.css are static files that 
   Vercel serves with a 404 status for any path that matches nothing 
   else. Vite copies them untouched, so 404.css carries its own copy of 
