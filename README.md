@@ -14,7 +14,7 @@ Live at https://israelalcantara.vercel.app
   `api/track-resume-download.js`, which counts resume downloads in Upstash
   Redis
 - Vercel Web Analytics, for pageviews
-- ESLint
+- ESLint, and Playwright for smoke tests
 
 ## Running it
 
@@ -38,11 +38,44 @@ environment variables below.
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Serves `dist/` locally |
 | `npm run lint` | ESLint |
+| `npm test` | Playwright smoke tests (below) |
+
+## Smoke tests
+
+`e2e/` holds fast checks of the critical paths:
+- the page loads with no console errors or failed requests;
+- the nav and mobile menu links reach their sections;
+- the Lightbox closes three ways and hands focus back;
+- the resume links are served;
+- new-tab links carry `rel="noopener noreferrer"`;
+- the skip link reaches `<main>`;
+- a failed image shows its fallback tile.
+
+`npm test` builds the site, serves it with `vite preview` on port 4173, and runs
+every test in Chromium, Firefox and WebKit. Each machine needs the browsers once:
+
+```sh
+npx playwright install chromium firefox webkit
+```
+
+Other runs:
+
+```sh
+npx playwright test --project=chromium   # one browser
+npx playwright test -g "lightbox"        # tests whose name matches
+npx playwright show-report               # the last run's HTML report
+```
+
+`vite preview` has no Vercel functions or Web Analytics, so the tests answer
+`/api/*` and `/_vercel/insights/*` themselves (`e2e/fixtures.js`). Port 4173 has
+to be free: the tests always start their own server, so they never test an old
+build.
 
 ## Structure
 
 ```
 api/            Vercel functions: the Spotify widget and the resume download counter
+e2e/            Playwright smoke tests (npm test)
 logos-src/      School logo originals (the WebP copies in src/assets/logos/ are made by hand)
 photos-src/     Photo originals, never served, stored in Git LFS
 public/         Copied into the build as is: resume PDF, icons, share image, 404 page
