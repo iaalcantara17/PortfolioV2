@@ -6,23 +6,38 @@ it in full, every session, without being reminded.
 ## What this project is
 
 A personal portfolio site for Israel Alcántara. React + Vite, deployed 
-to Vercel at israelalcantara.vercel.app. Currently mid-way through a 
-structured hardening pass before a full relaunch. Phases 0 through 4 
-are done (read-only audit, architecture refactor, the restraint pass 
-and content decisions, and accessibility/motion safety), with two 
-limits: the restraint pass cut some effects but recorded no keep/cut 
-decision for the ones that stayed until "Effects: keep/cut decisions" 
-below, and accessibility still has open items, listed under 
-"Accessibility status". Phase 5 
-(performance and resilience) is complete and on main: the main work in 
-PR #10, and the follow-up fixes in PR #11 (the contact email copies on 
-click instead of opening a mail app, and the Education hover floaters 
-work with trackpads). Phase 6 (SEO and search rankings) is complete and 
-on main: canonical URLs and site.config.js's BASE_URL, robots.txt and 
-sitemap.xml, heading structure and section anchor fixes, Person and 
-WebSite structured data, permanent redirects for /index.html and 
-/resume.pdf, resume PDF metadata, and the Live Demo hover tooltip 
-(PR #13).
+to Vercel at israelalcantara.vercel.app. The structured hardening pass 
+is complete, Phases 0 through 9, all on main:
+
+- Phases 0 through 4: read-only audit, architecture refactor, the 
+  restraint pass and content decisions, and accessibility/motion 
+  safety. The restraint pass's keep/cut decisions for the effects that 
+  stayed are under "Effects: keep/cut decisions" below.
+- Phase 5 (performance and resilience): the main work in PR #10, and 
+  the follow-up fixes in PR #11 (the contact email copies on click 
+  instead of opening a mail app, and the Education hover floaters work 
+  with trackpads).
+- Phase 6 (SEO and search rankings): canonical URLs and 
+  site.config.js's BASE_URL, robots.txt and sitemap.xml, heading 
+  structure and section anchor fixes, Person and WebSite structured 
+  data, permanent redirects for /index.html and /resume.pdf, resume PDF 
+  metadata, and the Live Demo hover tooltip (PR #13).
+- Phase 7 (infrastructure): PRs #25, #26 and #30 through #32. Security 
+  headers, the static 404 page, the Content-Security-Policy (report-only, 
+  then enforced), asset inlining turned off, and Vercel Web Analytics 
+  with the resume download counter.
+- Phase 8 (docs and tests): PR #29 (this file and the README brought 
+  current) and PR #37 (the Playwright smoke tests).
+- Phase 9 (final QA): production checked in Chrome, Firefox and WebKit, 
+  light and dark, at desktop and phone sizes: scrolling both ways at 
+  normal and fast speed, the Gallery reel by touch and mouse, every 
+  link, the share previews, the resume counter and analytics. Its 
+  fixes are PR #39. Lighthouse against production (13.5.0, median of 
+  3 runs) against the Phase 0 baseline, Performance / Accessibility / 
+  Best Practices / SEO: mobile 99 / 96 / 100 / 100, up from 63 / 92 / 
+  100 / 100; desktop 100 / 96 / 100 / 100, up from 74 / 87 / 100 / 100. 
+  The 4 Accessibility points left are the gold pills' contrast, open by 
+  choice (under "Accessibility status").
 
 ## Changes since Phase 6
 
@@ -78,6 +93,11 @@ One line per merged PR. #17 and #18 were closed without merging.
   toggle in the nav to choose (public/theme.js, src/utils/theme.js), 
   the LinkdUp card and Download Resume inverting to light, and the 
   smoke tests run in both themes.
+- #39: Phase 9's fixes. The nav's logo, theme toggle and menu button 
+  given a 44px tap area (.hit-area in index.css), About's "notices" and 
+  Education's date lines brought to 4.5:1 contrast, the smoke test's 
+  rel check made to wait for the page to render, and this file closed 
+  out.
 
 ## Accessibility status
 
@@ -88,8 +108,19 @@ One line per merged PR. #17 and #18 were closed without merging.
 - In place: the page behind the Lightbox and the mobile menu is inert 
   while either is open (utils/inertOutside.js), so a screen reader's 
   virtual cursor can't reach it either.
-- Open, by choice: gold text (stat suffixes, "Scroll", gold pills) 
-  stays below AA contrast (the note on the accent tokens in index.css).
+- In place: tap areas at least 44px square on the nav's logo, theme 
+  toggle and menu button (.hit-area in index.css), and 24px section 
+  dots. On phones every other control measured at least 24px in Phase 
+  9.
+- Resolved in Phase 9 (#39): two contrast misses outside the gold 
+  exception. About's "notices" was --color-purple, 3.37:1 on phones 
+  (22px); it's --color-purple-deep now, 6.20:1 (8.06:1 dark). 
+  Education's date lines were --color-faint, 4.32:1 on the card; 
+  they're --color-muted now, 4.87:1 (6.14:1 dark).
+- Open, by choice: gold text (stat suffixes, "Scroll", gold pills, 
+  including the ones on the LinkdUp card and Download Resume in the dark 
+  theme) stays below AA contrast (the note on the accent tokens in 
+  index.css). It's the only contrast failure left, in either theme.
 
 ## Effects: keep/cut decisions
 
@@ -262,16 +293,20 @@ why, but do not change it unilaterally.
   600px and below, same failure class as Hero. Not broken yet, but worth 
   a height sweep before it becomes the next surprise.
 - The Gallery film reel has no room on a desktop-width window below 
-  about 410px tall. Since PR #27 it shows no photo there instead of 
-  logging errors. Fixing it would mean letting the Gallery grow past 
-  one screen, which touches the locked reel.
+  about 425px tall (at 420px its photo is 5px wide). Since PR #27 it 
+  shows no photo there instead of logging errors. Fixing it would mean 
+  letting the Gallery grow past one screen, which touches the locked 
+  reel.
 
 ## Reference material
 
 - audit/before/ contains the Phase 0 baseline: Lighthouse reports 
   (mobile + desktop) and 25 screenshots at 390/1024/1440px, captured 
   against the live site after the hotfix/live-bugs merge. Use this as 
-  the comparison baseline for any before/after verification. It was 
-  never committed to git and isn't on the Windows machine, so it may 
-  only exist on the other one. Where it's missing, take the "before" 
-  screenshots from a fresh build of main.
+  the comparison baseline for any before/after verification.
+- audit/after/ holds later captures: Lighthouse reports against 
+  production and a preview, the Phase 4 screenshots (with their own 
+  README), and comparison screenshots.
+- Neither folder is in git (audit/ has been ignored since #34). Both 
+  are on the Windows machine. On a machine without them, take the 
+  "before" screenshots from a fresh build of main.
