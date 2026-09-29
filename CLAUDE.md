@@ -98,6 +98,22 @@ One line per merged PR. #17 and #18 were closed without merging.
   Education's date lines brought to 4.5:1 contrast, the smoke test's 
   rel check made to wait for the page to render, and this file closed 
   out.
+- #40: lockfile-only bumps to browserslist, caniuse-lite and 
+  electron-to-chromium. package.json unchanged.
+- #41: the Lightbox ready as soon as it appears, even when its code 
+  arrives late: focus on Close, the page inert and its keys working, 
+  with focus returned to the opener after React's commit. A smoke test 
+  holds the Lightbox's chunk back to check it.
+- #42: the vercel CLI removed from devDependencies, and dev:vercel runs 
+  it through npx (npx vercel dev). npm audit at 0 vulnerabilities, 
+  down from 30, all of which came from the CLI.
+- #43: dead code removed from utils/scrollBlur.js: the always-false 
+  ON_TOUCH_SCREENS flag, and the export on five tuning constants that 
+  nothing imported. The speed blur still runs on fine pointers only.
+- #44: the README's smoke-test, public/, hooks/ and utils/ lists 
+  brought current.
+- #45: /api/spotify answers 405 (Allow: GET) to anything but GET, the 
+  way the resume counter already rejected methods it doesn't take.
 
 ## Accessibility status
 
@@ -297,6 +313,9 @@ why, but do not change it unilaterally.
   shows no photo there instead of logging errors. Fixing it would mean 
   letting the Gallery grow past one screen, which touches the locked 
   reel.
+- Unresolved: the Firefox failures seen on #40 never reproduced (not 
+  seen in 8 test runs), and Safari loads the Lightbox chunk late 
+  (covered by the #41 test).
 
 ## Reference material
 
