@@ -65,6 +65,8 @@ One line per merged PR. #17 and #18 were closed without merging.
 - #34: .env files and audit/ ignored, and a quiet tile (MissingImage) 
   shown where an image fails to load: the film reel, the Lightbox, the 
   hover previews and the Education logos.
+- #35: the page inert behind the Lightbox and the mobile menu, so a 
+  screen reader's virtual cursor stays in them (utils/inertOutside.js).
 
 ## Accessibility status
 
@@ -72,9 +74,9 @@ One line per merged PR. #17 and #18 were closed without merging.
   Lightbox and the mobile menu with Escape to close, keyboard focus 
   rings, alt text on every photo, and reduced-motion gating for every 
   effect in the list below.
-- Open: the page behind the Lightbox and the mobile menu is not inert. 
-  Only Tab is trapped, so a screen reader's virtual cursor can still 
-  reach it.
+- In place: the page behind the Lightbox and the mobile menu is inert 
+  while either is open (utils/inertOutside.js), so a screen reader's 
+  virtual cursor can't reach it either.
 - Open, by choice: gold text (stat suffixes, "Scroll", gold pills) 
   stays below AA contrast (the note on the accent tokens in index.css).
 

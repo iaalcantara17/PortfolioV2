@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { sections } from '../data/sections'
 import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
+import { inertOutside } from '../utils/inertOutside'
 import { trackResumeDownload } from '../utils/trackResumeDownload'
 
 // section = index in the full registry, so links stay correct if sections reorder
@@ -14,6 +15,7 @@ export default function Nav({ containerRef, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navRef = useRef(null)
   const toggleRef = useRef(null)
+  const releasePageRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef?.current
@@ -41,7 +43,22 @@ export default function Nav({ containerRef, onNavigate }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [isMenuOpen])
 
+  // While the mobile menu is open, everything outside the nav is inert, so a screen
+  // reader stays in the menu the way Tab does
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const release = inertOutside(navRef.current)
+    releasePageRef.current = release
+    return () => {
+      release()
+      releasePageRef.current = null
+    }
+  }, [isMenuOpen])
+
   const handleNavigate = (section) => {
+    // A menu link moves focus into the section it jumps to, which an inert page
+    // would refuse, so the page comes back first instead of when the menu unmounts
+    releasePageRef.current?.()
     setIsMenuOpen(false)
     onNavigate(section)
   }
