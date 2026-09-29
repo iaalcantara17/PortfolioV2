@@ -99,15 +99,25 @@
   /* Night — for what is dark in both themes, so its colors never follow the page's:
      the film reel (its black band, cream sprockets and chevrons, and the current
      photo's ring), the Lightbox (its controls and missing-photo tile), and the
-     LinkdUp card's text and Live Demo button. The paper-, white- and ink-a92 tints
-     above are only used on these, so they stay put too. */
+     LinkdUp card's Live Demo button, purple on the card in both themes. The paper-,
+     white- and ink-a92 tints above are only used on these and on the LinkdUp card
+     in the light theme, so they stay put too. */
   --color-night: #0d0d0d;
   --color-night-text: #f5f2ec;
   --color-night-purple: #534AB7;
   --color-night-ring: #403B6E;
-  /* The LinkdUp card's background: the night black here, a raised dark tone in the
-     dark theme, where the page itself is near-black */
+  /* The LinkdUp card: the page's one inverted card, dark on the light page here and
+     light on the dark page in the dark theme (the same flip as Contact's Download
+     Resume button). Its background, edge, text in three strengths, button outlines
+     and tech tags. */
   --color-feature: var(--color-night);
+  --color-feature-edge: #2a2a2a;
+  --color-feature-text: var(--color-night-text);
+  --color-feature-soft: var(--color-paper-a70);
+  --color-feature-faint: var(--color-paper-a50);
+  --color-feature-outline: var(--color-paper-a30);
+  --color-feature-tag: var(--color-white-a08);
+  --color-feature-tag-edge: var(--color-white-a15);
 }
 
 /* Dark theme: <html data-theme="dark">, set before the first paint by public/theme.js
@@ -139,7 +149,16 @@
     --color-black-a04: rgba(255, 255, 255, 0.04);
     --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.5);
 
-    --color-feature: #1d1d22;
+    /* The LinkdUp card turns light: the light theme's own paper, line, ink, muted
+       and faint, with its tags drawn like the other cards' (transparent, lined) */
+    --color-feature: #f5f2ec;
+    --color-feature-edge: #d4cfc5;
+    --color-feature-text: #0d0d0d;
+    --color-feature-soft: #666666;
+    --color-feature-faint: #6e6e6e;
+    --color-feature-outline: #d4cfc5;
+    --color-feature-tag: transparent;
+    --color-feature-tag-edge: #d4cfc5;
   }
 }
 
@@ -393,6 +412,13 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: screen;
 }
 
+/* Except on the LinkdUp card, which is light in the dark theme: there the dot is the
+   light theme's, purple and multiplied */
+:root[data-theme="dark"]:has(.featured-card:hover) #custom-cursor {
+  background: var(--color-purple);
+  mix-blend-mode: multiply;
+}
+
 /* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
    with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
    adds, so the dots keep their horizontal position; they sit 24px apart so no two
@@ -618,10 +644,11 @@ nav.site-nav.scrolled {
   color: var(--color-green-deep);
 }
 
+/* The LinkdUp card's tech tags (its --color-feature tokens) */
 .pill-dark {
-  background: var(--color-white-a08);
-  border-color: var(--color-white-a15);
-  color: var(--color-night-text);
+  background: var(--color-feature-tag);
+  border-color: var(--color-feature-tag-edge);
+  color: var(--color-feature-text);
 }
 
 /* Spotify bars animation */
