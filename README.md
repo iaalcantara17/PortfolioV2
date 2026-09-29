@@ -45,7 +45,10 @@ project, and you need the environment variables below.
 `e2e/` holds fast checks of the critical paths:
 - the page loads with no console errors or failed requests;
 - the nav and mobile menu links reach their sections;
+- the mobile menu opens and closes from its toggle and with Escape;
 - the Lightbox closes three ways and hands focus back;
+- the Lightbox is ready as soon as it appears, even when its code loads late
+  (focus on Close, the page behind it inert);
 - the resume links are served;
 - new-tab links carry `rel="noopener noreferrer"`;
 - the skip link reaches `<main>`;
@@ -83,14 +86,16 @@ api/            Vercel functions: the Spotify widget and the resume download cou
 e2e/            Playwright smoke tests (npm test)
 logos-src/      School logo originals (the WebP copies in src/assets/logos/ are made by hand)
 photos-src/     Photo originals, never served, stored in Git LFS
-public/         Copied into the build as is: resume PDF, icons, share image, 404 page
+public/         Copied into the build as is: resume PDF, icons, share image, 404 page, theme.js
 scripts/        Photo and share-image generators (Python, Pillow)
 src/
   assets/       Fonts, logos, and the generated photo variants
   components/   Shared components, and sections/ with one file per page section
   data/         Section registry, photo list and descriptions, quotes
-  hooks/        Active section, keyboard scrolling, scroll lock, Spotify polling
-  utils/        Motion, scrolling, speed blur, tilt, pointer followers, focus trap
+  hooks/        Active section, keyboard scrolling, scroll lock, Spotify polling,
+                failed image loads
+  utils/        Motion, scrolling, speed blur, tilt, pointer followers, focus trap,
+                inert page behind modals, theme, resume download counting
 index.html      Page shell: title, description, icons
 site.config.js  Canonical URL, structured data, share image settings
 vite.config.js  Build config, and the plugin that adds the SEO and share tags
