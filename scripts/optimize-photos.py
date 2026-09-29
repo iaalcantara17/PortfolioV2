@@ -1,6 +1,8 @@
 """Generate the site's optimized photo variants from the camera originals.
 
-Reads every JPG/PNG in photos-src/ (never served) and writes, per photo,
+Reads every JPG/PNG in photos-src/ (never served), strips each original's own
+metadata in place first (strip_metadata.py: EXIF, XMP, IPTC and the rest, pixels
+untouched), and writes, per photo,
 AVIF + WebP at 400/1200/2400px long edge into src/assets/photos/, plus a
 manifest.json of each original's dimensions and each variant's actual
 dimensions. All EXIF/XMP/ICC metadata is dropped (pixels are converted to
@@ -21,6 +23,8 @@ import sys
 from pathlib import Path
 
 from PIL import Image, ImageCms, ImageOps
+
+from strip_metadata import strip_metadata
 
 OUT_DIR = Path('src/assets/photos')
 WIDTHS = (400, 1200, 2400)
@@ -71,6 +75,11 @@ def main():
     sources = sorted(p for p in Path(args.src).iterdir() if p.suffix.lower() in SOURCE_EXTS)
     if not sources:
         sys.exit(f'No source photos found in {args.src}/')
+
+    # The originals lose their metadata before anything is made from them
+    for path in sources:
+        if strip_metadata(path):
+            print(f'Stripped metadata from {path}')
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {}

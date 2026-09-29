@@ -8,7 +8,8 @@
 Type is the site's own: DM Serif Display from src/assets/fonts/, and Arial, the
 font-sans fallback every desktop system has, so the output is the same on any
 machine. Colors are the design tokens in src/index.css. Nothing from the portrait's
-original file (EXIF, ICC) is carried over.
+original file (EXIF, ICC) is carried over, and the original itself is stripped of its
+metadata in place first (strip_metadata.py).
 
 Requires Pillow. Run from the repo root:
 
@@ -19,6 +20,8 @@ import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
+
+from strip_metadata import strip_metadata
 
 OUT_DIR = Path('public')
 SERIF = Path('src/assets/fonts/dm-serif-display-latin-400.woff2')
@@ -169,6 +172,8 @@ def main():
     for path in (SERIF, PORTRAIT):
         if not path.exists():
             sys.exit(f'Missing {path}')
+    if strip_metadata(PORTRAIT):
+        print(f'Stripped metadata from {PORTRAIT}')
     OUT_DIR.mkdir(exist_ok=True)
     rows = []
 
