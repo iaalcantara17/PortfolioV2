@@ -14,7 +14,7 @@ const CONTROL_STYLE = {
   borderRadius: '50%',
   border: '0.5px solid var(--color-white-a30)',
   background: 'var(--color-white-a06)',
-  color: 'var(--color-paper)',
+  color: 'var(--color-night-text)',
   fontSize: 18,
   lineHeight: 1,
   display: 'flex',
@@ -133,7 +133,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }) {
               // the page behind it the way the photo would.
               missingStyle={{
                 width: 'min(90vw, calc(90vh * var(--aspect)))',
-                background: 'var(--color-ink)',
+                background: 'var(--color-night)',
                 border: '0.5px solid var(--color-white-a30)',
                 color: 'var(--color-white-a30)',
               }}

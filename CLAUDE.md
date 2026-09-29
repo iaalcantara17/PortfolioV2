@@ -74,6 +74,10 @@ One line per merged PR. #17 and #18 were closed without merging.
   build time (buildDate in vite.config.js) along with its year.
 - #37: Playwright smoke tests (e2e/, npm test) against a preview build, 
   in Chromium, Firefox and WebKit.
+- #38: a dark theme, the system setting by default with a sun/moon 
+  toggle in the nav to choose (public/theme.js, src/utils/theme.js), 
+  the LinkdUp card and Download Resume inverting to light, and the 
+  smoke tests run in both themes.
 
 ## Accessibility status
 
@@ -109,6 +113,8 @@ its reduced-motion gating unchanged:
 - Hero typewriter and scramble (Hero.jsx): KEEP. A plain fade under 
   reduced motion.
 - Film reel glide (FilmReel.jsx): KEEP. Instant under reduced motion.
+- Theme toggle morph (ThemeToggle.jsx, .theme-toggle in index.css): 
+  KEEP. The sun and moon swap instantly under reduced motion.
 
 ## How things are built
 
@@ -138,8 +144,11 @@ its reduced-motion gating unchanged:
 - 404 page: public/404.html and public/404.css are static files that 
   Vercel serves with a 404 status for any path that matches nothing 
   else. Vite copies them untouched, so 404.css carries its own copy of 
-  7 token values from index.css (two font stacks and five colors). A 
-  change to any of those tokens needs the same edit in 404.css by hand.
+  7 token values from index.css (two font stacks and five colors), plus 
+  the dark theme's values for those five colors. A change to any of 
+  those tokens, in either theme, needs the same edit in 404.css by hand. 
+  404.html loads public/theme.js, so it follows the same theme as the 
+  site.
 - Headers: vercel.json sets X-Content-Type-Options, Referrer-Policy and 
   Permissions-Policy on /(.*), plus an enforced Content-Security-Policy 
   on the same route, so it covers the 404 page and the resume PDF too. 
@@ -189,8 +198,10 @@ its reduced-motion gating unchanged:
   full width): the current photo in the middle, one dimmed neighbor each 
   side, and a half-cut end sliver at each end. No matte around any photo, 
   square corners throughout. The current photo is marked mainly by full 
-  brightness against its dimmed neighbors, with a 3px --color-purple-ink 
-  ring as a secondary cue. The section counter handoff behavior.
+  brightness against its dimmed neighbors, with a 3px --color-night-ring 
+  ring as a secondary cue (the purple-ink value, #403B6E; the reel moved 
+  from --color-purple-ink to the night tokens with the dark theme, so it 
+  looks the same in both themes). The section counter handoff behavior.
 - The "play once and persist" animation behavior — entrance animations 
   fire once per element on first view and then stay visible permanently. 
   No reverse-on-scroll-up, no re-triggering.

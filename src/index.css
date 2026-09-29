@@ -95,6 +95,71 @@
   /* Shadow — only for things that float over the page (the diploma hover preview);
      cards sit flush with a hairline border instead */
   --shadow-float: 0 1px 2px rgba(13, 13, 13, 0.06), 0 6px 18px rgba(13, 13, 13, 0.08);
+
+  /* Night — for what is dark in both themes, so its colors never follow the page's:
+     the film reel (its black band, cream sprockets and chevrons, and the current
+     photo's ring), the Lightbox (its controls and missing-photo tile), and the
+     LinkdUp card's Live Demo button, purple on the card in both themes. The paper-,
+     white- and ink-a92 tints above are only used on these and on the LinkdUp card
+     in the light theme, so they stay put too. */
+  --color-night: #0d0d0d;
+  --color-night-text: #f5f2ec;
+  --color-night-purple: #534AB7;
+  --color-night-ring: #403B6E;
+  /* The LinkdUp card: the page's one inverted card, dark on the light page here and
+     light on the dark page in the dark theme (the same flip as Contact's Download
+     Resume button). Its background, edge, text in three strengths, button outlines
+     and tech tags. */
+  --color-feature: var(--color-night);
+  --color-feature-edge: #2a2a2a;
+  --color-feature-text: var(--color-night-text);
+  --color-feature-soft: var(--color-paper-a70);
+  --color-feature-faint: var(--color-paper-a50);
+  --color-feature-outline: var(--color-paper-a30);
+  --color-feature-tag: var(--color-white-a08);
+  --color-feature-tag-edge: var(--color-white-a15);
+}
+
+/* Dark theme: <html data-theme="dark">, set before the first paint by public/theme.js
+   from the visitor's choice (the nav's toggle) or, without one, their system setting,
+   and kept current by src/utils/theme.js. Only the tokens change. Near-black paper
+   with lighter tones for cards and layers, off-white ink, and the same purples
+   brightened to read on the dark (every text color here meets WCAG AA on the paper
+   and on cards). Gold keeps its light-theme values: its contrast is a standing
+   decision (the note on the accents above). The night tokens and the tints used only
+   on them don't change. Screen only, so a print always comes out light. */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-paper: #0e0e10;
+    --color-surface: #17171a;
+    --color-placeholder: #202024;
+    --color-line: #2e2e34;
+    --color-ink: #ecebe7;
+    --color-muted: #9a9791;
+    --color-faint: #85827d;
+
+    --color-purple: #8b84e8;
+    --color-purple-deep: #a59ef2;
+    --color-purple-ink: #bdb7f7;
+    --color-green-deep: #3cc496;
+
+    --color-paper-a72: rgba(14, 14, 16, 0.72);
+    --color-black-a04: rgba(255, 255, 255, 0.04);
+    --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.5);
+
+    /* The LinkdUp card turns light: the light theme's own paper, line, ink, muted
+       and faint, with its tags drawn like the other cards' (transparent, lined) */
+    --color-feature: #f5f2ec;
+    --color-feature-edge: #d4cfc5;
+    --color-feature-text: #0d0d0d;
+    --color-feature-soft: #666666;
+    --color-feature-faint: #6e6e6e;
+    --color-feature-outline: #d4cfc5;
+    --color-feature-tag: transparent;
+    --color-feature-tag-edge: #d4cfc5;
+  }
 }
 
 *, *::before, *::after {
@@ -340,6 +405,20 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: normal;
 }
 
+/* In the dark theme multiply would sink the dot into the dark page everywhere. screen
+   is its dark counterpart: purple on the dark page, while light things under the dot
+   (text, the theme toggle's icon) show through it, as dark things do with multiply */
+:root[data-theme="dark"] #custom-cursor {
+  mix-blend-mode: screen;
+}
+
+/* Except on the LinkdUp card, which is light in the dark theme: there the dot is the
+   light theme's, purple and multiplied */
+:root[data-theme="dark"]:has(.featured-card:hover) #custom-cursor {
+  background: var(--color-purple);
+  mix-blend-mode: multiply;
+}
+
 /* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
    with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
    adds, so the dots keep their horizontal position; they sit 24px apart so no two
@@ -420,6 +499,63 @@ nav.site-nav.scrolled {
   display: none;
   align-items: center;
   justify-content: center;
+}
+
+/* Light/dark toggle (ThemeToggle.jsx), beside the Resume button and framed like it.
+   The icon is a sun in the light theme and a moon in the dark one. Sun to moon: the
+   rays turn and draw in, then the disc grows and the bite slides across it, leaving a
+   crescent. Moon to sun runs the other way: the bite slides off, the disc shrinks and
+   the rays come back out. Each state's transitions are the ones used to arrive at it,
+   which is what orders the steps. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0.5px solid var(--color-line);
+  border-radius: 2px;
+  background: none;
+  color: var(--color-ink);
+}
+.theme-toggle svg {
+  overflow: visible;
+}
+.theme-toggle-disc,
+.theme-toggle-rays {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Sun */
+.theme-toggle-disc {
+  transform: scale(0.55);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+.theme-toggle-bite {
+  transform: translate(7px, -7px);
+  transition: transform 0.3s ease-in;
+}
+.theme-toggle-rays {
+  transform: none;
+  opacity: 1;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s, opacity 0.25s ease 0.25s;
+}
+
+/* Moon */
+.theme-toggle.is-dark .theme-toggle-rays {
+  transform: rotate(-60deg) scale(0.4);
+  opacity: 0;
+  transition: transform 0.3s ease-in, opacity 0.2s ease-in;
+}
+.theme-toggle.is-dark .theme-toggle-disc {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+.theme-toggle.is-dark .theme-toggle-bite {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
 /* Mobile nav menu overlay */
@@ -508,10 +644,11 @@ nav.site-nav.scrolled {
   color: var(--color-green-deep);
 }
 
+/* The LinkdUp card's tech tags (its --color-feature tokens) */
 .pill-dark {
-  background: var(--color-white-a08);
-  border-color: var(--color-white-a15);
-  color: var(--color-paper);
+  background: var(--color-feature-tag);
+  border-color: var(--color-feature-tag-edge);
+  color: var(--color-feature-text);
 }
 
 /* Spotify bars animation */
@@ -627,7 +764,7 @@ nav.site-nav.scrolled {
      14px, 3px in from each edge) as its own background. It spans the content width.
    - Frames: square photos straight on the black, no matte, square corners. --ring (1
      in the middle, fading as a frame leaves it) draws the current photo's 3px ring,
-     in the deep purple (--color-purple-ink): the lilac accent reads too close to the
+     in the deep purple (--color-night-ring): the lilac accent reads too close to the
      site's links to mark it here.
    - Ends: the photo past each neighbor, cut off by the band's edge, under a fade
      into the black and a chevron.
@@ -646,10 +783,10 @@ nav.site-nav.scrolled {
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 2px;
-  background-color: var(--color-ink);
+  background-color: var(--color-night);
   background-image:
-    linear-gradient(to right, var(--color-paper) 6px, transparent 6px),
-    linear-gradient(to right, var(--color-paper) 6px, transparent 6px);
+    linear-gradient(to right, var(--color-night-text) 6px, transparent 6px),
+    linear-gradient(to right, var(--color-night-text) 6px, transparent 6px);
   background-size: 14px 6px;
   background-repeat: repeat-x;
   background-position: 4px 3px, 4px calc(100% - 3px);
@@ -680,7 +817,7 @@ nav.site-nav.scrolled {
   content: "";
   position: absolute;
   inset: 0;
-  box-shadow: 0 0 0 3px var(--color-purple-ink);
+  box-shadow: 0 0 0 3px var(--color-night-ring);
   opacity: var(--ring, 0);
   pointer-events: none;
 }
@@ -728,7 +865,7 @@ nav.site-nav.scrolled {
   justify-content: flex-end;
 }
 .reel-arrow polyline {
-  stroke: var(--color-paper);
+  stroke: var(--color-night-text);
   stroke-width: 2.6;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1086,9 +1223,9 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, and the section
-   dot's scaled active state switches without animating. (The Gallery reel moves
-   instantly, in FilmReel.jsx.) */
+   no smooth scrolling, the mobile menu only fades, no hover tilt, the section dot's
+   scaled active state switches without animating, and the theme toggle's sun and
+   moon swap without the morph. (The Gallery reel moves instantly, in FilmReel.jsx.) */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1110,5 +1247,9 @@ nav.site-nav.scrolled {
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {
     animation-play-state: paused;
+  }
+  /* !important: the toggle's per-state transitions are more specific */
+  .theme-toggle svg * {
+    transition: none !important;
   }
 }

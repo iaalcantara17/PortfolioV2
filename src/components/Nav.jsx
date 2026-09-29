@@ -4,6 +4,7 @@ import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
 import { inertOutside } from '../utils/inertOutside'
 import { trackResumeDownload } from '../utils/trackResumeDownload'
+import ThemeToggle from './ThemeToggle'
 
 // section = index in the full registry, so links stay correct if sections reorder
 const links = sections
@@ -98,6 +99,7 @@ export default function Nav({ containerRef, onNavigate }) {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <ThemeToggle />
           <a
             href="/Resume_Israel_Alcantara.pdf"
             target="_blank"

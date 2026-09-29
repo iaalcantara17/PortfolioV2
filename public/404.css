@@ -9,6 +9,19 @@
         --color-purple: #7F77DD;
       }
 
+      /* The dark theme's values for the same tokens, also copied from index.css.
+         public/theme.js sets data-theme here as on the site. */
+      @media screen {
+        :root[data-theme="dark"] {
+          color-scheme: dark;
+          --color-paper: #0e0e10;
+          --color-line: #2e2e34;
+          --color-ink: #ecebe7;
+          --color-muted: #9a9791;
+          --color-purple: #8b84e8;
+        }
+      }
+
       *, *::before, *::after {
         box-sizing: border-box;
         margin: 0;

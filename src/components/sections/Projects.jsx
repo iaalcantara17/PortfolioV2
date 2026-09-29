@@ -217,10 +217,10 @@ export default function Projects({ isVisible }) {
             onMouseMove={(e) => handleTilt(e, e.currentTarget)}
             onMouseLeave={(e) => resetTilt(e.currentTarget)}
             style={{
-              background: 'var(--color-ink)',
+              background: 'var(--color-feature)',
               borderRadius: 4,
               padding: '28px 32px',
-              border: '0.5px solid #2a2a2a', /* one-off: review */
+              border: '0.5px solid var(--color-feature-edge)',
               position: 'relative',
             }}
           >
@@ -235,23 +235,23 @@ export default function Projects({ isVisible }) {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 26,
-                color: 'var(--color-paper)',
+                color: 'var(--color-feature-text)',
                 letterSpacing: '-0.02em',
                 marginBottom: 4,
               }}
             >
               LinkdUp
             </h3>
-            <div style={{ fontSize: 12, color: 'var(--color-paper-a50)', marginBottom: 12 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-feature-faint)', marginBottom: 12 }}>
               Mobile-first web app for group meetup coordination
             </div>
 
-            <p style={{ fontSize: 12, color: 'var(--color-paper-a70)', lineHeight: 1.85, marginBottom: 16 }}>
+            <p style={{ fontSize: 12, color: 'var(--color-feature-soft)', lineHeight: 1.85, marginBottom: 16 }}>
               Lead developer on a{' '}
-              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
-              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery,{' '}
-              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export, and{' '}
-              <strong style={{ color: 'var(--color-paper)', fontWeight: 500 }}>Gemini 2.5</strong> for AI-generated venue pitches. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery,{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export, and{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Gemini 2.5</strong> for AI-generated venue pitches. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
@@ -272,7 +272,7 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: 'var(--color-purple-deep)',
+                  background: 'var(--color-night-purple)',
                   borderRadius: 4,
                   fontSize: 11,
                   color: 'var(--color-white)',
@@ -293,10 +293,10 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  border: '0.5px solid var(--color-paper-a30)',
+                  border: '0.5px solid var(--color-feature-outline)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: 'var(--color-paper-a70)',
+                  color: 'var(--color-feature-soft)',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
@@ -319,10 +319,10 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  border: '0.5px solid var(--color-paper-a30)',
+                  border: '0.5px solid var(--color-feature-outline)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: 'var(--color-paper-a70)',
+                  color: 'var(--color-feature-soft)',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
                 }}
