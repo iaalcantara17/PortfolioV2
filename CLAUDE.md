@@ -132,18 +132,20 @@ One line per merged PR. #17 and #18 were closed without merging.
   while either is open (utils/inertOutside.js), so a screen reader's 
   virtual cursor can't reach it either.
 - In place: tap areas at least 44px square on the nav's logo, theme 
-  toggle and menu button (.hit-area in index.css), and 24px section 
-  dots. On phones every other control measured at least 24px in Phase 
-  9.
+  toggle and menu button (.hit-area in index.css), and on the Hero's 
+  Email me and Download resume buttons. On phones every other control 
+  measured at least 24px in Phase 9. (The 24px section dots were 
+  removed in the Oct 2026 redesign.)
 - Resolved in Phase 9 (#39): two contrast misses outside the gold 
   exception. About's "notices" was --color-purple, 3.37:1 on phones 
   (22px); it's --color-purple-deep now, 6.20:1 (8.06:1 dark). 
   Education's date lines were --color-faint, 4.32:1 on the card; 
   they're --color-muted now, 4.87:1 (6.14:1 dark).
-- Open, by choice: gold text (stat suffixes, "Scroll", gold pills, 
-  including the ones on the LinkdUp card and Download Resume in the dark 
-  theme) stays below AA contrast (the note on the accent tokens in 
-  index.css). It's the only contrast failure left, in either theme.
+- Open, by choice: gold pill text (Education's "In progress", the PDF 
+  tag on Contact's Download Resume) stays below AA contrast (the note on 
+  the accent tokens in index.css). It's the only contrast failure left, 
+  in either theme. Gold elsewhere is a fill, outline or dot, never text: 
+  the Hero's buttons are gold with dark text (9.24:1).
 
 ## Effects: keep/cut decisions
 
@@ -161,9 +163,12 @@ its reduced-motion gating unchanged:
 - Section counter scramble (SectionCounter.jsx): KEEP. Skipped under 
   reduced motion.
 - Pointer followers (utils/follower.js: the diploma and certificate 
-  previews, the "In progress" label, the Live Demo note): KEEP. They 
-  follow mouse pointers only; the Live Demo note also shows on keyboard 
-  focus.
+  previews, LinkdUp's screens preview, the "In progress" label, the 
+  Live Demo note): KEEP. They follow mouse pointers only; the Live Demo 
+  note also shows on keyboard focus. The screens preview cycles its 
+  images while the card is hovered, without the cross-fade under 
+  reduced motion; Screenshots opens them in the Lightbox for touch and 
+  the keyboard.
 - Hero typewriter and scramble (Hero.jsx): KEEP. A plain fade under 
   reduced motion.
 - Film reel glide (FilmReel.jsx): KEEP. Instant under reduced motion.
@@ -233,9 +238,9 @@ its reduced-motion gating unchanged:
   :development when VERCEL_ENV is unset), through KV_REST_API_URL and 
   KV_REST_API_TOKEN (the Upstash integration, one database for 
   Production and Preview). Preview clicks never touch production's 
-  count. POST adds one, GET only reads. Both resume links (Nav, 
-  Contact) POST to it on click through utils/trackResumeDownload.js, 
-  fire and forget. Only clicks count: not middle-clicks, "Open in new 
+  count. POST adds one, GET only reads. All three resume links (Nav, 
+  the Hero's Download resume, Contact) POST to it on click through 
+  utils/trackResumeDownload.js, fire and forget. Only clicks count: not middle-clicks, "Open in new 
   tab", the noscript link, or direct visits to the PDF or /resume.pdf. 
   The endpoint is public, so anyone can read the count or add to it.
 
