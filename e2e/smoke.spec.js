@@ -183,9 +183,13 @@ test.describe('lightbox', () => {
 })
 
 test.describe('resume', () => {
-  test('the nav and Contact resume links point to the PDF, which is served', async ({ page }) => {
+  test('the nav, Hero and Contact resume links point to the PDF, which is served', async ({ page }) => {
     await page.goto('/')
-    const links = [page.locator('nav a', { hasText: 'Resume' }), page.locator('#contact a', { hasText: 'Download Resume' })]
+    const links = [
+      page.locator('nav a', { hasText: 'Resume' }),
+      page.locator('#hero a', { hasText: 'Download resume' }),
+      page.locator('#contact a', { hasText: 'Download Resume' }),
+    ]
     for (const link of links) {
       await expect(link).toHaveAttribute('href', RESUME)
     }
@@ -193,6 +197,22 @@ test.describe('resume', () => {
     expect(res.status()).toBe(200)
     expect(res.headers()['content-type']).toContain('application/pdf')
     expect((await res.body()).subarray(0, 5).toString()).toBe('%PDF-')
+  })
+})
+
+test.describe('hero email button', () => {
+  // Copies the address, like the Contact row. Clipboard permissions can only be
+  // granted in Chromium.
+  test('copies the address and says so', async ({ page, context, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Clipboard permissions are Chromium-only')
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+    await page.goto('/')
+    // Found by its class, not its text, which is what changes
+    const button = page.locator('#hero .cta-gold')
+    await expect(button).toHaveText('Email me')
+    await button.click()
+    await expect(button).toHaveText('Copied')
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('ialcantara2003@gmail.com')
   })
 })
 

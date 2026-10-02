@@ -1,8 +1,11 @@
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import Photo from '../Photo'
+import { EMAIL, RESUME_URL } from '../../data/contact'
 import { photoByName, photoAlt } from '../../data/photos'
+import { useCopyText } from '../../hooks/useCopyText'
 import { prefersReducedMotion, entranceStart, pulseAvailability } from '../../utils/motion'
+import { trackResumeDownload } from '../../utils/trackResumeDownload'
 
 // Drawn width of the 3:2 portrait under object-fit: cover in the square box.
 // Must match imagesizes on the portrait preload in index.html
@@ -207,7 +210,10 @@ export default function Hero({ isVisible }) {
   const eyebrowRef = useRef(null)
   const statsRef = useRef(null)
   const statusRef = useRef(null)
+  const forwardRef = useRef(null)
   const completedRef = useRef(false)
+  const [copied, copy] = useCopyText()
+  const emailId = useId()
 
   // Set initial hidden state on mount, before the first paint, so nothing shows for
   // a frame and then disappears. Skipped once resolved, so a StrictMode (dev-only)
@@ -217,6 +223,7 @@ export default function Hero({ isVisible }) {
     gsap.set(eyebrowRef.current, { opacity: 0 })
     gsap.set(statsRef.current, entranceStart({ opacity: 0, x: 20 }))
     gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
+    gsap.set(forwardRef.current, { opacity: 0 })
   }, [])
 
   useEffect(() => {
@@ -227,6 +234,8 @@ export default function Hero({ isVisible }) {
     const eyebrow = eyebrowRef.current
     const stats = statsRef.current
     const status = statusRef.current
+    const forward = forwardRef.current
+    const pulse = () => pulseAvailability(forward.querySelector('.availability-dot'))
 
     // Reduced motion: no typewriter or scramble. The final text goes in at once and
     // the whole Hero fades in together.
@@ -238,10 +247,7 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, stats, status], {
-        opacity: 1, duration: 0.6, ease: 'power2.out',
-        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
-      })
+      gsap.to([eyebrow, stats, status, forward], { opacity: 1, duration: 0.6, ease: 'power2.out', onComplete: pulse })
       return
     }
 
@@ -281,13 +287,11 @@ export default function Hero({ isVisible }) {
       timers, intervals, resolvers
     )
 
-    // Status bar fades in after full animation
+    // The availability line, its buttons and the status bar fade in after full animation
     const finalFadeT = setTimeout(() => {
       completedRef.current = true
-      gsap.to(status, {
-        opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-        onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
-      })
+      gsap.to(status, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
+      gsap.to(forward, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1, onComplete: pulse })
     }, siempreDoneAt + 150)
     timers.push(finalFadeT)
 
@@ -302,6 +306,7 @@ export default function Hero({ isVisible }) {
         gsap.set(eyebrow, { opacity: 1 })
         gsap.set(stats, { opacity: 1, x: 0 })
         gsap.set(status, { opacity: 1, y: 0 })
+        gsap.set(forward, { opacity: 1 })
         completedRef.current = true
       }
     }
@@ -387,6 +392,40 @@ export default function Hero({ isVisible }) {
               </div>
             </div>
           </div>
+
+          {/* What's next: the roles Israel is open to and two ways to get in touch, in
+              gold, the site's forward-looking accent. Gold text would be too faint on
+              the paper, so the gold is the availability dot and the buttons. Fades in
+              last, with the status bar. */}
+          <div ref={forwardRef} className="hero-forward">
+            <p className="hero-availability">
+              <span className="availability-dot" aria-hidden="true" />
+              <span>Open to technology analyst, IT, and project management roles — leveraging a software engineering background.</span>
+            </p>
+            <div className="hero-cta">
+              {/* Copies the address, as the Contact row does (#11), and reads "Copied"
+                  for a moment; where the clipboard refuses, it opens a mail app */}
+              <button
+                type="button"
+                className="cta cta-gold"
+                aria-describedby={emailId}
+                onClick={() => copy(EMAIL, () => { window.location.href = `mailto:${EMAIL}` })}
+              >
+                <span aria-live="polite">{copied ? 'Copied' : 'Email me'}</span>
+              </button>
+              <span id={emailId} hidden>{EMAIL}</span>
+              <a
+                href={RESUME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta cta-gold-outline"
+                onClick={trackResumeDownload}
+              >
+                Download resume
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Right column — always rendered. The portrait (the page's largest image, so
@@ -464,12 +503,11 @@ export default function Hero({ isVisible }) {
         style={{
           borderTop: '0.5px solid var(--color-line)',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr',
         }}
       >
         {/* Gold marks what's ahead (relocation), purple what's already true */}
         {[
-          { text: 'Available now' },
           { text: 'Open to relocation', color: 'var(--color-gold)' },
           { text: 'Bilingual EN / ES', color: 'var(--color-purple)' },
         ].map(({ text, color }, i) => (
@@ -477,15 +515,13 @@ export default function Hero({ isVisible }) {
             key={text}
             style={{
               padding: '12px 48px',
-              borderRight: i < 2 ? '0.5px solid var(--color-line)' : 'none',
+              borderRight: i === 0 ? '0.5px solid var(--color-line)' : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: 8,
             }}
           >
-            {color
-              ? <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
-              : <div className="availability-dot" />}
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
             <span className="eyebrow">{text}</span>
           </div>
         ))}

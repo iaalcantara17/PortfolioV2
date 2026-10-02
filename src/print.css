@@ -5,8 +5,9 @@
    - Chrome: the cursor dot, the nav, the section counters, the skip link,
      and anything that only appears on hover or tap (previews, tips, hints).
    - Overlays: the Lightbox and the mobile menu, if either was open.
-   - The Spotify widget (live, so stale on paper), the resume button (it opens a
-     file) and the Gallery, whose film reel is laid out for the screen.
+   - The Spotify widget (live, so stale on paper), the Hero's two buttons and the
+     resume button (they act, on a screen) and the Gallery, whose film reel is laid
+     out for the screen.
    Entrances that haven't played yet (sections not scrolled to) print in their end
    state, hover tilt is flattened, the photos print smaller, and project links print
    their address after their label. The LinkdUp card
@@ -45,6 +46,7 @@
   .link-tip-bubble,
   .tap-hint,
   .about-spotify,
+  .hero-cta,
   .page-content a[href$=".pdf"],
   #gallery {
     display: none !important;
@@ -65,7 +67,8 @@
   .grid-card,
   .headline-char,
   .link-row,
-  .hero-status {
+  .hero-status,
+  .hero-forward {
     opacity: 1 !important;
     transform: none !important;
   }

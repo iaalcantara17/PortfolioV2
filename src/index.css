@@ -1001,8 +1001,81 @@ nav.site-nav.scrolled {
   visibility: visible;
 }
 
-/* Availability dot — Hero status bar and Contact. Gold, so green stays the Spotify
-   signal. Its pulse runs from the section entrance (pulseAvailability in utils/motion.js) */
+/* The Hero's "what's next" block (Hero.jsx), at the foot of its left column: the
+   roles Israel is open to, led by the availability dot, then the two calls to
+   action. Gold is the forward-looking accent, carried by the dot and the buttons;
+   the text stays ink, since gold text is too faint on the paper. */
+.hero-forward {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin-bottom: 28px;
+}
+
+.hero-availability {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--color-ink);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* Lines the dot up with the first line of text */
+.hero-availability .availability-dot {
+  transform: translateY(-1px);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* A call to action: the Download Resume button's type, at least 44px tall. Gold fill
+   with the night ink on it (dark text on gold in both themes), or a gold outline. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cta-gold {
+  background: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  color: var(--color-night);
+}
+
+.cta-gold-outline {
+  background: none;
+  border: 1px solid var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Dims on hover for a fine pointer only, so a tap can't leave it dimmed */
+@media (hover: hover) and (pointer: fine) {
+  .cta:hover {
+    opacity: 0.8;
+  }
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+
+/* Availability dot — the Hero's availability line and Contact. Gold, so green stays
+   the Spotify signal. Its pulse runs from the section entrance (pulseAvailability in
+   utils/motion.js) */
 .availability-dot {
   width: 7px;
   height: 7px;
@@ -1037,6 +1110,10 @@ nav.site-nav.scrolled {
   }
   .hero-status {
     margin-top: 48px;
+  }
+  /* The left column's space-between leaves no gap once it stacks */
+  .hero-forward {
+    margin-top: 40px;
   }
   /* Stacked, the columns keep the bottom padding they had before the desktop status
      bar moved into the flow (their inline 20px is for desktop) */
