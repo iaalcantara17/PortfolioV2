@@ -79,6 +79,8 @@ test.describe('the toggle', () => {
     await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'no-preference' })
     await page.goto('/')
     await toggle(page).click()
+    // The switch lands a frame later, once the cross-fade has its snapshot
+    await expect(html(page)).toHaveAttribute('data-theme', 'dark')
     // The sun's disc is still on its way to the moon's
     const running = await page.locator('.theme-toggle-disc').evaluate((el) => el.getAnimations().length)
     expect(running).toBeGreaterThan(0)
@@ -94,5 +96,50 @@ test.describe('the toggle', () => {
     expect(await disc.evaluate((el) => el.getAnimations().length)).toBe(0)
     // Already the moon's full disc
     expect(await disc.evaluate((el) => getComputedStyle(el).transform)).toBe('none')
+  })
+})
+
+// The page's colors cross-fade between themes through a view transition. Each test
+// counts the toggle's calls to document.startViewTransition.
+test.describe('the cross-fade', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__viewTransitions = 0
+      const start = Document.prototype.startViewTransition
+      if (!start) return
+      Document.prototype.startViewTransition = function (...args) {
+        window.__viewTransitions++
+        return start.apply(this, args)
+      }
+    })
+  })
+  const fades = (page) => page.evaluate(() => window.__viewTransitions)
+
+  test('the toggle fades the page between themes', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'no-preference' })
+    await page.goto('/')
+    test.skip(!(await page.evaluate(() => 'startViewTransition' in document)), 'No View Transitions in this browser')
+    await toggle(page).click()
+    await expect(html(page)).toHaveAttribute('data-theme', 'dark')
+    expect(await fades(page)).toBe(1)
+    expect(await pageColor(page)).toBe(DARK)
+  })
+
+  test('under reduced motion, the toggle switches without the fade', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' })
+    await page.goto('/')
+    await toggle(page).click()
+    await expect(html(page)).toHaveAttribute('data-theme', 'dark')
+    expect(await fades(page)).toBe(0)
+    expect(await pageColor(page)).toBe(DARK)
+  })
+
+  test('without View Transitions, the toggle still switches', async ({ page }) => {
+    await page.addInitScript(() => delete Document.prototype.startViewTransition)
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'no-preference' })
+    await page.goto('/')
+    await toggle(page).click()
+    await expect(html(page)).toHaveAttribute('data-theme', 'dark')
+    expect(await pageColor(page)).toBe(DARK)
   })
 })

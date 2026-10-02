@@ -1,6 +1,11 @@
+import { prefersReducedMotion } from './motion'
+
 // Light or dark, once the app runs. public/theme.js has already set <html data-theme>
 // before the first paint; this keeps it current:
 // - setTheme: the nav's toggle. The choice is kept in localStorage for later visits.
+//   The page cross-fades to it with a view transition (timed by ::view-transition
+//   in index.css); under reduced motion, or without view transitions, it switches
+//   at once.
 // - With no choice stored, the page follows the system setting as it changes.
 // - A choice made in another tab applies here too.
 // The address bar's color (<meta name="theme-color">) follows the page's own
@@ -36,7 +41,8 @@ export function setTheme(theme) {
   } catch {
     // Storage blocked: the choice holds for this page view only
   }
-  apply(theme)
+  if (prefersReducedMotion || !document.startViewTransition) apply(theme)
+  else document.startViewTransition(() => apply(theme))
 }
 
 export function subscribeTheme(listener) {

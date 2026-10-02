@@ -597,6 +597,14 @@ nav.site-nav.scrolled {
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
+/* The page's cross-fade between themes (setTheme in utils/theme.js): the browser's
+   own fade from a snapshot of the old theme to the new, shortened. The toggle's icon
+   keeps morphing underneath, since the new side is live. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+}
+
 /* Mobile nav menu overlay */
 @keyframes menuFadeIn {
   from { opacity: 0; transform: translateY(-8px); }
@@ -1265,7 +1273,8 @@ nav.site-nav.scrolled {
    no smooth scrolling, the mobile menu only fades, no hover tilt, the section dot's
    scaled active state switches without animating, the theme toggle's sun and moon
    swap without the morph, and the menu toggle's bars switch to the X without it.
-   (The Gallery reel moves instantly, in FilmReel.jsx.) */
+   (The Gallery reel moves instantly, in FilmReel.jsx; the theme switches without
+   its cross-fade, in utils/theme.js.) */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
