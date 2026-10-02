@@ -16,7 +16,7 @@ const SCRAMBLE_TICK = 40
 const NAME_LINE1 = 'Israel'.split('').map(ch => ({ ch }))
 const NAME_LINE2 = [
   { ch: 'A' }, { ch: 'l' }, { ch: 'c' },
-  { ch: 'á' },
+  { ch: 'a' },
   { ch: 'n' },
   { ch: ' ', noScramble: true },
   { ch: '—', style: { color: 'var(--color-purple)', fontSize: '0.8em', fontWeight: '700' } },
@@ -359,7 +359,7 @@ export default function Hero({ isVisible }) {
                 the plain name; the typed-out lines (split surname, dash, scramble) are
                 hidden from them. */}
             <h1 style={{ marginBottom: 32 }}>
-              <span className="sr-only">Israel Alcántara</span>
+              <span className="sr-only">Israel Alcantara</span>
               <span aria-hidden="true" style={{ display: 'block' }}>
                 <span ref={word1Ref} style={wordStyle} />
                 <span ref={word2Ref} style={wordStyle} />

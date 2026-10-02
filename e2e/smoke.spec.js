@@ -15,7 +15,7 @@ test.describe('page load', () => {
     })
 
     await page.goto('/')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcántara')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcantara')
     // Every section, so lazy images and each section's entrance load and run too
     for (const id of SECTIONS) {
       await goToSection(page, id)
@@ -201,7 +201,7 @@ test.describe('external links', () => {
     await page.goto('/')
     // The links are read once, not retried, so the app has to have rendered first. The
     // whole page renders in one go, so once the Hero's heading is there, every link is.
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcántara')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcantara')
     const links = await page.locator('a[target="_blank"]').evaluateAll((els) =>
       els.map((a) => ({ href: a.getAttribute('href'), rel: (a.getAttribute('rel') ?? '').split(/\s+/) })),
     )

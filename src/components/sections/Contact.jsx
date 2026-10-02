@@ -236,7 +236,7 @@ export default function Contact({ isVisible }) {
           alignItems: 'center',
         }}
       >
-        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, {import.meta.env.BUILD_YEAR}</span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcantara, {import.meta.env.BUILD_YEAR}</span>
         <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
       </div>
     </section>

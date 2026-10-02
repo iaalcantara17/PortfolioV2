@@ -70,7 +70,7 @@ function siteSeo() {
 }
 
 // The build's month and year, for the Contact footer ("Updated September 2026",
-// "Israel Alcántara, 2026"), fixed when the site is built so they can't go stale or
+// "Israel Alcantara, 2026"), fixed when the site is built so they can't go stale or
 // be forgotten. In New York time: Vercel builds in UTC, which would already show the
 // next month for the last hours of each month.
 function buildDate() {

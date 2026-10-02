@@ -51,6 +51,6 @@ export const photoAlt = {
   city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
   friends: 'Two friends seen from behind at a railing at night, one in a green and gold varsity jacket.',
   nature: 'Looking up through a canopy of tall pine trees.',
-  portrait: 'Portrait of Israel Alcántara.',
+  portrait: 'Portrait of Israel Alcantara.',
   streetwear: 'Israel standing on a grassy coastal hillside.',
 }
