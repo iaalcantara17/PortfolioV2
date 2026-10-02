@@ -95,7 +95,7 @@
   /* Night — for what is dark in both themes, so its colors never follow the page's:
      the film reel (its black band, cream sprockets and chevrons, and the current
      photo's ring), the Lightbox (its controls and missing-photo tile), and the
-     LinkdUp card's Live Demo button, purple on the card in both themes. The paper-,
+     LinkdUp card's Screenshots button, purple on the card in both themes. The paper-,
      white- and ink-a92 tints above are only used on these and on the LinkdUp card
      in the light theme, so they stay put too. */
   --color-night: #0d0d0d;
@@ -1151,20 +1151,13 @@ nav.site-nav.scrolled {
   .body-para-list {
     gap: 24px !important;
   }
-  /* Skills/Experience/Projects left column — title-to-subtitle spacing standardized to
-     24px, and flex-start instead of space-between so no leftover height gets distributed
-     as an inconsistent extra gap between the intro text and the stat block */
+  /* Skills/Experience/Education/Projects section titles — title-to-subtitle spacing
+     standardized to 24px */
   .section-intro-title {
     margin-bottom: 24px !important;
   }
-  .section-left-col {
-    justify-content: flex-start !important;
-  }
-  .section-stat {
-    margin-top: 32px;
-  }
   /* Contact's "Available now" sits at the bottom of its column through space-between,
-     which leaves no gap once the column stacks: the same 32px as a stat */
+     which leaves no gap once the column stacks: 32px */
   .contact-availability {
     margin-top: 32px;
   }

@@ -244,6 +244,21 @@ its reduced-motion gating unchanged:
   tab", the noscript link, or direct visits to the PDF or /resume.pdf. 
   The endpoint is public, so anyone can read the count or add to it.
 
+- Contact details and calls to action: src/data/contact.js holds the 
+  email address and the resume's path for the Hero, Nav and Contact 
+  (index.html's no-JavaScript page and the e2e tests write them out by 
+  hand). The Hero's Email me copies the address through 
+  hooks/useCopyText.js, the same copy-on-click as Contact's row (#11), 
+  and falls back to a mailto: link where the clipboard refuses.
+- Hover previews: components/HoverPreview.jsx, placed by 
+  utils/follower.js. A follower's shown state is its own (.is-shown), 
+  and followPointer/hideFollower take a follower selector, so the 
+  LinkdUp card holds two: the certificate's (on its button) and the 
+  screens' (on the card's body), which cycles while hovered. The 
+  screens are linkdup-screen-1 to -3 in the photo pipeline, provisional 
+  captures of linkdup.app's onboarding; replace them under the same 
+  names. Every photo named linkdup- stays out of the Gallery.
+
 ## Locked — do not change without explicit approval
 
 - The design system: DM Serif Display, the layout grid, and the purple/

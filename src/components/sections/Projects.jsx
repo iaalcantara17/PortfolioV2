@@ -146,7 +146,9 @@ export default function Projects({ isVisible }) {
   // What the Lightbox shows (the certificate or the screens), and which one; index null
   // when it's closed. Closing keeps the photos, so the closing fade still has them.
   const [lightbox, setLightbox] = useState({ photos: certificates, index: null })
-  // Whether a mouse is over the LinkdUp card's body, which cycles its screens preview
+  // Whether a mouse is on the LinkdUp card, which cycles its screens preview. It keeps
+  // cycling while the preview hides over a button, and starts again from the first
+  // screen only once the pointer leaves the card.
   const [screensActive, setScreensActive] = useState(false)
 
   // The screens preview follows a mouse over the card, but not over its buttons and
@@ -154,10 +156,9 @@ export default function Projects({ isVisible }) {
   const screensPreviewProps = {
     onPointerMove: (e) => {
       if (e.pointerType !== 'mouse') return
-      const overControl = e.target.closest('a, button')
-      if (overControl) hideFollower(e, e.currentTarget, { follower: SCREENS })
+      if (e.target.closest('a, button')) hideFollower(e, e.currentTarget, { follower: SCREENS })
       else followPointer(e, e.currentTarget, { follower: SCREENS })
-      setScreensActive(!overControl)
+      setScreensActive(true)
     },
     onPointerLeave: (e) => {
       hideFollower(e, e.currentTarget, { follower: SCREENS })
@@ -209,7 +210,6 @@ export default function Projects({ isVisible }) {
       >
         {/* Left column */}
         <div
-          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',

@@ -238,10 +238,17 @@ test.describe('LinkdUp screenshots', () => {
   })
 
   // The screenshots go through the photo pipeline like the Gallery's photos, but stay
-  // out of it: four photos, one dot each
+  // out of it: the reel's middle frame never shows one, all the way round
   test('the Gallery reel leaves them out', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/#gallery')
-    await expect(page.locator('.reel-dots span')).toHaveCount(4)
+    const count = await page.locator('.reel-dots span').count()
+    expect(count).toBeGreaterThan(0)
+    const middle = page.locator('.reel-frame[tabindex="0"] img')
+    for (let i = 0; i < count; i++) {
+      await expect(middle).not.toHaveAttribute('src', /linkdup-/)
+      await page.locator('.reel-arrow-right').click()
+    }
   })
 })
 

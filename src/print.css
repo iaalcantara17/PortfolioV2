@@ -5,9 +5,9 @@
    - Chrome: the cursor dot, the nav, the section counters, the skip link,
      and anything that only appears on hover or tap (previews, tips, hints).
    - Overlays: the Lightbox and the mobile menu, if either was open.
-   - The Spotify widget (live, so stale on paper), the Hero's two buttons and the
-     resume button (they act, on a screen) and the Gallery, whose film reel is laid
-     out for the screen.
+   - The Spotify widget (live, so stale on paper), the Hero's two buttons, the
+     LinkdUp card's Screenshots and Certificate and the resume button (they act, on
+     a screen) and the Gallery, whose film reel is laid out for the screen.
    Entrances that haven't played yet (sections not scrolled to) print in their end
    state, hover tilt is flattened, the photos print smaller, and project links print
    their address after their label. The LinkdUp card
@@ -47,6 +47,7 @@
   .tap-hint,
   .about-spotify,
   .hero-cta,
+  .featured-card button,
   .page-content a[href$=".pdf"],
   #gallery {
     display: none !important;
@@ -87,7 +88,7 @@
     print-color-adjust: exact;
   }
 
-  /* Project links print as their label and address, "Live Demo (linkdup.app)", the
+  /* Project links print as their label and address, "GitHub (github.com/...)", the
      way Contact shows its addresses. The button styling (set inline) comes off so a
      long address wraps like text, and the ↗ goes, since nothing opens on paper. */
   a[data-print-url] {
