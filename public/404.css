@@ -1,99 +1,97 @@
+:root {
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --color-paper: #f5f2ec;
+  --color-line: #d4cfc5;
+  --color-ink: #0d0d0d;
+  --color-muted: #666666;
+  --color-purple: #7F77DD;
+}
 
-      :root {
-        --font-serif: 'DM Serif Display', Georgia, serif;
-        --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        --color-paper: #f5f2ec;
-        --color-line: #d4cfc5;
-        --color-ink: #0d0d0d;
-        --color-muted: #666666;
-        --color-purple: #7F77DD;
-      }
+/* The dark theme's values for the same tokens, also copied from index.css.
+   public/theme.js sets data-theme here as on the site. */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-paper: #0e0e10;
+    --color-line: #2e2e34;
+    --color-ink: #ecebe7;
+    --color-muted: #9a9791;
+    --color-purple: #8b84e8;
+  }
+}
 
-      /* The dark theme's values for the same tokens, also copied from index.css.
-         public/theme.js sets data-theme here as on the site. */
-      @media screen {
-        :root[data-theme="dark"] {
-          color-scheme: dark;
-          --color-paper: #0e0e10;
-          --color-line: #2e2e34;
-          --color-ink: #ecebe7;
-          --color-muted: #9a9791;
-          --color-purple: #8b84e8;
-        }
-      }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-      *, *::before, *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-      body {
-        background-color: var(--color-paper);
-        color: var(--color-ink);
-        font-family: var(--font-sans);
-        font-size: 13px;
-        line-height: 1.85;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
+main {
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 96px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
 
-      main {
-        max-width: 480px;
-        min-height: 100vh;
-        margin: 0 auto;
-        padding: 96px 24px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 24px;
-      }
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
 
-      .eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 10px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--color-muted);
-      }
+.eyebrow::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: var(--color-purple);
+  flex-shrink: 0;
+}
 
-      .eyebrow::before {
-        content: "";
-        width: 32px;
-        height: 1px;
-        background: var(--color-purple);
-        flex-shrink: 0;
-      }
+h1 {
+  font-family: var(--font-serif);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
 
-      h1 {
-        font-family: var(--font-serif);
-        font-size: 52px;
-        font-weight: 400;
-        line-height: 0.92;
-        letter-spacing: -0.03em;
-      }
+p:not(.eyebrow) {
+  color: var(--color-muted);
+}
 
-      p:not(.eyebrow) {
-        color: var(--color-muted);
-      }
+/* The nav's Resume button */
+a {
+  align-self: flex-start;
+  border: 0.5px solid var(--color-line);
+  border-radius: 2px;
+  padding: 6px 14px;
+  color: var(--color-ink);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
 
-      /* The nav's Resume button */
-      a {
-        align-self: flex-start;
-        border: 0.5px solid var(--color-line);
-        border-radius: 2px;
-        padding: 6px 14px;
-        color: var(--color-ink);
-        font-size: 10px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        text-decoration: none;
-      }
-
-      a:focus-visible {
-        outline: 2px solid var(--color-purple);
-        outline-offset: 2px;
-      }
-    
+a:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}

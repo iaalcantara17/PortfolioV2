@@ -116,7 +116,7 @@ export default function Education({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return

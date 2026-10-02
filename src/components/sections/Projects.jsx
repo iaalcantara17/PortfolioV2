@@ -96,6 +96,19 @@ function NoteLink({ link, style }) {
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
+// The grid cards' links and More on GitHub: small purple outlined buttons
+const outlineLinkStyle = {
+  display: 'inline-flex',
+  padding: '4px 10px',
+  border: '0.5px solid var(--color-purple-a40)',
+  borderRadius: 4,
+  fontSize: 10,
+  color: 'var(--color-purple-deep)',
+  textDecoration: 'none',
+  letterSpacing: '0.04em',
+  fontFamily: 'var(--font-sans)',
+}
+
 // LinkdUp's capstone certificate, opened in the Lightbox like the NJIT diploma in Education
 const certificates = [
   {
@@ -119,7 +132,7 @@ export default function Projects({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -383,17 +396,7 @@ export default function Projects({ isVisible }) {
                     data-print-url={printUrl(l.url)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
-                      border: '0.5px solid var(--color-purple-a40)',
-                      borderRadius: 4,
-                      fontSize: 10,
-                      color: 'var(--color-purple-deep)',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                      fontFamily: 'var(--font-sans)',
-                    }}
+                    style={outlineLinkStyle}
                   >
                     <span>{l.label} <span className="link-arrow">↗</span></span>
                   </a>
@@ -443,26 +446,15 @@ export default function Projects({ isVisible }) {
                   // The demo runs on Streamlit, which puts idle apps to sleep
                   { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
                   { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
-                ].map((l) => {
-                  const style = {
-                    display: 'inline-flex',
-                    padding: '4px 10px',
-                    border: '0.5px solid var(--color-purple-a40)',
-                    borderRadius: 4,
-                    fontSize: 10,
-                    color: 'var(--color-purple-deep)',
-                    textDecoration: 'none',
-                    letterSpacing: '0.04em',
-                    fontFamily: 'var(--font-sans)',
-                  }
-                  return l.note ? (
-                    <NoteLink key={l.label} link={l} style={style} />
+                ].map((l) =>
+                  l.note ? (
+                    <NoteLink key={l.label} link={l} style={outlineLinkStyle} />
                   ) : (
-                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={style}>
+                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={outlineLinkStyle}>
                       <span>{l.label} <span className="link-arrow">↗</span></span>
                     </a>
-                  )
-                })}
+                  ),
+                )}
               </div>
             </div>
           </div>
@@ -485,17 +477,7 @@ export default function Projects({ isVisible }) {
               data-print-url={printUrl('https://github.com/iaalcantara17')}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                padding: '4px 10px',
-                border: '0.5px solid var(--color-purple-a40)',
-                borderRadius: 4,
-                fontSize: 10,
-                color: 'var(--color-purple-deep)',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-                fontFamily: 'var(--font-sans)',
-              }}
+              style={outlineLinkStyle}
             >
               <span>More on GitHub <span className="link-arrow">↗</span></span>
             </a>

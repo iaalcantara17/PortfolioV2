@@ -36,8 +36,8 @@ export const galleryPhotos = Object.keys(photoByName)
 export const srcSet = (photo, format, widths = WIDTHS) =>
   widths.map((w) => `${photo.variants[w][format]} ${photo.variants[w].width}w`).join(', ')
 
-// sizes for a photo scaled to fit inside a box without cropping (Gallery stage,
-// Lightbox): the width it's actually drawn at, in CSS px. A tall photo in a wide box
+// sizes for a photo scaled to fit inside a box without cropping (the Lightbox): the
+// width it's actually drawn at, in CSS px. A tall photo in a wide box
 // is drawn by its height, far narrower than the box, so the box width alone would
 // fetch a much bigger file than it needs.
 export const containSizes = (photo, boxWidth, boxHeight) => {
@@ -45,8 +45,8 @@ export const containSizes = (photo, boxWidth, boxHeight) => {
   return `${Math.ceil(Math.min(boxWidth, boxHeight * (width / height)))}px`
 }
 
-// Approved descriptions, by photo file. Gallery shows the same files and borrows
-// these until it has descriptions of its own.
+// Approved descriptions, by photo file: the alt text wherever the photo appears (Hero,
+// About, the Gallery reel and its Lightbox).
 export const photoAlt = {
   city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
   friends: 'Two friends seen from behind at a railing at night, one in a green and gold varsity jacket.',
