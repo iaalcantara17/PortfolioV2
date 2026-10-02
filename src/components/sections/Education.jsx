@@ -36,7 +36,7 @@ const schools = [
     period: 'Aug 2026 — Expected Fall 2028',
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
-    blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of how technology actually ships.',
+    blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of technology.',
     coursework: 'Global Economy, Business Statistics, Strategic Information Systems, and Business Essentials.',
   },
 ]
