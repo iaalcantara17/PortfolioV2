@@ -152,20 +152,6 @@ export default function Experience({ isVisible }) {
               Not just what I built, but where I was, what I did, and how I carried myself doing it.
             </p>
           </div>
-          <div data-animate className="section-stat">
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 42,
-                letterSpacing: '-0.03em',
-                color: 'var(--color-ink)',
-                lineHeight: 1,
-              }}
-            >
-              4<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
-            </div>
-            <div className="eyebrow" style={{ marginTop: 4 }}>Years of experience</div>
-          </div>
         </div>
 
         {/* Right column */}
@@ -209,29 +195,6 @@ export default function Experience({ isVisible }) {
               </div>
             )
           })}
-
-          {/* Legend */}
-          <div
-            className="exp-legend"
-            style={{
-              padding: '14px 48px',
-              borderTop: '0.5px solid var(--color-line)',
-              display: 'flex',
-              gap: 24,
-              alignItems: 'center',
-            }}
-          >
-            {[
-              { color: 'var(--color-purple)', label: 'Tech' },
-              { color: 'var(--color-gold)', label: 'Leadership' },
-              { color: 'var(--color-green)', label: 'Operations' },
-            ].map((l) => (
-              <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color, flexShrink: 0 }} />
-                <span className="eyebrow">{l.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
