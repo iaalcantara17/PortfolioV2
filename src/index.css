@@ -597,7 +597,7 @@ nav.site-nav.scrolled {
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-/* The page's cross-fade between themes (setTheme in utils/theme.js): the browser's
+/* The page's cross-fade between themes (toggleTheme in utils/theme.js): the browser's
    own fade from a snapshot of the old theme to the new, shortened. The toggle's icon
    keeps morphing underneath, since the new side is live. */
 ::view-transition-old(root),
@@ -1221,10 +1221,10 @@ nav.site-nav.scrolled {
   display: none;
 }
 
-/* About, Education and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
-   their content is taller than one screen. The section grows to fit instead of
-   scrolling inside a column, which only a mouse wheel could reach. Where it fits
-   (1440×900) it stays exactly one screen tall. */
+/* Hero, About, Education and Projects — desktop: on shorter screens (1366×768,
+   1280×720, 1024×768) their content is taller than one screen. The section grows to fit
+   instead of scrolling inside a column, which only a mouse wheel could reach. Where
+   it fits (1440×900) it stays exactly one screen tall. */
 @media (min-width: 1024px) {
   .section-wrapper:has(> .page-section.fit-content) {
     height: auto !important;

@@ -125,6 +125,20 @@ test.describe('the cross-fade', () => {
     expect(await pageColor(page)).toBe(DARK)
   })
 
+  // Both clicks land before the first switch does (it waits a frame for the fade's
+  // snapshot), so the second has to toggle from the first's choice
+  test('a second click during the fade toggles back', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'no-preference' })
+    await page.goto('/')
+    await toggle(page).evaluate((button) => {
+      button.click()
+      button.click()
+    })
+    await expect.poll(() => page.evaluate(() => localStorage.getItem('theme'))).toBe('light')
+    await expect(html(page)).toHaveAttribute('data-theme', 'light')
+    await expect(toggle(page)).toHaveAccessibleName(LABEL.light)
+  })
+
   test('under reduced motion, the toggle switches without the fade', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' })
     await page.goto('/')
