@@ -206,20 +206,6 @@ export default function Projects({ isVisible }) {
               Projects I can speak to in full, start to finish.
             </p>
           </div>
-          <div data-animate className="section-stat">
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 42,
-                letterSpacing: '-0.03em',
-                color: 'var(--color-ink)',
-                lineHeight: 1,
-              }}
-            >
-              3
-            </div>
-            <div className="eyebrow" style={{ marginTop: 4 }}>Projects I own</div>
-          </div>
         </div>
 
         {/* Right column */}
@@ -461,19 +447,15 @@ export default function Projects({ isVisible }) {
             </div>
           </div>
 
-          {/* Bottom note, with the rest of the projects on GitHub at its end */}
+          {/* The rest of the projects, on GitHub, under a rule at the end */}
           <div
             style={{
               borderTop: '0.5px solid var(--color-line)',
               paddingTop: 14,
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 12,
+              justifyContent: 'flex-end',
             }}
           >
-            <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Only projects I built and can fully speak to.</span>
             <a
               href="https://github.com/iaalcantara17"
               data-print-url={printUrl('https://github.com/iaalcantara17')}
