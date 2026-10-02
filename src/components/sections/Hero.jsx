@@ -424,7 +424,7 @@ export default function Hero({ isVisible }) {
             />
           </div>
 
-          {/* Stats with gold suffixes */}
+          {/* Stats, with their suffixes in purple: both are done (achieved = purple) */}
           <div ref={statsRef} style={{ width: '100%', maxWidth: 420, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '0.5px solid var(--color-line)', borderRadius: 4 }}>
             {[
               { num: '12', suffix: 'W', label: 'AWS Internship' },
@@ -447,7 +447,7 @@ export default function Hero({ isVisible }) {
                     marginBottom: 4,
                   }}
                 >
-                  {item.num}<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{item.suffix}</span>
+                  {item.num}<span style={{ color: 'var(--color-purple)', fontWeight: 600 }}>{item.suffix}</span>
                 </div>
                 <div className="eyebrow">{item.label}</div>
               </div>
@@ -467,11 +467,12 @@ export default function Hero({ isVisible }) {
           gridTemplateColumns: '1fr 1fr 1fr',
         }}
       >
+        {/* Gold marks what's ahead (relocation), purple what's already true */}
         {[
-          'Available now',
-          'Open to relocation',
-          'Bilingual EN / ES',
-        ].map((text, i) => (
+          { text: 'Available now' },
+          { text: 'Open to relocation', color: 'var(--color-gold)' },
+          { text: 'Bilingual EN / ES', color: 'var(--color-purple)' },
+        ].map(({ text, color }, i) => (
           <div
             key={text}
             style={{
@@ -482,9 +483,9 @@ export default function Hero({ isVisible }) {
               gap: 8,
             }}
           >
-            {text === 'Available now'
-              ? <div className="availability-dot" />
-              : <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-gold)', flexShrink: 0 }} />}
+            {color
+              ? <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
+              : <div className="availability-dot" />}
             <span className="eyebrow">{text}</span>
           </div>
         ))}

@@ -8,7 +8,7 @@ import { entranceStart, entranceEnd } from '../../utils/motion'
 
 const interestTiers = [
   { pills: ['Music', 'Fashion', 'Photography', 'Basketball'], type: 'purple' },
-  { pills: ['Gym', 'Running', 'Hiking'], type: 'gold' },
+  { pills: ['Gym', 'Running', 'Hiking'], type: 'plain' },
   { pills: ['Drawing', 'Piano'], type: 'plain' },
 ]
 
@@ -99,8 +99,8 @@ export default function About({ isVisible }) {
             ))}
           </div>
 
-          {/* Gold divider */}
-          <div data-animate style={{ width: 32, height: 1, background: 'var(--color-gold)' }} />
+          {/* Divider */}
+          <div data-animate style={{ width: 32, height: 1, background: 'var(--color-purple)' }} />
 
           {/* Interests */}
           <div>

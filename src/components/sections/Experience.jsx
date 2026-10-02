@@ -9,7 +9,6 @@ const roles = [
     location: 'Arlington, VA',
     period: 'May 2025 — Aug 2025',
     tag: 'Tech',
-    tagColor: 'purple',
     desc: (
       <>
         Built a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, reducing payloads by up to{' '}
@@ -23,7 +22,6 @@ const roles = [
     location: 'Newark, NJ',
     period: 'Jun 2025 — May 2026',
     tag: 'Leadership',
-    tagColor: 'gold',
     desc: (
       <>
         Supervise a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. Enforce housing policy, conduct regular rounds, author formal incident reports, and design monthly community events on a sub-$1k semester budget.
@@ -36,7 +34,6 @@ const roles = [
     location: '',
     period: 'Mar 2024 — May 2025',
     tag: 'Leadership',
-    tagColor: 'gold',
     desc: (
       <>
         Planned and executed{' '}
@@ -50,7 +47,6 @@ const roles = [
     location: '',
     period: 'Oct 2022 — May 2026',
     tag: 'Operations',
-    tagColor: 'green',
     desc: (
       <>
         Troubleshot AV systems end-to-end across{' '}
@@ -64,7 +60,6 @@ const roles = [
     location: 'Long Branch, NJ',
     period: 'Jul 2023 — Sep 2023',
     tag: 'Operations',
-    tagColor: 'green',
     desc: (
       <>
         Monitored three pools, ran daily chemical checks, and delivered CPR/first aid when needed, safeguarding{' '}
@@ -186,7 +181,7 @@ export default function Experience({ isVisible }) {
                       </div>
                     </div>
                     <div className="exp-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-                      <span className={`tag pill-${role.tagColor}`}>{role.tag}</span>
+                      <span className="tag pill-purple">{role.tag}</span>
                       <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>{role.period}</span>
                     </div>
                   </div>

@@ -59,16 +59,17 @@
   --color-faint: #6e6e6e;
   --color-white: #fff;
 
-  /* Accents. Green pill text uses the darker green-deep, which meets WCAG AA on
-     its tint. Gold text (stat suffixes, "Scroll", gold pills) keeps the lighter
-     brand golds by choice, below AA contrast. */
+  /* Accents, by meaning. Gold marks what's ahead: the availability line, the Hero's
+     calls to action, target roles, a degree in progress. Purple marks what's done or
+     earned: a finished degree, the internship, an award, completed roles. Gold pill
+     text keeps the lighter brand golds by choice, below AA contrast. Green is
+     Spotify's alone. */
   --color-purple: #7F77DD;
   --color-purple-deep: #534AB7;
   --color-purple-ink: #403B6E;
   --color-gold: #D4AF37;
   --color-gold-deep: #9a7d1a;
   --color-green: #1D9E75;
-  --color-green-deep: #157456;      /* green pill text on its tint */
 
   /* Translucent — suffix is the alpha, e.g. a12 = 0.12 */
   --color-purple-a12: rgba(127, 119, 221, 0.12);
@@ -76,8 +77,6 @@
   --color-purple-a40: rgba(127, 119, 221, 0.4);
   --color-gold-a12: rgba(212, 175, 55, 0.12);
   --color-gold-a40: rgba(212, 175, 55, 0.4);
-  --color-green-a12: rgba(29, 158, 117, 0.12);
-  --color-green-a30: rgba(29, 158, 117, 0.3);
   --color-paper-a30: rgba(245, 242, 236, 0.3);
   --color-paper-a50: rgba(245, 242, 236, 0.5);
   --color-paper-a70: rgba(245, 242, 236, 0.7);
@@ -115,6 +114,8 @@
   --color-feature-outline: var(--color-paper-a30);
   --color-feature-tag: var(--color-white-a08);
   --color-feature-tag-edge: var(--color-white-a15);
+  /* Purple text on the card: the dark theme's purple-deep on this dark card */
+  --color-feature-accent: #a59ef2;
 }
 
 /* Dark theme: <html data-theme="dark">, set before the first paint by public/theme.js
@@ -140,7 +141,6 @@
     --color-purple: #8b84e8;
     --color-purple-deep: #a59ef2;
     --color-purple-ink: #bdb7f7;
-    --color-green-deep: #3cc496;
 
     --color-paper-a72: rgba(14, 14, 16, 0.72);
     --color-black-a04: rgba(255, 255, 255, 0.04);
@@ -156,6 +156,7 @@
     --color-feature-outline: #d4cfc5;
     --color-feature-tag: transparent;
     --color-feature-tag-edge: #d4cfc5;
+    --color-feature-accent: #534AB7;
   }
 }
 
@@ -632,10 +633,12 @@ nav.site-nav.scrolled {
   color: var(--color-gold-deep);
 }
 
-.pill-green {
-  background: var(--color-green-a12);
-  border-color: var(--color-green-a30);
-  color: var(--color-green-deep);
+/* The LinkdUp card's award: .pill-purple, with its text in a purple that reads on
+   the card in either theme (--color-feature-accent) */
+.pill-feature-purple {
+  background: var(--color-purple-a12);
+  border-color: var(--color-purple-a30);
+  color: var(--color-feature-accent);
 }
 
 /* The LinkdUp card's tech tags (its --color-feature tokens) */
