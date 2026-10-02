@@ -249,7 +249,7 @@ export default function Education({ isVisible }) {
                 </svg>
               )}
 
-              {s.diploma && <HoverPreview image={s.diploma.image} />}
+              {s.diploma && <HoverPreview images={[s.diploma.image]} />}
 
               {/* Hover label, positioned by hoverOnlyProps (see .card-follower).
                   aria-hidden: the status pill already says the same to screen readers. */}

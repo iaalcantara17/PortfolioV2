@@ -53,6 +53,60 @@
       }
     }
   },
+  "linkdup-screen-1": {
+    "width": 1170,
+    "height": 1992,
+    "variants": {
+      "400": {
+        "width": 235,
+        "height": 400
+      },
+      "1200": {
+        "width": 705,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1170,
+        "height": 1992
+      }
+    }
+  },
+  "linkdup-screen-2": {
+    "width": 1170,
+    "height": 1992,
+    "variants": {
+      "400": {
+        "width": 235,
+        "height": 400
+      },
+      "1200": {
+        "width": 705,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1170,
+        "height": 1992
+      }
+    }
+  },
+  "linkdup-screen-3": {
+    "width": 1170,
+    "height": 1992,
+    "variants": {
+      "400": {
+        "width": 235,
+        "height": 400
+      },
+      "1200": {
+        "width": 705,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1170,
+        "height": 1992
+      }
+    }
+  },
   "nature": {
     "width": 4000,
     "height": 6000,

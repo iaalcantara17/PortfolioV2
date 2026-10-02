@@ -956,6 +956,20 @@ nav.site-nav.scrolled {
   height: auto;
 }
 
+/* Its images share one cell; the current one shows, and the next cross-fades in as a
+   preview of several cycles (HoverPreview.jsx). One image is always current. */
+.card-hover-preview {
+  display: grid;
+}
+.card-hover-preview > span {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.card-hover-preview > .is-current {
+  opacity: 1;
+}
+
 /* Hover label on a card that opens nothing (Montclair's "In progress"): a follower
    styled like the photo caption chip in About */
 .card-hover-label {
@@ -1308,6 +1322,10 @@ nav.site-nav.scrolled {
     transition: none !important;
   }
   .hamburger-line {
+    transition: none;
+  }
+  /* A cycling hover preview swaps its images without the cross-fade */
+  .card-hover-preview > span {
     transition: none;
   }
 }

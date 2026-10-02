@@ -200,6 +200,51 @@ test.describe('resume', () => {
   })
 })
 
+test.describe('LinkdUp screenshots', () => {
+  const card = (page) => page.locator('.featured-card')
+  const screens = (page) => card(page).locator('.linkdup-screens')
+
+  test('hovering the card shows its screenshots, one after another', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('heading', { name: 'LinkdUp' }).hover()
+    await expect(screens(page)).toHaveClass(/is-shown/)
+    const first = await screens(page).getAttribute('data-current')
+    await expect.poll(() => screens(page).getAttribute('data-current'), { timeout: 5000 }).not.toBe(first)
+    await page.mouse.move(5, 5)
+    await expect(screens(page)).not.toHaveClass(/is-shown/)
+  })
+
+  // The card holds two previews; over the Certificate button, only its own shows
+  test('hovering Certificate shows only the certificate preview', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('button', { name: /View certificate/ }).hover()
+    await expect(card(page).locator('.certificate-preview')).toHaveClass(/is-shown/)
+    await expect(screens(page)).not.toHaveClass(/is-shown/)
+  })
+
+  test.describe('on touch', () => {
+    test.use({ hasTouch: true })
+
+    test('a tap shows no preview, and Screenshots opens them in the viewer', async ({ page }) => {
+      await page.goto('/#projects')
+      await card(page).getByRole('heading', { name: 'LinkdUp' }).tap()
+      await expect(screens(page)).not.toHaveClass(/is-shown/)
+      await card(page).getByRole('button', { name: /View screenshots/ }).tap()
+      const dialog = page.getByRole('dialog', { name: 'Photo viewer' })
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /Reconnect with your alumni/)
+      await dialog.getByRole('button', { name: 'Next photo' }).tap()
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /Swipe on spots together/)
+    })
+  })
+
+  // The screenshots go through the photo pipeline like the Gallery's photos, but stay
+  // out of it: four photos, one dot each
+  test('the Gallery reel leaves them out', async ({ page }) => {
+    await page.goto('/#gallery')
+    await expect(page.locator('.reel-dots span')).toHaveCount(4)
+  })
+})
+
 test.describe('hero email button', () => {
   // Copies the address, like the Contact row. Clipboard permissions can only be
   // granted in Chromium.
