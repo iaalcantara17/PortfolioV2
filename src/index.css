@@ -310,7 +310,7 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-gutter: stable;
 }
 
-/* Each section takes focus when the nav, a dot or the mobile menu jumps to it
+/* Each section takes focus when the nav or the mobile menu jumps to it
    (App.jsx), so the next Tab starts inside it. A ring around a whole screen adds
    nothing, so none is drawn; the section's own controls keep theirs. */
 .section-wrapper:focus {
@@ -412,54 +412,6 @@ h1, h2, h3, h4, h5, h6 {
 :root[data-theme="dark"]:has(.featured-card:hover) #custom-cursor {
   background: var(--color-purple);
   mix-blend-mode: multiply;
-}
-
-/* Section indicator dots. Each is a 24px button (the WCAG 2.2 minimum target)
-   with the 6px dot drawn by ::before. right is 24px less the 9px the wider button
-   adds, so the dots keep their horizontal position; they sit 24px apart so no two
-   targets overlap. */
-#section-indicator {
-  position: fixed;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-}
-
-.section-dot {
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Only the active dot shows by default, as before Phase 4. A dot's purple ring
-   appears only with keyboard focus (:focus-visible), never on a mouse click. The
-   browser's own focus outline stays too, so focus on the already-filled active dot
-   is still visible. */
-.section-dot::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.section-dot:focus-visible::before {
-  border-color: var(--color-purple);
-}
-
-.section-dot.active::before {
-  border-color: var(--color-purple);
-  background: var(--color-purple);
-  transform: scale(1.3);
 }
 
 /* Nav */
@@ -1069,9 +1021,6 @@ nav.site-nav.scrolled {
     height: auto !important;
     overflow: visible !important;
   }
-  #section-indicator {
-    display: none;
-  }
   /* Stack two-column layouts */
   .page-section > div[style*="grid-template-columns: 1fr 1fr"],
   .page-section > div[style*="grid-template-columns: 200px"],
@@ -1095,11 +1044,6 @@ nav.site-nav.scrolled {
     margin-top: 40px;
     gap: 32px !important;
     padding-bottom: 48px !important;
-  }
-  /* Hero left column uses justify-content:space-between for its two children,
-     which collapses to 0 gap once the section height goes from 100vh to auto */
-  .hero-bottom {
-    margin-top: 40px;
   }
   /* Extra breathing room between stacked sections */
   .page-section:not(:last-child) {
@@ -1252,10 +1196,9 @@ nav.site-nav.scrolled {
   .site-nav-inner {
     padding: 0 16px;
   }
-  /* The Contact footer's three notes don't fit on one line here: they stack,
-     left-aligned (their row layout is set inline, hence !important) */
-  .contact-footer,
-  .contact-footer-notes {
+  /* The Contact footer's two notes don't fit on one line here: they stack,
+     left-aligned (its row layout is set inline, hence !important) */
+  .contact-footer {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 0 !important;
@@ -1263,8 +1206,7 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   the mobile menu only fades, no hover tilt, the section dot's
-   scaled active state switches without animating, the theme toggle's sun and moon
+   the mobile menu only fades, no hover tilt, the theme toggle's sun and moon
    swap without the morph, and the menu toggle's bars switch to the X without it.
    (The Gallery reel moves instantly, in FilmReel.jsx; the theme switches without
    its cross-fade, in utils/theme.js.) */
@@ -1279,9 +1221,6 @@ nav.site-nav.scrolled {
   }
   .tilt-card {
     transform: none !important;
-  }
-  .section-dot::before {
-    transition: background 0.3s ease;
   }
   /* The Spotify bars hold still at their first frame */
   .spotify-bars .spotify-bar {

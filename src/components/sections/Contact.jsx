@@ -237,10 +237,7 @@ export default function Contact({ isVisible }) {
         }}
       >
         <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, {import.meta.env.BUILD_YEAR}</span>
-        <span className="contact-footer-notes" style={{ display: 'flex', justifyContent: 'flex-end', gap: 24 }}>
-          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Built with craft.</span>
-          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
-        </span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
       </div>
     </section>
   )

@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import Cursor from './components/Cursor'
 import Nav from './components/Nav'
-import SectionIndicator from './components/SectionIndicator'
 import SectionCounter from './components/SectionCounter'
 import SectionLabel from './components/SectionLabel'
 import SectionErrorBoundary from './components/SectionErrorBoundary'
@@ -18,7 +17,7 @@ export default function App() {
   // Most recent section to enter the viewport. Gates each section's one-shot
   // entrance (isVisible), so it deliberately fires early.
   const [visibleSection, setVisibleSection] = useState(0)
-  // The section the page is on, shown by the dots and the counter.
+  // The section the page is on, shown by the counter.
   const activeSection = useActiveSection(containerRef, sectionRefs)
   useKeyboardScroll(containerRef)
 
@@ -95,7 +94,6 @@ export default function App() {
       <a href="#main" className="skip-link" onClick={skipToMain}>Skip to main content</a>
       <Cursor />
       <Nav containerRef={containerRef} onNavigate={navigateTo} />
-      <SectionIndicator current={activeSection} onNavigate={navigateTo} />
       <SectionCounter active={activeSection} containerRef={containerRef} />
 
       <div ref={containerRef} className="page-scroller">

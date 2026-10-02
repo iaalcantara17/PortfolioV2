@@ -2,12 +2,11 @@
    printing it gave a single page: the Hero, cut off mid-portrait. Here the sections
    run on as one document at their natural height, and what only works on a screen
    is left out:
-   - Chrome: the cursor dot, the nav, the section dots and counters, the skip link,
+   - Chrome: the cursor dot, the nav, the section counters, the skip link,
      and anything that only appears on hover or tap (previews, tips, hints).
    - Overlays: the Lightbox and the mobile menu, if either was open.
-   - The Hero's "Scroll" cue, the Spotify widget (live, so stale on paper), the
-     resume button (it opens a file) and the Gallery, whose film reel is laid out
-     for the screen.
+   - The Spotify widget (live, so stale on paper), the resume button (it opens a
+     file) and the Gallery, whose film reel is laid out for the screen.
    Entrances that haven't played yet (sections not scrolled to) print in their end
    state, hover tilt is flattened, the photos print smaller, and project links print
    their address after their label. The LinkdUp card
@@ -38,7 +37,6 @@
   #custom-cursor,
   .skip-link,
   nav.site-nav,
-  #section-indicator,
   .section-counter,
   [data-fixed-counter],
   .mobile-menu-overlay,
@@ -46,7 +44,6 @@
   .card-follower,
   .link-tip-bubble,
   .tap-hint,
-  .hero-bottom,
   .about-spotify,
   .page-content a[href$=".pdf"],
   #gallery {

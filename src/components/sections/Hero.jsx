@@ -205,7 +205,6 @@ export default function Hero({ isVisible }) {
   const subtextBodyRef = useRef(null)
   const siempreRef = useRef(null)
   const eyebrowRef = useRef(null)
-  const bottomRef = useRef(null)
   const statsRef = useRef(null)
   const statusRef = useRef(null)
   const completedRef = useRef(false)
@@ -218,7 +217,6 @@ export default function Hero({ isVisible }) {
     gsap.set(eyebrowRef.current, { opacity: 0 })
     gsap.set(statsRef.current, entranceStart({ opacity: 0, x: 20 }))
     gsap.set(statusRef.current, entranceStart({ opacity: 0, y: 10 }))
-    gsap.set(bottomRef.current, { opacity: 0 })
   }, [])
 
   useEffect(() => {
@@ -229,7 +227,6 @@ export default function Hero({ isVisible }) {
     const eyebrow = eyebrowRef.current
     const stats = statsRef.current
     const status = statusRef.current
-    const bottom = bottomRef.current
 
     // Reduced motion: no typewriter or scramble. The final text goes in at once and
     // the whole Hero fades in together.
@@ -241,7 +238,7 @@ export default function Hero({ isVisible }) {
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
       completedRef.current = true
       gsap.fromTo(typed.map(([, ref]) => ref.current), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-      gsap.to([eyebrow, stats, status, bottom], {
+      gsap.to([eyebrow, stats, status], {
         opacity: 1, duration: 0.6, ease: 'power2.out',
         onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
       })
@@ -284,14 +281,13 @@ export default function Hero({ isVisible }) {
       timers, intervals, resolvers
     )
 
-    // Status bar and bottom fade in after full animation
+    // Status bar fades in after full animation
     const finalFadeT = setTimeout(() => {
       completedRef.current = true
       gsap.to(status, {
         opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
         onComplete: () => pulseAvailability(status.querySelector('.availability-dot')),
       })
-      gsap.to(bottom, { opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 })
     }, siempreDoneAt + 150)
     timers.push(finalFadeT)
 
@@ -306,7 +302,6 @@ export default function Hero({ isVisible }) {
         gsap.set(eyebrow, { opacity: 1 })
         gsap.set(stats, { opacity: 1, x: 0 })
         gsap.set(status, { opacity: 1, y: 0 })
-        gsap.set(bottom, { opacity: 1 })
         completedRef.current = true
       }
     }
@@ -338,8 +333,7 @@ export default function Hero({ isVisible }) {
           paddingTop: 56,
         }}
       >
-        {/* Left column. 20px bottom padding keeps the scroll hint 20px above the
-            status bar, which now sits below the columns rather than over them. */}
+        {/* Left column. The status bar sits below the columns rather than over them. */}
         <div
           className="hero-left"
           style={{
@@ -391,17 +385,6 @@ export default function Hero({ isVisible }) {
                 <br />
                 <em ref={siempreRef} style={{ color: 'var(--color-purple-deep)', fontStyle: 'italic' }} />
               </div>
-            </div>
-          </div>
-
-          {/* Bottom — scroll indicator + counter, fades in after full animation */}
-          <div ref={bottomRef} className="hero-bottom">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-                <div style={{ width: 1, height: 32, background: 'var(--color-gold)' }} />
-                <div style={{ width: 0, height: 0, borderLeft: '3px solid transparent', borderRight: '3px solid transparent', borderTop: '5px solid var(--color-gold)' }} />
-              </div>
-              <span className="eyebrow" style={{ color: 'var(--color-gold)' }}>Scroll</span>
             </div>
           </div>
         </div>
