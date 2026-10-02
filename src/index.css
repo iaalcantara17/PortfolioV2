@@ -1113,8 +1113,8 @@ nav.site-nav.scrolled {
   .body-para-list {
     gap: 24px !important;
   }
-  /* Skills/Experience left column — title-to-subtitle spacing standardized to 24px,
-     and flex-start instead of space-between so no leftover height gets distributed
+  /* Skills/Experience/Projects left column — title-to-subtitle spacing standardized to
+     24px, and flex-start instead of space-between so no leftover height gets distributed
      as an inconsistent extra gap between the intro text and the stat block */
   .section-intro-title {
     margin-bottom: 24px !important;
@@ -1123,6 +1123,11 @@ nav.site-nav.scrolled {
     justify-content: flex-start !important;
   }
   .section-stat {
+    margin-top: 32px;
+  }
+  /* Contact's "Available now" sits at the bottom of its column through space-between,
+     which leaves no gap once the column stacks: the same 32px as a stat */
+  .contact-availability {
     margin-top: 32px;
   }
   /* Skills/Experience right column — 32px of breathing room below the intro/stat

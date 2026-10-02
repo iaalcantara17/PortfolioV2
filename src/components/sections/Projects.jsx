@@ -171,6 +171,7 @@ export default function Projects({ isVisible }) {
       >
         {/* Left column */}
         <div
+          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -184,6 +185,7 @@ export default function Projects({ isVisible }) {
                 keeps its nav label ("Projects") first when navigating by heading */}
             <h2
               data-animate
+              className="section-intro-title"
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(26px, 2.8vw, 36px)',
@@ -200,11 +202,11 @@ export default function Projects({ isVisible }) {
               <br />
               built<span style={{ color: 'var(--color-purple)' }}>.</span>
             </h2>
-            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
+            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Projects I can speak to in full, start to finish.
             </p>
           </div>
-          <div data-animate>
+          <div data-animate className="section-stat">
             <div
               style={{
                 fontFamily: 'var(--font-serif)',
