@@ -5,7 +5,7 @@ it in full, every session, without being reminded.
 
 ## What this project is
 
-A personal portfolio site for Israel Alcántara. React + Vite, deployed 
+A personal portfolio site for Israel Alcantara. React + Vite, deployed 
 to Vercel at israelalcantara.vercel.app. The structured hardening pass 
 is complete, Phases 0 through 9, all on main:
 
@@ -241,10 +241,23 @@ its reduced-motion gating unchanged:
 
 ## Locked — do not change without explicit approval
 
-- The design system: colors, DM Serif Display, the layout grid.
-- The About bio, the pull quote, approved section headings, and the 
-  quote rotation list in src/data/quotes.js.
-- Section order and nav order.
+- The design system: DM Serif Display, the layout grid, and the purple/
+  gold palette values themselves. Gold's meaning is now fixed as a
+  "forward-looking" marker — the availability line, target-role text,
+  and the Hero CTA buttons. Anything already completed/credentialed
+  (degree, cum laude, finished internship, etc.) uses purple instead.
+  Don't reassign gold to a different meaning without approval.
+- The About bio, the pull quote, and approved section headings.
+- The quote rotation list in src/data/quotes.js, including the 14
+  quotes added in the Oct 2026 redesign pass — verbatim, punctuation
+  included. No new additions without going through the sourcing/
+  approval process this list was built with.
+- Section order: Hero → Experience → Projects → Skills → Education →
+  About → Gallery → Contact. Gallery stays its own full section, never
+  folded into About.
+- The per-section number-in-header system (the number follows the
+  header text, switches only once pixel-aligned). This replaced the
+  old side-dot nav, which is gone — don't bring it back.
 - The Gallery film reel: one looping black 35mm band (cream sprocket 
   holes) that is both viewer and thumbnails, pinned to the full 1344px 
   content width so its edges line up under "Through the lens." and 
@@ -259,6 +272,9 @@ its reduced-motion gating unchanged:
 - The "play once and persist" animation behavior — entrance animations 
   fire once per element on first view and then stay visible permanently. 
   No reverse-on-scroll-up, no re-triggering.
+- The custom cursor and the speed-based scroll blur, kept exactly as-is.
+- The surname spelling: "Alcantara" (no accent mark), everywhere on
+  the site, including inside otherwise-locked text like the About bio.
 
 If you believe something locked has a real problem, say so and explain 
 why, but do not change it unilaterally.
