@@ -378,7 +378,7 @@ export default function Projects({ isVisible }) {
               >
                 SFort95 Compiler
               </h3>
-              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
@@ -434,7 +434,7 @@ export default function Projects({ isVisible }) {
               >
                 Data Analysis App
               </h3>
-              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
                 <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
               </p>
