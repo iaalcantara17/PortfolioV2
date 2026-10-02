@@ -19,7 +19,7 @@ export const test = base.extend({
 export { expect }
 
 // Every section's id (its anchor), in page order
-export const SECTIONS = ['hero', 'about', 'skills', 'experience', 'education', 'projects', 'gallery', 'contact']
+export const SECTIONS = ['hero', 'experience', 'projects', 'skills', 'education', 'about', 'gallery', 'contact']
 
 // Waits until a section's top is at the top of the screen: the page scrolls inside
 // .page-scroller, eased by Lenis, so it takes a moment to arrive. Within 2px: an eased
