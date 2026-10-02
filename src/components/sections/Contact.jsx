@@ -1,11 +1,13 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { gsap } from 'gsap'
+import { EMAIL, RESUME_URL } from '../../data/contact'
+import { useCopyText } from '../../hooks/useCopyText'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
 import { trackResumeDownload } from '../../utils/trackResumeDownload'
 
 // copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
-  { label: 'Email', value: 'ialcantara2003@gmail.com', copy: true },
+  { label: 'Email', value: EMAIL, copy: true },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
@@ -16,8 +18,6 @@ const dimOnMouseHover = (opacity) => ({
   onPointerEnter: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = opacity },
   onPointerLeave: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = '1' },
 })
-
-const COPIED_MS = 1500
 
 // Selects an element's text, for copying by hand
 function selectText(el) {
@@ -31,28 +31,16 @@ function selectText(el) {
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
-  const [copied, setCopied] = useState(false)
+  const [copied, copy] = useCopyText()
   // The copy button's aria-label replaces its text for screen readers, so the address
   // on screen is attached as its description: "Copy email address, button, <address>"
   const copyValueId = useId()
-  const copiedTimerRef = useRef(null)
 
-  useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
-
-  // Copies a row's value, from a mouse click, a tap or the keyboard alike; the label
-  // reads "Copied" for a moment. If the clipboard isn't available or refuses, the
-  // value is selected instead, ready to copy by hand.
+  // Copies a row's value; the label reads "Copied" for a moment. If the clipboard
+  // refuses, the value is selected instead, ready to copy by hand.
   const copyValue = (e, link) => {
     const valueEl = e.currentTarget.querySelector('[data-copy-value]')
-    if (!navigator.clipboard) return selectText(valueEl)
-    navigator.clipboard.writeText(link.value).then(
-      () => {
-        setCopied(true)
-        clearTimeout(copiedTimerRef.current)
-        copiedTimerRef.current = setTimeout(() => setCopied(false), COPIED_MS)
-      },
-      () => selectText(valueEl)
-    )
+    copy(link.value, () => selectText(valueEl))
   }
 
   // Hidden until the first entrance below: the starting state, set on mount
@@ -209,7 +197,7 @@ export default function Contact({ isVisible }) {
             {/* Resume download */}
             <div style={{ marginTop: 32 }}>
               <a
-                href="/Resume_Israel_Alcantara.pdf"
+                href={RESUME_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={trackResumeDownload}

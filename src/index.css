@@ -971,10 +971,10 @@ nav.site-nav.scrolled {
   pointer-events: none;
 }
 
-/* Shown while a mouse or trackpad pointer is over the card (.follower-shown, set by
+/* Shown while a mouse or trackpad pointer is over the card (.is-shown, set by
    followPointer in utils/follower.js from the pointer's own type, not a media query,
    so a trackpad on a touch-first iPad counts too). A touch or pen never sets it. */
-.follower-shown .card-follower {
+.card-follower.is-shown {
   opacity: 1;
 }
 /* A follower can overhang its card; lift the card showing it so the next card

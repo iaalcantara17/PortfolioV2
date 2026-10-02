@@ -2,8 +2,7 @@ import Photo from './Photo'
 
 // A small image preview that follows the pointer while its card is hovered (a
 // .card-follower, placed and shown by followPointer in utils/follower.js). Mouse and
-// trackpad only;
-// decorative, since the card itself says what it opens.
+// trackpad only; decorative, since the card itself says what it opens.
 export default function HoverPreview({ image }) {
   return (
     <span className="card-follower card-hover-preview" aria-hidden="true">
