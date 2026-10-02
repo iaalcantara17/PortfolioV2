@@ -114,6 +114,13 @@ One line per merged PR. #17 and #18 were closed without merging.
   brought current.
 - #45: /api/spotify answers 405 (Allow: GET) to anything but GET, the 
   way the resume counter already rejected methods it doesn't take.
+- #46: brought this file's change list current through #45.
+- #47: the page cross-fades between themes (a 200ms view transition, 
+  instant under reduced motion or without view transitions), the menu 
+  toggle's bars morph into an X, intro copy for the Gallery and each 
+  Education card (a blurb and its coursework; Education now grows to 
+  fit on short desktop screens), and a "More on GitHub" link at the end 
+  of Projects.
 
 ## Accessibility status
 
