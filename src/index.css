@@ -1194,7 +1194,7 @@ nav.site-nav.scrolled {
   display: none;
 }
 
-/* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
+/* About, Education and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
    their content is taller than one screen. The section grows to fit instead of
    scrolling inside a column, which only a mouse wheel could reach. Where it fits
    (1440×900) it stays exactly one screen tall. */

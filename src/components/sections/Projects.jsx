@@ -209,6 +209,9 @@ export default function Projects({ isVisible }) {
 
         {/* Right column */}
         <div style={{ padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
+            A few things I've built end to end, with plenty more where these came from.
+          </p>
 
           {/* Featured card. position: relative makes the card the certificate
               preview's frame (followPointer places it in the card's coordinates). */}

@@ -15,7 +15,7 @@ import montclairLogo from '../../assets/logos/montclair.webp'
 // Logos show in their official colors, a deliberate exception to the token palette.
 // Dates are static text, updated by hand. A card with a diploma opens it in the Lightbox
 // and previews it on hover; a card with a hoverLabel only reacts to hover (tilt plus
-// the label).
+// the label). Each card also carries a short blurb and its coursework.
 const schools = [
   {
     degree: 'Bachelor of Science in Computer Science',
@@ -25,6 +25,8 @@ const schools = [
     period: 'Sep 2022 — May 2026',
     logo: { src: njitLogo, width: 192, height: 192 },
     diploma: { image: photoByName['njit-diploma'], alt: 'NJIT diploma, Bachelor of Science in Computer Science' },
+    blurb: 'Four years built the technical foundation. Java, C, Python and a few others along the way, systems design, algorithms, a compiler project for a cut-down version of Fortran, and a full capstone build from scratch.',
+    coursework: 'Advanced Data Structures & Algorithms, Database System Design & Management, Principles of Operating Systems, Introduction to Computer Networks, Introduction to Machine Learning, Introduction to Cybersecurity, Designing the User Experience, Programming Language Concepts, Design in Software Engineering, Intensive Programming in Linux, Introduction to Computer Science I & II, and a Senior Capstone Project.',
   },
   {
     degree: 'Master of Business Administration',
@@ -34,6 +36,8 @@ const schools = [
     period: 'Aug 2026 — Expected Fall 2028',
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
+    blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of how technology actually ships.',
+    coursework: 'Global Economy, Business Statistics, Strategic Information Systems, and Business Essentials.',
   },
 ]
 
@@ -136,7 +140,7 @@ export default function Education({ isVisible }) {
   return (
     <section
       ref={sectionRef}
-      className="page-section"
+      className="page-section fit-content"
       style={{ background: 'var(--color-paper)', borderBottom: '0.5px solid var(--color-line)' }}
     >
       <div
@@ -223,6 +227,9 @@ export default function Education({ isVisible }) {
                   {s.school}
                 </div>
                 <div className="eyebrow" style={{ color: 'var(--color-muted)' }}>{s.college}</div>
+                <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginTop: 12 }}>{s.blurb}</p>
+                <div className="eyebrow" style={{ color: 'var(--color-muted)', marginTop: 12, marginBottom: 2 }}>Coursework</div>
+                <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85 }}>{s.coursework}</p>
               </div>
 
               <div className="edu-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>

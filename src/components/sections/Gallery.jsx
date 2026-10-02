@@ -69,20 +69,27 @@ export default function Gallery({ isVisible }) {
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 4 }}>
             <h2 className="eyebrow" style={{ color: 'var(--color-faint)', fontSize: 9 }}>Full Gallery</h2>
           </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(36px, 4.5vw, 56px)',
-              letterSpacing: '-0.03em',
-              lineHeight: 0.92,
-              color: 'var(--color-ink)',
-            }}
-          >
-            Through
-            <br />
-            the
-            <br />
-            lens<span style={{ color: 'var(--color-purple)' }}>.</span>
+          {/* The intro sits beside the title, not under it, so the header keeps its
+              height: the reel sizes its photos from the space left below it */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 24 }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(36px, 4.5vw, 56px)',
+                letterSpacing: '-0.03em',
+                lineHeight: 0.92,
+                color: 'var(--color-ink)',
+              }}
+            >
+              Through
+              <br />
+              the
+              <br />
+              lens<span style={{ color: 'var(--color-purple)' }}>.</span>
+            </div>
+            <p style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, maxWidth: 360 }}>
+              I shoot on a Canon Rebel SL3. Nothing professional, just a habit of chasing good light, whether that's a skyline at sunset or whatever catches my eye on a hike. It's less about the gear and more about noticing something worth stopping for.
+            </p>
           </div>
         </div>
 
