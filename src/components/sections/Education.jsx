@@ -96,8 +96,8 @@ function SchoolLogo({ logo }) {
 }
 
 // A card that opens nothing gets the same hover tilt, for consistency with the NJIT
-// card, but no data-cursor: the cursor dot doesn't grow, since there is nothing to
-// click. Its hover label follows the pointer like a tooltip (utils/follower.js).
+// card, but the cursor dot doesn't grow (it's no link or button), since there is
+// nothing to click. Its hover label follows the pointer like a tooltip (utils/follower.js).
 // Mouse pointers only, so a tap on a phone can't leave the card tilted.
 const hoverOnlyProps = {
   onPointerMove: (e) => {

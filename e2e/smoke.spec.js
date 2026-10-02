@@ -142,6 +142,14 @@ test.describe('lightbox', () => {
     await expect(frame).toBeFocused()
   })
 
+  // The cursor dot grows over links and buttons, including ones mounted after the page
+  // loaded, like the Lightbox's
+  test('the cursor dot grows over its controls', async ({ page }) => {
+    await openFromReel(page)
+    await page.getByRole('dialog').getByRole('button', { name: 'Close' }).hover()
+    await expect(page.locator('#custom-cursor')).toHaveClass(/hovering/)
+  })
+
   // Opened before its chunk has arrived, the Lightbox shows through Suspense. It must be
   // ready the moment it's on the page: focus on Close and the page behind it inert,
   // or a key pressed right away still goes to the page.
