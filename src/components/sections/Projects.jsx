@@ -467,9 +467,38 @@ export default function Projects({ isVisible }) {
             </div>
           </div>
 
-          {/* Bottom note */}
-          <div style={{ borderTop: '0.5px solid var(--color-line)', paddingTop: 14 }}>
+          {/* Bottom note, with the rest of the projects on GitHub at its end */}
+          <div
+            style={{
+              borderTop: '0.5px solid var(--color-line)',
+              paddingTop: 14,
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 12,
+            }}
+          >
             <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Only projects I built and can fully speak to.</span>
+            <a
+              href="https://github.com/iaalcantara17"
+              data-print-url={printUrl('https://github.com/iaalcantara17')}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                padding: '4px 10px',
+                border: '0.5px solid var(--color-purple-a40)',
+                borderRadius: 4,
+                fontSize: 10,
+                color: 'var(--color-purple-deep)',
+                textDecoration: 'none',
+                letterSpacing: '0.04em',
+                fontFamily: 'var(--font-sans)',
+              }}
+            >
+              <span>More on GitHub <span className="link-arrow">↗</span></span>
+            </a>
           </div>
         </div>
       </div>

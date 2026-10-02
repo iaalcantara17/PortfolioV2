@@ -64,6 +64,38 @@ test.describe('mobile menu', () => {
     await expect(toggle).toBeFocused()
   })
 
+  // The toggle's three bars turn into the X: the outer two rotate into its strokes,
+  // the middle one fades. Under reduced motion they switch without moving.
+  const bars = (page) => page.locator('.hamburger-btn .hamburger-line')
+  // Clicks the toggle and counts the bars' animations right after React has rendered
+  // the click (a macrotask later), inside the page, so a slow machine can't let the
+  // 200ms morph finish before it's counted
+  const clickAndCount = (page) =>
+    page.locator('.hamburger-btn').evaluate(async (button) => {
+      button.click()
+      await new Promise((resolve) => setTimeout(resolve))
+      return button.querySelector('svg').getAnimations({ subtree: true }).length
+    })
+  const middleOpacity = (page) => bars(page).nth(1).evaluate((el) => getComputedStyle(el).opacity)
+
+  test('its bars morph into an X and back', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.goto('/')
+    await expect(bars(page)).toHaveCount(3)
+    expect(await clickAndCount(page)).toBeGreaterThan(0)
+    await expect.poll(() => middleOpacity(page)).toBe('0')
+    expect(await clickAndCount(page)).toBeGreaterThan(0)
+    await expect.poll(() => middleOpacity(page)).toBe('1')
+  })
+
+  test('under reduced motion, its bars switch to the X without the morph', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/')
+    expect(await clickAndCount(page)).toBe(0)
+    expect(await middleOpacity(page)).toBe('0')
+    expect(await bars(page).first().evaluate((el) => getComputedStyle(el).transform)).not.toBe('none')
+  })
+
   test('a menu link closes the menu and scrolls to its section', async ({ page }) => {
     await page.goto('/')
     await page.locator('.hamburger-btn').click()

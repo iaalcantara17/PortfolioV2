@@ -112,27 +112,20 @@ export default function Nav({ containerRef, onNavigate }) {
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
 
+          {/* Three bars that turn into the X when the menu is open (.hamburger-line in
+              index.css) */}
           <button
             ref={toggleRef}
-            className="hamburger-btn hit-area"
+            className={`hamburger-btn hit-area${isMenuOpen ? ' is-open' : ''}`}
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMenuOpen}
             style={{ background: 'none', border: 'none', padding: 4 }}
           >
-            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" style={{ color: 'var(--color-ink)' }}>
-              {isMenuOpen ? (
-                <>
-                  <line x1="1" y1="1" x2="19" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="19" y1="1" x2="1" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                </>
-              ) : (
-                <>
-                  <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                </>
-              )}
+            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true" style={{ color: 'var(--color-ink)' }}>
+              {[1, 7, 13].map((y) => (
+                <line key={y} className="hamburger-line" x1="0" y1={y} x2="20" y2={y} stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              ))}
             </svg>
           </button>
         </div>

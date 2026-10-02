@@ -521,6 +521,25 @@ nav.site-nav.scrolled {
   justify-content: center;
 }
 
+/* Its bars and the X (Nav.jsx). Open, the outer bars meet in the middle and turn
+   into the X's strokes, (1,1)–(19,13) and its mirror: 33.69° is that stroke's angle
+   and 1.0815 its length over a bar's 20. The middle bar fades out. Closing runs the
+   same way back. */
+.hamburger-line {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hamburger-btn.is-open .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(33.69deg) scaleX(1.0815);
+}
+.hamburger-btn.is-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.is-open .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-33.69deg) scaleX(1.0815);
+}
+
 /* Light/dark toggle (ThemeToggle.jsx), beside the Resume button and framed like it.
    The icon is a sun in the light theme and a moon in the dark one. Sun to moon: the
    rays turn and draw in, then the disc grows and the bite slides across it, leaving a
@@ -576,6 +595,14 @@ nav.site-nav.scrolled {
 .theme-toggle.is-dark .theme-toggle-bite {
   transform: none;
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+/* The page's cross-fade between themes (toggleTheme in utils/theme.js): the browser's
+   own fade from a snapshot of the old theme to the new, shortened. The toggle's icon
+   keeps morphing underneath, since the new side is live. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
 }
 
 /* Mobile nav menu overlay */
@@ -1194,10 +1221,10 @@ nav.site-nav.scrolled {
   display: none;
 }
 
-/* About and Projects — desktop: on shorter screens (1366×768, 1280×720, 1024×768)
-   their content is taller than one screen. The section grows to fit instead of
-   scrolling inside a column, which only a mouse wheel could reach. Where it fits
-   (1440×900) it stays exactly one screen tall. */
+/* Hero, About, Education and Projects — desktop: on shorter screens (1366×768,
+   1280×720, 1024×768) their content is taller than one screen. The section grows to fit
+   instead of scrolling inside a column, which only a mouse wheel could reach. Where
+   it fits (1440×900) it stays exactly one screen tall. */
 @media (min-width: 1024px) {
   .section-wrapper:has(> .page-section.fit-content) {
     height: auto !important;
@@ -1244,8 +1271,10 @@ nav.site-nav.scrolled {
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
    no smooth scrolling, the mobile menu only fades, no hover tilt, the section dot's
-   scaled active state switches without animating, and the theme toggle's sun and
-   moon swap without the morph. (The Gallery reel moves instantly, in FilmReel.jsx.) */
+   scaled active state switches without animating, the theme toggle's sun and moon
+   swap without the morph, and the menu toggle's bars switch to the X without it.
+   (The Gallery reel moves instantly, in FilmReel.jsx; the theme switches without
+   its cross-fade, in utils/theme.js.) */
 @keyframes menuFadeOnly {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1271,5 +1300,8 @@ nav.site-nav.scrolled {
   /* !important: the toggle's per-state transitions are more specific */
   .theme-toggle svg * {
     transition: none !important;
+  }
+  .hamburger-line {
+    transition: none;
   }
 }

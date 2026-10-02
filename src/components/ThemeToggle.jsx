@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { currentTheme, setTheme, subscribeTheme } from '../utils/theme'
+import { currentTheme, subscribeTheme, toggleTheme } from '../utils/theme'
 
 // Eight rays around the sun, from 9.5 to 11.5 out from the middle of a 24px box
 const RAYS = Array.from({ length: 8 }, (_, i) => {
@@ -24,7 +24,7 @@ export default function ThemeToggle() {
       type="button"
       className={`theme-toggle hit-area${dark ? ' is-dark' : ''}`}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      onClick={() => setTheme(dark ? 'light' : 'dark')}
+      onClick={toggleTheme}
     >
       <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
         <mask id="theme-toggle-bite">
