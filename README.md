@@ -51,7 +51,8 @@ project, and you need the environment variables below.
   (focus on Close, the page behind it inert);
 - the resume links are served, and the Hero's Email me copies the address
   (Chromium only, where the clipboard can be granted);
-- LinkdUp's screens: the hover preview shows and cycles, over Certificate only its
+- LinkdUp's screens: the hover preview shows and cycles through all five in a frame
+  that keeps one size (the taller confirmation screen too), over Certificate only its
   preview shows, on touch a tap shows no preview and Screenshots opens them in the
   Lightbox, and the Gallery leaves them out;
 - new-tab links carry `rel="noopener noreferrer"`;
@@ -137,7 +138,9 @@ python scripts/optimize-photos.py --src path/to/folder-with-the-new-photo
 Every photo not named in `NOT_IN_GALLERY` (`src/data/photos.js`) or starting with
 `linkdup-` goes into the Gallery reel, which grows to hold it; give it a
 description in `photoAlt`, the photo's alt text. LinkdUp's screens are
-`linkdup-screen-1` to `-3`, shown in Projects: replace them under the same names.
+`linkdup-screen-1` to `-5`, shown in Projects with their alt text there; their
+hover preview fits each inside one frame, so a screen of another shape is shown
+whole rather than cropped.
 
 The originals are stored in Git LFS (`.gitattributes`), so a new or
 changed photo doesn't grow the repo's history. Each machine needs Git LFS

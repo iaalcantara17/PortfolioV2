@@ -255,9 +255,14 @@ its reduced-motion gating unchanged:
   and followPointer/hideFollower take a follower selector, so the 
   LinkdUp card holds two: the certificate's (on its button) and the 
   screens' (on the card's body), which cycles while hovered. The 
-  screens are linkdup-screen-1 to -3 in the photo pipeline, provisional 
-  captures of linkdup.app's onboarding; replace them under the same 
-  names. Every photo named linkdup- stays out of the Gallery.
+  screens are linkdup-screen-1 to -5 in the photo pipeline: create a 
+  party, its invite code, a swipe card, the group vote and the locked 
+  plan, captured from a five-person run on a local copy of LinkdUp 
+  (C:\CS_491\linkdup_v2\demo-shots). Screen 5 is taller than the rest 
+  (its screen scrolls), so the preview keeps one frame at the others' 
+  shape (HoverPreview's aspect) and fits each screen inside it whole, 
+  on the app's own background (#0A0A0F). Every photo named linkdup- 
+  stays out of the Gallery.
 
 ## Locked — do not change without explicit approval
 
