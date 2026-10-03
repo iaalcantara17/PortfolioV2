@@ -9,7 +9,6 @@ const roles = [
     location: 'Arlington, VA',
     period: 'May 2025 — Aug 2025',
     tag: 'Tech',
-    tagColor: 'purple',
     desc: (
       <>
         Built a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, reducing payloads by up to{' '}
@@ -23,7 +22,6 @@ const roles = [
     location: 'Newark, NJ',
     period: 'Jun 2025 — May 2026',
     tag: 'Leadership',
-    tagColor: 'gold',
     desc: (
       <>
         Supervise a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. Enforce housing policy, conduct regular rounds, author formal incident reports, and design monthly community events on a sub-$1k semester budget.
@@ -36,7 +34,6 @@ const roles = [
     location: '',
     period: 'Mar 2024 — May 2025',
     tag: 'Leadership',
-    tagColor: 'gold',
     desc: (
       <>
         Planned and executed{' '}
@@ -50,7 +47,6 @@ const roles = [
     location: '',
     period: 'Oct 2022 — May 2026',
     tag: 'Operations',
-    tagColor: 'green',
     desc: (
       <>
         Troubleshot AV systems end-to-end across{' '}
@@ -64,7 +60,6 @@ const roles = [
     location: 'Long Branch, NJ',
     period: 'Jul 2023 — Sep 2023',
     tag: 'Operations',
-    tagColor: 'green',
     desc: (
       <>
         Monitored three pools, ran daily chemical checks, and delivered CPR/first aid when needed, safeguarding{' '}
@@ -117,7 +112,6 @@ export default function Experience({ isVisible }) {
       >
         {/* Left column */}
         <div
-          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -151,20 +145,6 @@ export default function Experience({ isVisible }) {
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Not just what I built, but where I was, what I did, and how I carried myself doing it.
             </p>
-          </div>
-          <div data-animate className="section-stat">
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 42,
-                letterSpacing: '-0.03em',
-                color: 'var(--color-ink)',
-                lineHeight: 1,
-              }}
-            >
-              4<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
-            </div>
-            <div className="eyebrow" style={{ marginTop: 4 }}>Years of experience</div>
           </div>
         </div>
 
@@ -200,7 +180,7 @@ export default function Experience({ isVisible }) {
                       </div>
                     </div>
                     <div className="exp-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-                      <span className={`tag pill-${role.tagColor}`}>{role.tag}</span>
+                      <span className="tag pill-purple">{role.tag}</span>
                       <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>{role.period}</span>
                     </div>
                   </div>
@@ -209,29 +189,6 @@ export default function Experience({ isVisible }) {
               </div>
             )
           })}
-
-          {/* Legend */}
-          <div
-            className="exp-legend"
-            style={{
-              padding: '14px 48px',
-              borderTop: '0.5px solid var(--color-line)',
-              display: 'flex',
-              gap: 24,
-              alignItems: 'center',
-            }}
-          >
-            {[
-              { color: 'var(--color-purple)', label: 'Tech' },
-              { color: 'var(--color-gold)', label: 'Leadership' },
-              { color: 'var(--color-green)', label: 'Operations' },
-            ].map((l) => (
-              <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color, flexShrink: 0 }} />
-                <span className="eyebrow">{l.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ it in full, every session, without being reminded.
 
 ## What this project is
 
-A personal portfolio site for Israel Alcántara. React + Vite, deployed 
+A personal portfolio site for Israel Alcantara. React + Vite, deployed 
 to Vercel at israelalcantara.vercel.app. The structured hardening pass 
 is complete, Phases 0 through 9, all on main:
 
@@ -132,18 +132,19 @@ One line per merged PR. #17 and #18 were closed without merging.
   while either is open (utils/inertOutside.js), so a screen reader's 
   virtual cursor can't reach it either.
 - In place: tap areas at least 44px square on the nav's logo, theme 
-  toggle and menu button (.hit-area in index.css), and 24px section 
-  dots. On phones every other control measured at least 24px in Phase 
-  9.
+  toggle and menu button (.hit-area in index.css), and on the Hero's 
+  Email me and Download resume buttons. On phones every other control 
+  measured at least 24px in Phase 9. (The 24px section dots were 
+  removed in the Oct 2026 redesign.)
 - Resolved in Phase 9 (#39): two contrast misses outside the gold 
   exception. About's "notices" was --color-purple, 3.37:1 on phones 
   (22px); it's --color-purple-deep now, 6.20:1 (8.06:1 dark). 
   Education's date lines were --color-faint, 4.32:1 on the card; 
   they're --color-muted now, 4.87:1 (6.14:1 dark).
-- Open, by choice: gold text (stat suffixes, "Scroll", gold pills, 
-  including the ones on the LinkdUp card and Download Resume in the dark 
-  theme) stays below AA contrast (the note on the accent tokens in 
-  index.css). It's the only contrast failure left, in either theme.
+- Open, by choice: gold pill text (Education's "In progress") stays 
+  below AA contrast (the note on the accent tokens in index.css). It's 
+  the only contrast failure left, in either theme. Gold elsewhere is a fill, outline or dot, never text: 
+  the Hero's buttons are gold with dark text (9.24:1).
 
 ## Effects: keep/cut decisions
 
@@ -161,9 +162,12 @@ its reduced-motion gating unchanged:
 - Section counter scramble (SectionCounter.jsx): KEEP. Skipped under 
   reduced motion.
 - Pointer followers (utils/follower.js: the diploma and certificate 
-  previews, the "In progress" label, the Live Demo note): KEEP. They 
-  follow mouse pointers only; the Live Demo note also shows on keyboard 
-  focus.
+  previews, LinkdUp's screens preview, the "In progress" label, the 
+  Live Demo note): KEEP. They follow mouse pointers only; the Live Demo 
+  note also shows on keyboard focus. The screens preview cycles its 
+  images while the card is hovered, without the cross-fade under 
+  reduced motion; Screenshots opens them in the Lightbox for touch and 
+  the keyboard.
 - Hero typewriter and scramble (Hero.jsx): KEEP. A plain fade under 
   reduced motion.
 - Film reel glide (FilmReel.jsx): KEEP. Instant under reduced motion.
@@ -233,18 +237,52 @@ its reduced-motion gating unchanged:
   :development when VERCEL_ENV is unset), through KV_REST_API_URL and 
   KV_REST_API_TOKEN (the Upstash integration, one database for 
   Production and Preview). Preview clicks never touch production's 
-  count. POST adds one, GET only reads. Both resume links (Nav, 
-  Contact) POST to it on click through utils/trackResumeDownload.js, 
-  fire and forget. Only clicks count: not middle-clicks, "Open in new 
+  count. POST adds one, GET only reads. Both resume links (Nav, Hero) 
+  POST to it on click through utils/trackResumeDownload.js, fire and 
+  forget. Only clicks count: not middle-clicks, "Open in new 
   tab", the noscript link, or direct visits to the PDF or /resume.pdf. 
   The endpoint is public, so anyone can read the count or add to it.
 
+- Contact details and calls to action: src/data/contact.js holds the 
+  email address and the resume's path for the Hero, Nav and Contact 
+  (index.html's no-JavaScript page and the e2e tests write them out by 
+  hand). The Hero's Email me copies the address through 
+  hooks/useCopyText.js, the same copy-on-click as Contact's row (#11), 
+  and falls back to a mailto: link where the clipboard refuses.
+- Hover previews: components/HoverPreview.jsx, placed by 
+  utils/follower.js. A follower's shown state is its own (.is-shown), 
+  and followPointer/hideFollower take a follower selector, so the 
+  LinkdUp card holds two: the certificate's (on its button) and the 
+  screens' (on the card's body), which cycles while hovered. The 
+  screens are linkdup-screen-1 to -5 in the photo pipeline: create a 
+  party, its invite code, a swipe card, the group vote and the locked 
+  plan, captured from a five-person run on a local copy of LinkdUp 
+  (C:\CS_491\linkdup_v2\demo-shots). Screen 5 is taller than the rest 
+  (its screen scrolls), so the preview keeps one frame at the others' 
+  shape (aspect-ratio on .linkdup-screens in index.css) and fits each 
+  screen inside it whole, 
+  on the app's own background (#0A0A0F). Every photo named linkdup- 
+  stays out of the Gallery.
+
 ## Locked — do not change without explicit approval
 
-- The design system: colors, DM Serif Display, the layout grid.
-- The About bio, the pull quote, approved section headings, and the 
-  quote rotation list in src/data/quotes.js.
-- Section order and nav order.
+- The design system: DM Serif Display, the layout grid, and the purple/
+  gold palette values themselves. Gold's meaning is now fixed as a
+  "forward-looking" marker — the availability line, target-role text,
+  and the Hero CTA buttons. Anything already completed/credentialed
+  (degree, cum laude, finished internship, etc.) uses purple instead.
+  Don't reassign gold to a different meaning without approval.
+- The About bio, the pull quote, and approved section headings.
+- The quote rotation list in src/data/quotes.js, including the 14
+  quotes added in the Oct 2026 redesign pass — verbatim, punctuation
+  included. No new additions without going through the sourcing/
+  approval process this list was built with.
+- Section order: Hero → Experience → Projects → Skills → Education →
+  About → Gallery → Contact. Gallery stays its own full section, never
+  folded into About.
+- The per-section number-in-header system (the number follows the
+  header text, switches only once pixel-aligned). This replaced the
+  old side-dot nav, which is gone — don't bring it back.
 - The Gallery film reel: one looping black 35mm band (cream sprocket 
   holes) that is both viewer and thumbnails, pinned to the full 1344px 
   content width so its edges line up under "Through the lens." and 
@@ -259,6 +297,9 @@ its reduced-motion gating unchanged:
 - The "play once and persist" animation behavior — entrance animations 
   fire once per element on first view and then stay visible permanently. 
   No reverse-on-scroll-up, no re-triggering.
+- The custom cursor and the speed-based scroll blur, kept exactly as-is.
+- The surname spelling: "Alcantara" (no accent mark), everywhere on
+  the site, including inside otherwise-locked text like the About bio.
 
 If you believe something locked has a real problem, say so and explain 
 why, but do not change it unilaterally.

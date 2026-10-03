@@ -153,7 +153,6 @@ export default function Education({ isVisible }) {
       >
         {/* Left column */}
         <div
-          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -249,7 +248,7 @@ export default function Education({ isVisible }) {
                 </svg>
               )}
 
-              {s.diploma && <HoverPreview image={s.diploma.image} />}
+              {s.diploma && <HoverPreview images={[s.diploma.image]} />}
 
               {/* Hover label, positioned by hoverOnlyProps (see .card-follower).
                   aria-hidden: the status pill already says the same to screen readers. */}

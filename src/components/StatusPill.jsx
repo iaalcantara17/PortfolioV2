@@ -1,8 +1,8 @@
 // Status pill on Education's cards. Built on the .tag chip and the .pill-* color
-// variants, so every status reads as one system.
+// variants: purple for a degree that's earned, gold for one still ahead.
 const STATUSES = {
-  earned: { label: 'Earned', color: 'gold' },
-  'in-progress': { label: 'In progress', color: 'purple' },
+  earned: { label: 'Earned', color: 'purple' },
+  'in-progress': { label: 'In progress', color: 'gold' },
 }
 
 export default function StatusPill({ status }) {

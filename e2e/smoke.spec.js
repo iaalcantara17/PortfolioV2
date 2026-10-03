@@ -15,7 +15,7 @@ test.describe('page load', () => {
     })
 
     await page.goto('/')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcántara')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcantara')
     // Every section, so lazy images and each section's entrance load and run too
     for (const id of SECTIONS) {
       await goToSection(page, id)
@@ -183,16 +183,125 @@ test.describe('lightbox', () => {
 })
 
 test.describe('resume', () => {
-  test('the nav and Contact resume links point to the PDF, which is served', async ({ page }) => {
+  // The two places to get the resume: the nav and the Hero
+  const resumeLinks = (page) => [
+    page.locator('nav a', { hasText: 'Resume' }),
+    page.locator('#hero a', { hasText: 'Download resume' }),
+  ]
+
+  test('the nav and Hero resume links point to the PDF, which is served, and Contact has none', async ({ page }) => {
     await page.goto('/')
-    const links = [page.locator('nav a', { hasText: 'Resume' }), page.locator('#contact a', { hasText: 'Download Resume' })]
-    for (const link of links) {
+    for (const link of resumeLinks(page)) {
       await expect(link).toHaveAttribute('href', RESUME)
     }
+    await expect(page.locator(`#contact a[href="${RESUME}"]`)).toHaveCount(0)
     const res = await page.request.get(RESUME)
     expect(res.status()).toBe(200)
     expect(res.headers()['content-type']).toContain('application/pdf')
     expect((await res.body()).subarray(0, 5).toString()).toBe('%PDF-')
+  })
+
+  // Each click counts one download (api/track-resume-download.js), from either link
+  test('a click on either resume link counts a download', async ({ page, context }) => {
+    const counted = []
+    await page.route('**/api/track-resume-download', (route) => {
+      counted.push(route.request().method())
+      return route.fulfill({ status: 204 })
+    })
+    await page.goto('/')
+    for (const link of resumeLinks(page)) {
+      const pdfTab = context.waitForEvent('page')
+      await link.click()
+      await (await pdfTab).close()
+    }
+    await expect.poll(() => counted).toEqual(['POST', 'POST'])
+  })
+})
+
+test.describe('LinkdUp screenshots', () => {
+  const card = (page) => page.locator('.featured-card')
+  const screens = (page) => card(page).locator('.linkdup-screens')
+
+  test('hovering the card shows its screenshots, one after another', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('heading', { name: 'LinkdUp' }).hover()
+    await expect(screens(page)).toHaveClass(/is-shown/)
+    const first = await screens(page).getAttribute('data-current')
+    await expect.poll(() => screens(page).getAttribute('data-current'), { timeout: 5000 }).not.toBe(first)
+    await page.mouse.move(5, 5)
+    await expect(screens(page)).not.toHaveClass(/is-shown/)
+  })
+
+  // All five screens, the taller confirmation screen too, in one frame that never
+  // changes size (a frame that grew for the tall one would jump under the pointer)
+  test('the preview cycles through all five screens in a frame of one size', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('heading', { name: 'LinkdUp' }).hover()
+    await expect(screens(page)).toHaveClass(/is-shown/)
+    const seen = new Set()
+    const sizes = new Set()
+    const until = Date.now() + 12_000
+    while (seen.size < 5 && Date.now() < until) {
+      seen.add(await screens(page).getAttribute('data-current'))
+      // Its layout size: the card's hover tilt skews the on-screen box as the pointer moves
+      sizes.add(await screens(page).evaluate((el) => `${el.offsetWidth}x${el.offsetHeight}`))
+      await page.waitForTimeout(250)
+    }
+    expect([...seen].sort()).toEqual(['0', '1', '2', '3', '4'])
+    expect([...sizes]).toHaveLength(1)
+  })
+
+  // The card holds two previews; over the Certificate button, only its own shows
+  test('hovering Certificate shows only the certificate preview', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('button', { name: /View certificate/ }).hover()
+    await expect(card(page).locator('.certificate-preview')).toHaveClass(/is-shown/)
+    await expect(screens(page)).not.toHaveClass(/is-shown/)
+  })
+
+  test.describe('on touch', () => {
+    test.use({ hasTouch: true })
+
+    test('a tap shows no preview, and Screenshots opens them in the viewer', async ({ page }) => {
+      await page.goto('/#projects')
+      await card(page).getByRole('heading', { name: 'LinkdUp' }).tap()
+      await expect(screens(page)).not.toHaveClass(/is-shown/)
+      await card(page).getByRole('button', { name: /View screenshots/ }).tap()
+      const dialog = page.getByRole('dialog', { name: 'Photo viewer' })
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /create-party screen/)
+      await dialog.getByRole('button', { name: 'Next photo' }).tap()
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /invite screen/)
+    })
+  })
+
+  // The screenshots go through the photo pipeline like the Gallery's photos, but stay
+  // out of it: the reel's middle frame never shows one, all the way round
+  test('the Gallery reel leaves them out', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/#gallery')
+    const count = await page.locator('.reel-dots span').count()
+    expect(count).toBeGreaterThan(0)
+    const middle = page.locator('.reel-frame[tabindex="0"] img')
+    for (let i = 0; i < count; i++) {
+      await expect(middle).not.toHaveAttribute('src', /linkdup-/)
+      await page.locator('.reel-arrow-right').click()
+    }
+  })
+})
+
+test.describe('hero email button', () => {
+  // Copies the address, like the Contact row. Clipboard permissions can only be
+  // granted in Chromium.
+  test('copies the address and says so', async ({ page, context, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Clipboard permissions are Chromium-only')
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+    await page.goto('/')
+    // Found by its class, not its text, which is what changes
+    const button = page.locator('#hero .cta-gold')
+    await expect(button).toHaveText('Email me')
+    await button.click()
+    await expect(button).toHaveText('Copied')
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('ialcantara2003@gmail.com')
   })
 })
 
@@ -201,7 +310,7 @@ test.describe('external links', () => {
     await page.goto('/')
     // The links are read once, not retried, so the app has to have rendered first. The
     // whole page renders in one go, so once the Hero's heading is there, every link is.
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcántara')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Israel Alcantara')
     const links = await page.locator('a[target="_blank"]').evaluateAll((els) =>
       els.map((a) => ({ href: a.getAttribute('href'), rel: (a.getAttribute('rel') ?? '').split(/\s+/) })),
     )

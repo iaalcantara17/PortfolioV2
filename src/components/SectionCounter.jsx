@@ -19,7 +19,7 @@ function scrambleNum(el, target) {
   return iv
 }
 
-// active: index of the current section, from useActiveSection (shared with the dots)
+// active: index of the current section, from useActiveSection
 // containerRef: the page scroller
 export default function SectionCounter({ active, containerRef }) {
   const numRef = useRef(null)

@@ -25,11 +25,12 @@ export const photoByName = Object.fromEntries(
   }),
 )
 
-// Images that go through the pipeline for use elsewhere, not in Gallery
-const NOT_IN_GALLERY = new Set(['njit-diploma', 'linkdup-certificate', 'portrait'])
+// Images that go through the pipeline for use elsewhere, not in Gallery: these, and
+// everything of LinkdUp's (its certificate and screenshots, in Projects)
+const NOT_IN_GALLERY = new Set(['njit-diploma', 'portrait'])
 
 export const galleryPhotos = Object.keys(photoByName)
-  .filter((name) => !NOT_IN_GALLERY.has(name))
+  .filter((name) => !NOT_IN_GALLERY.has(name) && !name.startsWith('linkdup-'))
   .sort()
   .map((name) => photoByName[name])
 
@@ -51,6 +52,6 @@ export const photoAlt = {
   city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
   friends: 'Two friends seen from behind at a railing at night, one in a green and gold varsity jacket.',
   nature: 'Looking up through a canopy of tall pine trees.',
-  portrait: 'Portrait of Israel Alcántara.',
+  portrait: 'Portrait of Israel Alcantara.',
   streetwear: 'Israel standing on a grassy coastal hillside.',
 }

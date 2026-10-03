@@ -23,22 +23,27 @@ export function placeFollower(e, card, follower, { alwaysBelow = false } = {}) {
   follower.style.top = `${useBelow ? below : above}px`
 }
 
-// pointermove handler for a card with a follower: places it and shows it (.follower-shown
-// on the card), for mouse pointers only. Keyed off the pointer itself rather than a
-// (hover: hover) media query, which only describes a device's primary input: an iPad
-// with a trackpad is touch-primary, but Safari reports its trackpad as a mouse.
+// pointermove handler for a card with a follower: places it and shows it (.is-shown on
+// the follower, .follower-shown on the card while any of its followers shows), for
+// mouse pointers only. Keyed off the pointer itself rather than a (hover: hover) media
+// query, which only describes a device's primary input: an iPad with a trackpad is
+// touch-primary, but Safari reports its trackpad as a mouse.
 // card is the element that holds the follower and frames it: the one the handler is
 // on, unless given (a control inside the card that shows the card's follower).
-// options go to placeFollower.
-export function followPointer(e, card = e.currentTarget, options) {
+// follower picks which of the card's followers, by selector, for a card with more than
+// one; the rest of the options go to placeFollower.
+export function followPointer(e, card = e.currentTarget, { follower = '.card-follower', ...options } = {}) {
   if (e.pointerType !== 'mouse') return
-  const follower = card.querySelector('.card-follower')
-  if (!follower) return
-  placeFollower(e, card, follower, options)
+  const el = card.querySelector(follower)
+  if (!el) return
+  placeFollower(e, card, el, options)
+  el.classList.add('is-shown')
   card.classList.add('follower-shown')
 }
 
-// pointerleave handler for a card with a follower: hides it
-export function hideFollower(e, card = e.currentTarget) {
-  card.classList.remove('follower-shown')
+// pointerleave handler for a card with a follower: hides it (the one picked by
+// follower, as in followPointer)
+export function hideFollower(e, card = e.currentTarget, { follower = '.card-follower' } = {}) {
+  card.querySelector(follower)?.classList.remove('is-shown')
+  if (!card.querySelector('.card-follower.is-shown')) card.classList.remove('follower-shown')
 }

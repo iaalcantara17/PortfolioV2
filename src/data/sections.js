@@ -13,11 +13,11 @@ import Contact from '../components/sections/Contact'
 
 export const sections = [
   { key: 'hero', anchor: 'hero', label: 'Hero', Component: Hero, inNav: false },
-  { key: 'about', anchor: 'about', label: 'About', Component: About, inNav: true },
-  { key: 'skills', anchor: 'skills', label: 'Skills', Component: Skills, inNav: true },
   { key: 'experience', anchor: 'experience', label: 'Experience', Component: Experience, inNav: true },
-  { key: 'education', anchor: 'education', label: 'Education', Component: Education, inNav: true },
   { key: 'projects', anchor: 'projects', label: 'Projects', Component: Projects, inNav: true },
+  { key: 'skills', anchor: 'skills', label: 'Skills', Component: Skills, inNav: true },
+  { key: 'education', anchor: 'education', label: 'Education', Component: Education, inNav: true },
+  { key: 'about', anchor: 'about', label: 'About', Component: About, inNav: true },
   { key: 'gallery', anchor: 'gallery', label: 'Gallery', Component: Gallery, inNav: true },
   { key: 'contact', anchor: 'contact', label: 'Contact', Component: Contact, inNav: true },
 ]

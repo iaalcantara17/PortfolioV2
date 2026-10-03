@@ -1,11 +1,12 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { gsap } from 'gsap'
+import { EMAIL } from '../../data/contact'
+import { useCopyText } from '../../hooks/useCopyText'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
-import { trackResumeDownload } from '../../utils/trackResumeDownload'
 
 // copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
-  { label: 'Email', value: 'ialcantara2003@gmail.com', copy: true },
+  { label: 'Email', value: EMAIL, copy: true },
   { label: 'LinkedIn', value: 'linkedin.com/in/israel-alcantara', href: 'https://linkedin.com/in/israel-alcantara' },
   { label: 'GitHub', value: 'github.com/iaalcantara17', href: 'https://github.com/iaalcantara17' },
 ]
@@ -16,8 +17,6 @@ const dimOnMouseHover = (opacity) => ({
   onPointerEnter: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = opacity },
   onPointerLeave: (e) => { if (e.pointerType === 'mouse') e.currentTarget.style.opacity = '1' },
 })
-
-const COPIED_MS = 1500
 
 // Selects an element's text, for copying by hand
 function selectText(el) {
@@ -31,28 +30,16 @@ function selectText(el) {
 export default function Contact({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
-  const [copied, setCopied] = useState(false)
+  const [copied, copy] = useCopyText()
   // The copy button's aria-label replaces its text for screen readers, so the address
   // on screen is attached as its description: "Copy email address, button, <address>"
   const copyValueId = useId()
-  const copiedTimerRef = useRef(null)
 
-  useEffect(() => () => clearTimeout(copiedTimerRef.current), [])
-
-  // Copies a row's value, from a mouse click, a tap or the keyboard alike; the label
-  // reads "Copied" for a moment. If the clipboard isn't available or refuses, the
-  // value is selected instead, ready to copy by hand.
+  // Copies a row's value; the label reads "Copied" for a moment. If the clipboard
+  // refuses, the value is selected instead, ready to copy by hand.
   const copyValue = (e, link) => {
     const valueEl = e.currentTarget.querySelector('[data-copy-value]')
-    if (!navigator.clipboard) return selectText(valueEl)
-    navigator.clipboard.writeText(link.value).then(
-      () => {
-        setCopied(true)
-        clearTimeout(copiedTimerRef.current)
-        copiedTimerRef.current = setTimeout(() => setCopied(false), COPIED_MS)
-      },
-      () => selectText(valueEl)
-    )
+    copy(link.value, () => selectText(valueEl))
   }
 
   // Hidden until the first entrance below: the starting state, set on mount
@@ -205,33 +192,6 @@ export default function Contact({ isVisible }) {
                 </Row>
               )
             })}
-
-            {/* Resume download */}
-            <div style={{ marginTop: 32 }}>
-              <a
-                href="/Resume_Israel_Alcantara.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={trackResumeDownload}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  padding: '12px 24px',
-                  background: 'var(--color-ink)',
-                  borderRadius: 4,
-                  textDecoration: 'none',
-                  transition: 'opacity 0.2s ease',
-                }}
-                {...dimOnMouseHover('0.8')}
-              >
-                <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
-                  Download Resume
-                </span>
-                <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -248,11 +208,8 @@ export default function Contact({ isVisible }) {
           alignItems: 'center',
         }}
       >
-        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcántara, {import.meta.env.BUILD_YEAR}</span>
-        <span className="contact-footer-notes" style={{ display: 'flex', justifyContent: 'flex-end', gap: 24 }}>
-          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Built with craft.</span>
-          <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
-        </span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Israel Alcantara, {import.meta.env.BUILD_YEAR}</span>
+        <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Updated {import.meta.env.BUILD_MONTH}</span>
       </div>
     </section>
   )

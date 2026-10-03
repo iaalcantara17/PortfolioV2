@@ -117,20 +117,63 @@ const certificates = [
   },
 ]
 
-// The Certificate button shows its card's hover preview (HoverPreview) the way the NJIT
-// card shows the diploma's, but only while the pointer is over the button. The preview
-// sits in the card's coordinates, always below the pointer (like the Live Demo note),
-// so it never covers the card's content above the button.
+// LinkdUp's screens, from a five-person group run on a local copy of the app: create a
+// party, share its code, swipe, vote, lock the plan. The live demo needs its backend,
+// which is down, so the card shows the app instead: the screens cycle in a hover
+// preview while the pointer is on the card, and the Screenshots button opens them in
+// the Lightbox (touch and keyboard too).
+const screenshots = [
+  { image: photoByName['linkdup-screen-1'], alt: 'LinkdUp create-party screen, a party named Saturday Night Crew' },
+  { image: photoByName['linkdup-screen-2'], alt: 'LinkdUp invite screen, the code ARRJWK for friends to join with' },
+  { image: photoByName['linkdup-screen-3'], alt: 'LinkdUp swipe screen, Liberty Science Center on card 4 of 10, rated 4.5 and 6.9 miles away' },
+  { image: photoByName['linkdup-screen-4'], alt: "LinkdUp group vote, Razza in Jersey City as the group's top pick, with Yes and No buttons" },
+  { image: photoByName['linkdup-screen-5'], alt: 'LinkdUp confirmation screen, Razza on Saturday, April 8, 2028 at 7:00 PM with five attendees' },
+]
+
+// The card holds two hover previews (HoverPreview), picked out by these classes
+const SCREENS = '.linkdup-screens'
+const CERTIFICATE = '.certificate-preview'
+
+// The Certificate button shows the certificate's preview the way the NJIT card shows
+// the diploma's, but only while the pointer is over the button. The preview sits in
+// the card's coordinates, always below the pointer (like the Live Demo note), so it
+// never covers the card's content above the button.
 const cardOf = (e) => e.currentTarget.closest('.featured-card')
 const certificatePreviewProps = {
-  onPointerMove: (e) => followPointer(e, cardOf(e), { alwaysBelow: true }),
-  onPointerLeave: (e) => hideFollower(e, cardOf(e)),
+  onPointerMove: (e) => followPointer(e, cardOf(e), { alwaysBelow: true, follower: CERTIFICATE }),
+  onPointerLeave: (e) => hideFollower(e, cardOf(e), { follower: CERTIFICATE }),
 }
 
 export default function Projects({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
-  const [lightboxIndex, setLightboxIndex] = useState(null)
+  // What the Lightbox shows (the certificate or the screens), and which one; index null
+  // when it's closed. Closing keeps the photos, so the closing fade still has them.
+  const [lightbox, setLightbox] = useState({ photos: certificates, index: null })
+  // Whether a mouse is on the LinkdUp card, which cycles its screens preview. It keeps
+  // cycling while the preview hides over a button, and starts again from the first
+  // screen only once the pointer leaves the card.
+  const [screensActive, setScreensActive] = useState(false)
+
+  // The screens preview follows a mouse over the card, but not over its buttons and
+  // links, which have their own (the certificate's) or none
+  const screensPreviewProps = {
+    onPointerMove: (e) => {
+      if (e.pointerType !== 'mouse') return
+      if (e.target.closest('a, button')) hideFollower(e, e.currentTarget, { follower: SCREENS })
+      else followPointer(e, e.currentTarget, { follower: SCREENS })
+      setScreensActive(true)
+    },
+    onPointerLeave: (e) => {
+      hideFollower(e, e.currentTarget, { follower: SCREENS })
+      setScreensActive(false)
+    },
+  }
+  const openLightbox = (e, photos) => {
+    // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
+    resetTilt(cardOf(e))
+    setLightbox({ photos, index: 0 })
+  }
 
   // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
@@ -171,7 +214,6 @@ export default function Projects({ isVisible }) {
       >
         {/* Left column */}
         <div
-          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -211,12 +253,14 @@ export default function Projects({ isVisible }) {
         {/* Right column */}
         <div style={{ padding: '32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-          {/* Featured card. position: relative makes the card the certificate
-              preview's frame (followPointer places it in the card's coordinates). */}
+          {/* Featured card. position: relative makes the card the frame of its two
+              previews, the screens and the certificate (followPointer places them in
+              the card's coordinates). */}
           <div
             className="featured-card tilt-card"
             onMouseMove={(e) => handleTilt(e, e.currentTarget)}
             onMouseLeave={(e) => resetTilt(e.currentTarget)}
+            {...screensPreviewProps}
             style={{
               background: 'var(--color-feature)',
               borderRadius: 4,
@@ -227,7 +271,7 @@ export default function Projects({ isVisible }) {
           >
             {/* Award badge */}
             <div style={{ marginBottom: 14 }}>
-              <span className="pill pill-gold" style={{ fontSize: 9 }}>
+              <span className="pill pill-feature-purple" style={{ fontSize: 9 }}>
                 2nd Place, NJIT CS491 Capstone 2026
               </span>
             </div>
@@ -263,27 +307,29 @@ export default function Projects({ isVisible }) {
 
             {/* Wraps on narrow screens, where the three don't fit on one line */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              <a
-                href="https://linkdup.app"
-                data-print-url={printUrl('https://linkdup.app')}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* The live demo is down (its backend's hosting lapsed), so the first
+                  button opens the app's screens in the Lightbox instead */}
+              <button
+                type="button"
+                aria-label="View screenshots: LinkdUp"
+                aria-haspopup="dialog"
+                onClick={(e) => openLightbox(e, screenshots)}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
                   background: 'var(--color-night-purple)',
+                  border: 'none',
                   borderRadius: 4,
                   fontSize: 11,
                   color: 'var(--color-white)',
-                  textDecoration: 'none',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
                 }}
               >
-                <span>Live Demo <span className="link-arrow">↗</span></span>
-              </a>
+                Screenshots
+              </button>
               <a
                 href="https://github.com/iaalcantara17/LinkdUp"
                 data-print-url={printUrl('https://github.com/iaalcantara17/LinkdUp')}
@@ -309,12 +355,9 @@ export default function Projects({ isVisible }) {
               <button
                 type="button"
                 aria-label="View certificate: LinkdUp, 2nd Place, NJIT CS491 Capstone 2026"
+                aria-haspopup="dialog"
                 {...certificatePreviewProps}
-                onClick={(e) => {
-                  // A tap fires mousemove first, so don't leave the card tilted behind the Lightbox
-                  resetTilt(cardOf(e))
-                  setLightboxIndex(0)
-                }}
+                onClick={(e) => openLightbox(e, certificates)}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -332,7 +375,8 @@ export default function Projects({ isVisible }) {
               </button>
             </div>
 
-            <HoverPreview image={certificates[0].image} />
+            <HoverPreview images={[certificates[0].image]} className="certificate-preview" />
+            <HoverPreview images={screenshots.map((s) => s.image)} active={screensActive} className="linkdup-screens" />
           </div>
 
           {/* Grid cards */}
@@ -470,10 +514,10 @@ export default function Projects({ isVisible }) {
       </div>
 
       <LazyLightbox
-        photos={certificates}
-        index={lightboxIndex}
-        onClose={() => setLightboxIndex(null)}
-        onNavigate={setLightboxIndex}
+        photos={lightbox.photos}
+        index={lightbox.index}
+        onClose={() => setLightbox((l) => ({ ...l, index: null }))}
+        onNavigate={(index) => setLightbox((l) => ({ ...l, index }))}
       />
     </section>
   )

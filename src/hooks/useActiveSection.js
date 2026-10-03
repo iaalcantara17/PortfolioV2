@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { HANDOFF_LINE } from '../data/sections'
 
 // Index of the section whose box covers HANDOFF_LINE, the point where a
-// section's own label meets the floating counter. The section dots and the
-// counter both read this, so they always agree.
+// section's own label meets the floating counter, which shows this number.
 //
 // Checked from geometry once per scroll frame. An IntersectionObserver on a
 // 1px band looks cheaper but can miss a change: when a fast scroll lands a

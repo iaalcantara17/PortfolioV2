@@ -16,7 +16,7 @@ export const SHARE_IMAGE = {
   path: '/og-image.png',
   width: 1200,
   height: 630,
-  alt: 'Israel Alcántara, Software Engineer · MBA Candidate, next to a portrait of Israel.',
+  alt: 'Israel Alcantara, Software Engineer · MBA Candidate, next to a portrait of Israel.',
 }
 
 // schema.org structured data (JSON-LD) for the page: who the site is about, and the
@@ -29,7 +29,7 @@ export const structuredData = (baseUrl) => {
       {
         '@type': 'Person',
         '@id': person,
-        name: 'Israel Alcántara',
+        name: 'Israel Alcantara',
         url: `${baseUrl}/`,
         jobTitle: 'Software Engineer',
         // NJIT: BS in Computer Science, earned
@@ -43,7 +43,7 @@ export const structuredData = (baseUrl) => {
         '@type': 'WebSite',
         '@id': `${baseUrl}/#website`,
         url: `${baseUrl}/`,
-        name: 'Israel Alcántara',
+        name: 'Israel Alcantara',
         inLanguage: 'en',
         about: { '@id': person },
         author: { '@id': person },

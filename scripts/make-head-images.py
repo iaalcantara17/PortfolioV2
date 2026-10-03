@@ -45,7 +45,7 @@ OG_TEXT_LEFT = 72
 # Between the text block and the portrait
 OG_GUTTER = 64
 EYEBROW = 'Software Engineer · MBA Candidate'
-NAME_LINES = ('Israel', 'Alcántara')
+NAME_LINES = ('Israel', 'Alcantara')
 # Sized for the preview card, not the file: LinkedIn shows the image about 552px wide,
 # so 26px here reads at about 12px there
 EYEBROW_PX = 26

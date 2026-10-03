@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { RESUME_URL } from '../data/contact'
 import { sections } from '../data/sections'
 import { useScrollLock } from '../hooks/useScrollLock'
 import { trapFocus } from '../utils/focusTrap'
@@ -102,7 +103,7 @@ export default function Nav({ containerRef, onNavigate }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <ThemeToggle />
           <a
-            href="/Resume_Israel_Alcantara.pdf"
+            href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={trackResumeDownload}

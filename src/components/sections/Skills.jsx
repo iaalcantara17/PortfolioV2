@@ -35,17 +35,17 @@ const categories = [
   {
     name: 'Cloud and DevOps',
     items: [
-      { label: 'AWS (CloudWatch)', type: 'gold' },
-      { label: 'Linux', type: 'gold' },
-      { label: 'Git', type: 'gold' },
+      { label: 'AWS (CloudWatch)', type: 'plain' },
+      { label: 'Linux', type: 'plain' },
+      { label: 'Git', type: 'plain' },
     ],
   },
   {
     name: 'Databases',
     items: [
-      { label: 'Supabase', type: 'green' },
-      { label: 'MySQL', type: 'green' },
-      { label: 'MongoDB', type: 'green' },
+      { label: 'Supabase', type: 'plain' },
+      { label: 'MySQL', type: 'plain' },
+      { label: 'MongoDB', type: 'plain' },
     ],
   },
 ]
@@ -93,7 +93,6 @@ export default function Skills({ isVisible }) {
       >
         {/* Left column */}
         <div
-          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -129,22 +128,6 @@ export default function Skills({ isVisible }) {
               Tools I've used in production, in class, and on projects I actually care about.
             </p>
           </div>
-
-          {/* Stat — 25+ already has gold suffix */}
-          <div data-animate className="section-stat">
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 42,
-                letterSpacing: '-0.03em',
-                color: 'var(--color-ink)',
-                lineHeight: 1,
-              }}
-            >
-              25<span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>+</span>
-            </div>
-            <div className="eyebrow" style={{ marginTop: 4 }}>Technologies</div>
-          </div>
         </div>
 
         {/* Right column */}
@@ -178,7 +161,7 @@ export default function Skills({ isVisible }) {
           ))}
           </div>
 
-          {/* Legend */}
+          {/* Legend: purple marks the strongest; each row's heading names the rest */}
           <div
             className="skills-legend"
             style={{
@@ -190,16 +173,10 @@ export default function Skills({ isVisible }) {
               flexShrink: 0,
             }}
           >
-            {[
-              { color: 'var(--color-purple)', label: 'Strong' },
-              { color: 'var(--color-gold)', label: 'Cloud/DevOps' },
-              { color: 'var(--color-green)', label: 'Databases' },
-            ].map((l) => (
-              <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: l.color, flexShrink: 0 }} />
-                <span className="eyebrow">{l.label}</span>
-              </div>
-            ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-purple)', flexShrink: 0 }} />
+              <span className="eyebrow">Strong</span>
+            </div>
           </div>
         </div>
       </div>
