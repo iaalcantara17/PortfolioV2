@@ -21,13 +21,12 @@ const bodyParagraphs = [
 
 export default function About({ isVisible }) {
   const sectionRef = useRef(null)
-  const onceTlRef = useRef(null)
   const tlRef = useRef(null)
   // Picked once per page load. Not re-picked on entrance: a different-length quote
   // would change the section's height mid-scroll on the stacked mobile layout.
   const [quote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)])
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -42,16 +41,12 @@ export default function About({ isVisible }) {
     const section = sectionRef.current
     if (!section) return
 
-    if (isVisible && !onceTlRef.current) {
-      const onceTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      onceTl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.06, duration: 0.7 }))
-      onceTlRef.current = onceTl
-    }
-
     if (isVisible && !tlRef.current) {
+      // The labels and the quotes start together; the paragraphs 0.4s after the quotes
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.to(section.querySelectorAll('.pull-quote, .about-quote'), entranceEnd({ y: 0, opacity: 1, duration: 0.7 }))
-        .to(section.querySelectorAll('.body-para'), entranceEnd({ y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }), '-=0.3')
+      tl.to(section.querySelectorAll('[data-animate]'), entranceEnd({ y: 0, opacity: 1, stagger: 0.06, duration: 0.7 }))
+        .to(section.querySelectorAll('.pull-quote, .about-quote'), entranceEnd({ y: 0, opacity: 1, duration: 0.7 }), 0)
+        .to(section.querySelectorAll('.body-para'), entranceEnd({ y: 0, opacity: 1, stagger: 0.08, duration: 0.6 }), '<+=0.4')
         .to(section.querySelectorAll('.interest-pill'), entranceEnd({ y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 }), '-=0.2')
       tlRef.current = tl
     }

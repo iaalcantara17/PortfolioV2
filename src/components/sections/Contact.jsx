@@ -55,7 +55,7 @@ export default function Contact({ isVisible }) {
     )
   }
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -141,7 +141,7 @@ export default function Contact({ isVisible }) {
           </div>
 
           {/* Availability */}
-          <div data-animate style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div data-animate className="contact-availability" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div className="availability-dot" />
             <span className="eyebrow" style={{ color: 'var(--color-purple-ink)' }}>Available now</span>
           </div>
@@ -191,14 +191,16 @@ export default function Contact({ isVisible }) {
                   </div>
                   {l.copy ? (
                     // Copy icon (two sheets), in the tap hint's style (14px, round caps,
-                    // the purple "does something" accent) but a lighter 1.1 stroke, so it
-                    // matches the thin ↗ arrows on the rows below it
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ color: 'var(--color-purple)', flexShrink: 0 }}>
+                    // a "does something" purple) but a lighter 1.1 stroke, so it matches
+                    // the thin ↗ arrows on the rows below it, in their color too
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ color: 'var(--color-purple-deep)', flexShrink: 0 }}>
                       <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
                       <path d="M9.5 4.5V3A1.5 1.5 0 0 0 8 1.5H3A1.5 1.5 0 0 0 1.5 3v5A1.5 1.5 0 0 0 3 9.5h1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : (
-                    <span style={{ color: 'var(--color-purple)', fontSize: 18, lineHeight: 1 }}>↗</span>
+                    // purple-deep: the arrow is text, and the lighter purple is under 4.5:1
+                    // on the paper
+                    <span style={{ color: 'var(--color-purple-deep)', fontSize: 18, lineHeight: 1 }}>↗</span>
                   )}
                 </Row>
               )

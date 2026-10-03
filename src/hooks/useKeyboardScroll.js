@@ -16,7 +16,7 @@ export function useKeyboardScroll(containerRef) {
       // A modal (Lightbox, mobile menu) has locked the page
       if (document.documentElement.classList.contains('scroll-locked')) return
       // Space still activates a focused button or link
-      if (e.key === ' ' && e.target.closest?.('button, a, [role="button"]')) return
+      if (e.key === ' ' && e.target.closest?.('button, a')) return
 
       // Same step as the browser's own page scroll: most of a screen, with overlap
       const page = container.clientHeight * 0.875

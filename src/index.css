@@ -75,7 +75,6 @@
   --color-purple-a30: rgba(127, 119, 221, 0.3);
   --color-purple-a40: rgba(127, 119, 221, 0.4);
   --color-gold-a12: rgba(212, 175, 55, 0.12);
-  --color-gold-a30: rgba(212, 175, 55, 0.3);
   --color-gold-a40: rgba(212, 175, 55, 0.4);
   --color-green-a12: rgba(29, 158, 117, 0.12);
   --color-green-a30: rgba(29, 158, 117, 0.3);
@@ -83,10 +82,8 @@
   --color-paper-a50: rgba(245, 242, 236, 0.5);
   --color-paper-a70: rgba(245, 242, 236, 0.7);
   --color-paper-a72: rgba(245, 242, 236, 0.72);
-  --color-paper-a85: rgba(245, 242, 236, 0.85);
   --color-white-a06: rgba(255, 255, 255, 0.06);
   --color-white-a08: rgba(255, 255, 255, 0.08);
-  --color-white-a10: rgba(255, 255, 255, 0.1);
   --color-white-a15: rgba(255, 255, 255, 0.15);
   --color-white-a30: rgba(255, 255, 255, 0.3);
   --color-ink-a92: rgba(13, 13, 13, 0.92);
@@ -169,7 +166,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
@@ -362,8 +358,7 @@ h1, h2, h3, h4, h5, h6 {
   #custom-cursor {
     display: none;
   }
-  button,
-  [role="button"] {
+  button {
     cursor: pointer;
   }
 }
@@ -766,8 +761,6 @@ nav.site-nav.scrolled {
 /* Hero grid — inherits centered max-width:1440px wrapper from the generic rule above; right column centers its content within itself */
 .hero-grid {
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  justify-content: normal;
 }
 
 /* Photo placeholder */
@@ -776,11 +769,6 @@ nav.site-nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-faint);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-family: var(--font-sans);
 }
 
 /* Missing image (MissingImage.jsx): what shows where an image's file didn't load.
@@ -807,7 +795,7 @@ nav.site-nav.scrolled {
    and places each frame as the reel moves; here is what doesn't move.
    - Space: at least 80px under the header (the column's 24px gap plus 56px here),
      then the band and its dots centered in what's left.
-   - Band: the negative's black, with PR #18's sprocket rows (6px cream squares every
+   - Band: the negative's black, with its sprocket rows (6px cream squares every
      14px, 3px in from each edge) as its own background. It spans the content width.
    - Frames: square photos straight on the black, no matte, square corners. --ring (1
      in the middle, fading as a frame leaves it) draws the current photo's 3px ring,
@@ -1125,8 +1113,8 @@ nav.site-nav.scrolled {
   .body-para-list {
     gap: 24px !important;
   }
-  /* Skills/Experience left column — title-to-subtitle spacing standardized to 24px,
-     and flex-start instead of space-between so no leftover height gets distributed
+  /* Skills/Experience/Projects left column — title-to-subtitle spacing standardized to
+     24px, and flex-start instead of space-between so no leftover height gets distributed
      as an inconsistent extra gap between the intro text and the stat block */
   .section-intro-title {
     margin-bottom: 24px !important;
@@ -1135,6 +1123,11 @@ nav.site-nav.scrolled {
     justify-content: flex-start !important;
   }
   .section-stat {
+    margin-top: 32px;
+  }
+  /* Contact's "Available now" sits at the bottom of its column through space-between,
+     which leaves no gap once the column stacks: the same 32px as a stat */
+  .contact-availability {
     margin-top: 32px;
   }
   /* Skills/Experience right column — 32px of breathing room below the intro/stat
@@ -1270,7 +1263,7 @@ nav.site-nav.scrolled {
 }
 
 /* Reduced motion — entrances already fade without moving (utils/motion.js). Here:
-   no smooth scrolling, the mobile menu only fades, no hover tilt, the section dot's
+   the mobile menu only fades, no hover tilt, the section dot's
    scaled active state switches without animating, the theme toggle's sun and moon
    swap without the morph, and the menu toggle's bars switch to the X without it.
    (The Gallery reel moves instantly, in FilmReel.jsx; the theme switches without
@@ -1281,9 +1274,6 @@ nav.site-nav.scrolled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   .mobile-menu-overlay {
     animation-name: menuFadeOnly;
   }

@@ -3,7 +3,6 @@ import { gsap } from 'gsap'
 
 export default function Cursor() {
   const cursorRef = useRef(null)
-  const pos = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     const cursor = cursorRef.current
@@ -21,7 +20,6 @@ export default function Cursor() {
         cursor.classList.add('visible')
         shown = true
       }
-      pos.current = { x: e.clientX, y: e.clientY }
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
@@ -30,23 +28,23 @@ export default function Cursor() {
       })
     }
 
-    const onEnter = () => cursor.classList.add('hovering')
-    const onLeave = () => cursor.classList.remove('hovering')
+    // The dot grows over anything clickable. One listener on the document, so links and
+    // buttons that mount later (the Lightbox's controls, reel frames as the reel moves)
+    // count too. Every move onto a new element fires mouseover, which settles the state;
+    // mouseout with nowhere to go is the pointer leaving the window.
+    const onOver = (e) => cursor.classList.toggle('hovering', !!e.target.closest('a, button'))
+    const onOut = (e) => {
+      if (!e.relatedTarget) cursor.classList.remove('hovering')
+    }
 
     window.addEventListener('mousemove', onMove)
-
-    const clickables = document.querySelectorAll('a, button, [data-cursor]')
-    clickables.forEach((el) => {
-      el.addEventListener('mouseenter', onEnter)
-      el.addEventListener('mouseleave', onLeave)
-    })
+    document.addEventListener('mouseover', onOver)
+    document.addEventListener('mouseout', onOut)
 
     return () => {
       window.removeEventListener('mousemove', onMove)
-      clickables.forEach((el) => {
-        el.removeEventListener('mouseenter', onEnter)
-        el.removeEventListener('mouseleave', onLeave)
-      })
+      document.removeEventListener('mouseover', onOver)
+      document.removeEventListener('mouseout', onOut)
     }
   }, [])
 

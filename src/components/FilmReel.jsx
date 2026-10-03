@@ -43,7 +43,7 @@ const DOTS_ROOM = 20 + 7
 // end slivers
 const DIM = [1, 0.65]
 const DIM_EDGE = 0.4
-// PR #18's sprocket rows (12px), plus room for the ring and focus outline on the black
+// The sprocket rows (12px), plus room for the ring and focus outline on the black
 const SPROCKET_ROW = 12
 const RING_ROOM = 6
 const SPROCKET_PITCH = 14

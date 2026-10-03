@@ -96,6 +96,19 @@ function NoteLink({ link, style }) {
 
 const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
 
+// The grid cards' links and More on GitHub: small purple outlined buttons
+const outlineLinkStyle = {
+  display: 'inline-flex',
+  padding: '4px 10px',
+  border: '0.5px solid var(--color-purple-a40)',
+  borderRadius: 4,
+  fontSize: 10,
+  color: 'var(--color-purple-deep)',
+  textDecoration: 'none',
+  letterSpacing: '0.04em',
+  fontFamily: 'var(--font-sans)',
+}
+
 // LinkdUp's capstone certificate, opened in the Lightbox like the NJIT diploma in Education
 const certificates = [
   {
@@ -119,7 +132,7 @@ export default function Projects({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -158,6 +171,7 @@ export default function Projects({ isVisible }) {
       >
         {/* Left column */}
         <div
+          className="section-left-col"
           style={{
             padding: '48px 32px 40px',
             borderRight: '0.5px solid var(--color-line)',
@@ -171,6 +185,7 @@ export default function Projects({ isVisible }) {
                 keeps its nav label ("Projects") first when navigating by heading */}
             <h2
               data-animate
+              className="section-intro-title"
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(26px, 2.8vw, 36px)',
@@ -187,23 +202,9 @@ export default function Projects({ isVisible }) {
               <br />
               built<span style={{ color: 'var(--color-purple)' }}>.</span>
             </h2>
-            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85 }}>
+            <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
               Projects I can speak to in full, start to finish.
             </p>
-          </div>
-          <div data-animate>
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 42,
-                letterSpacing: '-0.03em',
-                color: 'var(--color-ink)',
-                lineHeight: 1,
-              }}
-            >
-              3
-            </div>
-            <div className="eyebrow" style={{ marginTop: 4 }}>Projects I own</div>
           </div>
         </div>
 
@@ -363,7 +364,7 @@ export default function Projects({ isVisible }) {
               >
                 SFort95 Compiler
               </h3>
-              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
@@ -383,17 +384,7 @@ export default function Projects({ isVisible }) {
                     data-print-url={printUrl(l.url)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
-                      border: '0.5px solid var(--color-purple-a40)',
-                      borderRadius: 4,
-                      fontSize: 10,
-                      color: 'var(--color-purple-deep)',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                      fontFamily: 'var(--font-sans)',
-                    }}
+                    style={outlineLinkStyle}
                   >
                     <span>{l.label} <span className="link-arrow">↗</span></span>
                   </a>
@@ -429,7 +420,7 @@ export default function Projects({ isVisible }) {
               >
                 Data Analysis App
               </h3>
-              <p style={{ fontSize: 11.5, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
                 <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
               </p>
@@ -443,59 +434,34 @@ export default function Projects({ isVisible }) {
                   // The demo runs on Streamlit, which puts idle apps to sleep
                   { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
                   { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
-                ].map((l) => {
-                  const style = {
-                    display: 'inline-flex',
-                    padding: '4px 10px',
-                    border: '0.5px solid var(--color-purple-a40)',
-                    borderRadius: 4,
-                    fontSize: 10,
-                    color: 'var(--color-purple-deep)',
-                    textDecoration: 'none',
-                    letterSpacing: '0.04em',
-                    fontFamily: 'var(--font-sans)',
-                  }
-                  return l.note ? (
-                    <NoteLink key={l.label} link={l} style={style} />
+                ].map((l) =>
+                  l.note ? (
+                    <NoteLink key={l.label} link={l} style={outlineLinkStyle} />
                   ) : (
-                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={style}>
+                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={outlineLinkStyle}>
                       <span>{l.label} <span className="link-arrow">↗</span></span>
                     </a>
-                  )
-                })}
+                  ),
+                )}
               </div>
             </div>
           </div>
 
-          {/* Bottom note, with the rest of the projects on GitHub at its end */}
+          {/* The rest of the projects, on GitHub, under a rule at the end */}
           <div
             style={{
               borderTop: '0.5px solid var(--color-line)',
               paddingTop: 14,
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 12,
+              justifyContent: 'flex-end',
             }}
           >
-            <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>Only projects I built and can fully speak to.</span>
             <a
               href="https://github.com/iaalcantara17"
               data-print-url={printUrl('https://github.com/iaalcantara17')}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                padding: '4px 10px',
-                border: '0.5px solid var(--color-purple-a40)',
-                borderRadius: 4,
-                fontSize: 10,
-                color: 'var(--color-purple-deep)',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-                fontFamily: 'var(--font-sans)',
-              }}
+              style={outlineLinkStyle}
             >
               <span>More on GitHub <span className="link-arrow">↗</span></span>
             </a>

@@ -96,8 +96,8 @@ function SchoolLogo({ logo }) {
 }
 
 // A card that opens nothing gets the same hover tilt, for consistency with the NJIT
-// card, but no data-cursor: the cursor dot doesn't grow, since there is nothing to
-// click. Its hover label follows the pointer like a tooltip (utils/follower.js).
+// card, but the cursor dot doesn't grow (it's no link or button), since there is
+// nothing to click. Its hover label follows the pointer like a tooltip (utils/follower.js).
 // Mouse pointers only, so a tap on a phone can't leave the card tilted.
 const hoverOnlyProps = {
   onPointerMove: (e) => {
@@ -116,7 +116,7 @@ export default function Education({ isVisible }) {
   const tlRef = useRef(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  // Fix 1 — set initial hidden state on mount
+  // Hidden until the first entrance below: the starting state, set on mount
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
