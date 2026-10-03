@@ -130,11 +130,6 @@ const screenshots = [
   { image: photoByName['linkdup-screen-5'], alt: 'LinkdUp confirmation screen, Razza on Saturday, April 8, 2028 at 7:00 PM with five attendees' },
 ]
 
-// The preview's frame: the shape of the phone screens (the confirmation screen is
-// taller, and is fitted inside it whole)
-const screenSize = photoByName['linkdup-screen-1'].variants[400]
-const SCREEN_ASPECT = screenSize.width / screenSize.height
-
 // The card holds two hover previews (HoverPreview), picked out by these classes
 const SCREENS = '.linkdup-screens'
 const CERTIFICATE = '.certificate-preview'
@@ -381,7 +376,7 @@ export default function Projects({ isVisible }) {
             </div>
 
             <HoverPreview images={[certificates[0].image]} className="certificate-preview" />
-            <HoverPreview images={screenshots.map((s) => s.image)} active={screensActive} aspect={SCREEN_ASPECT} className="linkdup-screens" />
+            <HoverPreview images={screenshots.map((s) => s.image)} active={screensActive} className="linkdup-screens" />
           </div>
 
           {/* Grid cards */}

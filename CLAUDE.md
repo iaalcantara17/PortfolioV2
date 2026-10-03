@@ -259,7 +259,8 @@ its reduced-motion gating unchanged:
   plan, captured from a five-person run on a local copy of LinkdUp 
   (C:\CS_491\linkdup_v2\demo-shots). Screen 5 is taller than the rest 
   (its screen scrolls), so the preview keeps one frame at the others' 
-  shape (HoverPreview's aspect) and fits each screen inside it whole, 
+  shape (aspect-ratio on .linkdup-screens in index.css) and fits each 
+  screen inside it whole, 
   on the app's own background (#0A0A0F). Every photo named linkdup- 
   stays out of the Gallery.
 

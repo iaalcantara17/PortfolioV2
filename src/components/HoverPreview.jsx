@@ -10,9 +10,7 @@ const CYCLE_MS = 1600
 // With several images, it shows them one after another while active (the card is
 // hovered), cross-fading (.card-hover-preview in index.css), and starts again from
 // the first each time. className picks it out when a card holds more than one preview.
-// aspect (width / height) fixes the frame's shape for images that differ: each one is
-// fitted inside it whole, so the frame never changes size as they cycle.
-export default function HoverPreview({ images, active = false, className = '', aspect }) {
+export default function HoverPreview({ images, active = false, className = '' }) {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
@@ -26,8 +24,7 @@ export default function HoverPreview({ images, active = false, className = '', a
 
   return (
     <span
-      className={`card-follower card-hover-preview${aspect ? ' is-framed' : ''} ${className}`}
-      style={aspect ? { aspectRatio: aspect } : undefined}
+      className={`card-follower card-hover-preview ${className}`}
       aria-hidden="true"
       data-current={current}
     >
