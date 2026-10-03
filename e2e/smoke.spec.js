@@ -214,6 +214,25 @@ test.describe('LinkdUp screenshots', () => {
     await expect(screens(page)).not.toHaveClass(/is-shown/)
   })
 
+  // All five screens, the taller confirmation screen too, in one frame that never
+  // changes size (a frame that grew for the tall one would jump under the pointer)
+  test('the preview cycles through all five screens in a frame of one size', async ({ page }) => {
+    await page.goto('/#projects')
+    await card(page).getByRole('heading', { name: 'LinkdUp' }).hover()
+    await expect(screens(page)).toHaveClass(/is-shown/)
+    const seen = new Set()
+    const sizes = new Set()
+    const until = Date.now() + 12_000
+    while (seen.size < 5 && Date.now() < until) {
+      seen.add(await screens(page).getAttribute('data-current'))
+      // Its layout size: the card's hover tilt skews the on-screen box as the pointer moves
+      sizes.add(await screens(page).evaluate((el) => `${el.offsetWidth}x${el.offsetHeight}`))
+      await page.waitForTimeout(250)
+    }
+    expect([...seen].sort()).toEqual(['0', '1', '2', '3', '4'])
+    expect([...sizes]).toHaveLength(1)
+  })
+
   // The card holds two previews; over the Certificate button, only its own shows
   test('hovering Certificate shows only the certificate preview', async ({ page }) => {
     await page.goto('/#projects')
@@ -231,9 +250,9 @@ test.describe('LinkdUp screenshots', () => {
       await expect(screens(page)).not.toHaveClass(/is-shown/)
       await card(page).getByRole('button', { name: /View screenshots/ }).tap()
       const dialog = page.getByRole('dialog', { name: 'Photo viewer' })
-      await expect(dialog.locator('img')).toHaveAttribute('alt', /Reconnect with your alumni/)
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /create-party screen/)
       await dialog.getByRole('button', { name: 'Next photo' }).tap()
-      await expect(dialog.locator('img')).toHaveAttribute('alt', /Swipe on spots together/)
+      await expect(dialog.locator('img')).toHaveAttribute('alt', /invite screen/)
     })
   })
 

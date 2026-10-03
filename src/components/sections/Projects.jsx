@@ -117,14 +117,23 @@ const certificates = [
   },
 ]
 
-// LinkdUp's screens. The live demo needs its backend, which is down, so the card shows
-// the app instead: the screens cycle in a hover preview while the pointer is on the
-// card, and the Screenshots button opens them in the Lightbox (touch and keyboard too).
+// LinkdUp's screens, from a five-person group run on a local copy of the app: create a
+// party, share its code, swipe, vote, lock the plan. The live demo needs its backend,
+// which is down, so the card shows the app instead: the screens cycle in a hover
+// preview while the pointer is on the card, and the Screenshots button opens them in
+// the Lightbox (touch and keyboard too).
 const screenshots = [
-  { image: photoByName['linkdup-screen-1'], alt: 'LinkdUp onboarding: "Reconnect with your alumni."' },
-  { image: photoByName['linkdup-screen-2'], alt: 'LinkdUp onboarding: "Swipe on spots together."' },
-  { image: photoByName['linkdup-screen-3'], alt: 'LinkdUp onboarding: "Lock in the date. No group chat chaos."' },
+  { image: photoByName['linkdup-screen-1'], alt: 'LinkdUp create-party screen, a party named Saturday Night Crew' },
+  { image: photoByName['linkdup-screen-2'], alt: 'LinkdUp invite screen, the code ARRJWK for friends to join with' },
+  { image: photoByName['linkdup-screen-3'], alt: 'LinkdUp swipe screen, Liberty Science Center on card 4 of 10, rated 4.5 and 6.9 miles away' },
+  { image: photoByName['linkdup-screen-4'], alt: "LinkdUp group vote, Razza in Jersey City as the group's top pick, with Yes and No buttons" },
+  { image: photoByName['linkdup-screen-5'], alt: 'LinkdUp confirmation screen, Razza on Saturday, April 8, 2028 at 7:00 PM with five attendees' },
 ]
+
+// The preview's frame: the shape of the phone screens (the confirmation screen is
+// taller, and is fitted inside it whole)
+const screenSize = photoByName['linkdup-screen-1'].variants[400]
+const SCREEN_ASPECT = screenSize.width / screenSize.height
 
 // The card holds two hover previews (HoverPreview), picked out by these classes
 const SCREENS = '.linkdup-screens'
@@ -372,7 +381,7 @@ export default function Projects({ isVisible }) {
             </div>
 
             <HoverPreview images={[certificates[0].image]} className="certificate-preview" />
-            <HoverPreview images={screenshots.map((s) => s.image)} active={screensActive} className="linkdup-screens" />
+            <HoverPreview images={screenshots.map((s) => s.image)} active={screensActive} aspect={SCREEN_ASPECT} className="linkdup-screens" />
           </div>
 
           {/* Grid cards */}

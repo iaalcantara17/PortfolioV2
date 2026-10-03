@@ -970,6 +970,27 @@ nav.site-nav.scrolled {
   opacity: 1;
 }
 
+/* A framed preview (HoverPreview's aspect) keeps one shape for images that differ:
+   each fills the frame's height or width and is fitted inside it whole, never cropped
+   or stretched. Clipping its overflow lets aspect-ratio hold against a taller image. */
+.card-hover-preview.is-framed {
+  grid-template-rows: minmax(0, 1fr);
+}
+.card-hover-preview.is-framed > span {
+  min-height: 0;
+}
+.card-hover-preview.is-framed img {
+  height: 100%;
+  object-fit: contain;
+}
+
+/* LinkdUp's screens: the app's own background (#0A0A0F, sampled from the screenshots)
+   behind them, so the taller confirmation screen sits in the frame like the same
+   phone showing a longer page, with no seam where the screenshot ends */
+.card-hover-preview.linkdup-screens {
+  background: #0a0a0f;
+}
+
 /* Hover label on a card that opens nothing (Montclair's "In progress"): a follower
    styled like the photo caption chip in About */
 .card-hover-label {
