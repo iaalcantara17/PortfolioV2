@@ -49,9 +49,25 @@ export const containSizes = (photo, boxWidth, boxHeight) => {
 // Approved descriptions, by photo file: the alt text wherever the photo appears (Hero,
 // About, the Gallery reel and its Lightbox).
 export const photoAlt = {
+  'car-bmw-e34': 'A white BMW E34 5 Series on black mesh wheels, parked in front of a red building with a white porch.',
+  'car-bmw-e36': 'A dark green BMW E36 with angel-eye headlights, parked next to a blue convertible.',
+  'car-corvette-z06': 'A blue Chevrolet Corvette Z06 parked on a gravel lot in front of the trees.',
+  'car-golf-mk2-gti': 'A teal VW Golf Mk2 GTI with a red-trimmed grille, shot head-on.',
+  'car-golf-r32': 'A blue-purple VW Golf R32 parked next to two classic VW Beetles.',
+  'car-porsche-930': 'A black Porsche 911 Turbo with yellow headlights and gold wheels, parked outside Brakes & Briskets.',
+  'car-porsche-944': 'A gray Porsche 944, lowered on aftermarket wheels, parked by the road.',
+  'car-skyline-r34': 'A blue Nissan Skyline R34 with a Nismo front bumper and black wheels.',
+  'car-supra-mk4': 'A purple Toyota Supra Mk4 with a body kit and rear wing, in a lot full of show cars.',
   city: 'The Brooklyn Bridge with the Lower Manhattan skyline at sunset.',
   friends: 'Two friends seen from behind at a railing at night, one in a green and gold varsity jacket.',
   nature: 'Looking up through a canopy of tall pine trees.',
   portrait: 'Portrait of Israel Alcantara.',
   streetwear: 'Israel standing on a grassy coastal hillside.',
+}
+
+// Where the reel's square crop sits in a photo, as object-position, for a photo the
+// middle crop frames badly. Every other photo is cropped from the middle; the
+// Lightbox always shows the whole photo.
+export const photoFocus = {
+  'car-porsche-930': '50% 85%',
 }

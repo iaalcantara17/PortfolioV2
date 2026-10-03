@@ -5,23 +5,36 @@ import LazyLightbox from '../LazyLightbox'
 import { galleryPhotos, photoAlt } from '../../data/photos'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
-// Each photo's alt text: its approved description in data/photos.js. City, friends
-// and nature appear only here; streetwear is also About's photo, with the same
+// Each photo's alt text: its approved description in data/photos.js. Every photo but
+// streetwear appears only here; streetwear is also About's photo, with the same
 // description. A photo added without one is named by its place in the set.
 const galleryAlt = (photo, index, total) => photoAlt[photo.name] ?? `Photo ${index + 1} of ${total}`
+
+// A Fisher–Yates shuffle of a copy, so each visit starts the reel somewhere new
+function shuffled(items) {
+  const out = [...items]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
 
 export default function Gallery({ isVisible }) {
   const sectionRef = useRef(null)
   const tlRef = useRef(null)
+  // The order is set once, on mount, and never changes after: the reel and the
+  // Lightbox share it
+  const [photos] = useState(() => shuffled(galleryPhotos))
   // The photo in the middle of the reel. The Lightbox opens on it, and its own
   // previous/next move the reel along behind it.
   const [index, setIndex] = useState(0)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  const total = galleryPhotos.length
+  const total = photos.length
   const lightboxPhotos = useMemo(
-    () => galleryPhotos.map((image, i) => ({ image, alt: galleryAlt(image, i, total) })),
-    [total],
+    () => photos.map((image, i) => ({ image, alt: galleryAlt(image, i, total) })),
+    [photos, total],
   )
   // The reel describes each photo the same way the Lightbox does
   const descriptions = useMemo(() => lightboxPhotos.map((photo) => photo.alt), [lightboxPhotos])
@@ -95,7 +108,7 @@ export default function Gallery({ isVisible }) {
 
         {/* The reel, centered in the space under the header */}
         <FilmReel
-          photos={galleryPhotos}
+          photos={photos}
           descriptions={descriptions}
           isVisible={isVisible}
           index={index}
