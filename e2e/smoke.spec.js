@@ -332,12 +332,13 @@ test.describe('skip link', () => {
 })
 
 test.describe('missing images', () => {
-  // The city photo is the reel's first, middle frame; the NJIT logo is Education's first
-  const CITY = /\/assets\/city-\d+-[^/]+\.(avif|webp)$/
+  // Every photo variant fails, so whichever photo the reel starts on is missing; the
+  // NJIT logo is Education's first
+  const PHOTO = /\/assets\/[a-z0-9-]+-(400|1200|2400)-[^/]+\.(avif|webp)$/
   const NJIT_LOGO = /\/assets\/njit-(?!diploma)[^/]+\.webp$/
 
   test.beforeEach(async ({ page }) => {
-    await page.route((url) => CITY.test(url.pathname) || NJIT_LOGO.test(url.pathname), (route) =>
+    await page.route((url) => PHOTO.test(url.pathname) || NJIT_LOGO.test(url.pathname), (route) =>
       route.fulfill({ status: 404, body: '' }),
     )
   })
@@ -348,7 +349,9 @@ test.describe('missing images', () => {
     const tile = frame.locator('.missing-image')
     await expect(tile).toBeVisible()
     await expect(tile).toHaveAttribute('role', 'img')
-    await expect(tile).toHaveAttribute('aria-label', /Brooklyn Bridge/)
+    // Named by the photo's approved description, not the "Photo 1 of 4" fallback
+    await expect(tile).toHaveAttribute('aria-label', /\w/)
+    await expect(tile).not.toHaveAttribute('aria-label', /^Photo \d+ of \d+$/)
     await expect(frame.locator('img')).toHaveCount(0)
 
     await frame.focus()
