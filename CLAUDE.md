@@ -141,10 +141,9 @@ One line per merged PR. #17 and #18 were closed without merging.
   (22px); it's --color-purple-deep now, 6.20:1 (8.06:1 dark). 
   Education's date lines were --color-faint, 4.32:1 on the card; 
   they're --color-muted now, 4.87:1 (6.14:1 dark).
-- Open, by choice: gold pill text (Education's "In progress", the PDF 
-  tag on Contact's Download Resume) stays below AA contrast (the note on 
-  the accent tokens in index.css). It's the only contrast failure left, 
-  in either theme. Gold elsewhere is a fill, outline or dot, never text: 
+- Open, by choice: gold pill text (Education's "In progress") stays 
+  below AA contrast (the note on the accent tokens in index.css). It's 
+  the only contrast failure left, in either theme. Gold elsewhere is a fill, outline or dot, never text: 
   the Hero's buttons are gold with dark text (9.24:1).
 
 ## Effects: keep/cut decisions
@@ -238,9 +237,9 @@ its reduced-motion gating unchanged:
   :development when VERCEL_ENV is unset), through KV_REST_API_URL and 
   KV_REST_API_TOKEN (the Upstash integration, one database for 
   Production and Preview). Preview clicks never touch production's 
-  count. POST adds one, GET only reads. All three resume links (Nav, 
-  the Hero's Download resume, Contact) POST to it on click through 
-  utils/trackResumeDownload.js, fire and forget. Only clicks count: not middle-clicks, "Open in new 
+  count. POST adds one, GET only reads. Both resume links (Nav, Hero) 
+  POST to it on click through utils/trackResumeDownload.js, fire and 
+  forget. Only clicks count: not middle-clicks, "Open in new 
   tab", the noscript link, or direct visits to the PDF or /resume.pdf. 
   The endpoint is public, so anyone can read the count or add to it.
 
