@@ -183,20 +183,38 @@ test.describe('lightbox', () => {
 })
 
 test.describe('resume', () => {
-  test('the nav, Hero and Contact resume links point to the PDF, which is served', async ({ page }) => {
+  // The two places to get the resume: the nav and the Hero
+  const resumeLinks = (page) => [
+    page.locator('nav a', { hasText: 'Resume' }),
+    page.locator('#hero a', { hasText: 'Download resume' }),
+  ]
+
+  test('the nav and Hero resume links point to the PDF, which is served, and Contact has none', async ({ page }) => {
     await page.goto('/')
-    const links = [
-      page.locator('nav a', { hasText: 'Resume' }),
-      page.locator('#hero a', { hasText: 'Download resume' }),
-      page.locator('#contact a', { hasText: 'Download Resume' }),
-    ]
-    for (const link of links) {
+    for (const link of resumeLinks(page)) {
       await expect(link).toHaveAttribute('href', RESUME)
     }
+    await expect(page.locator(`#contact a[href="${RESUME}"]`)).toHaveCount(0)
     const res = await page.request.get(RESUME)
     expect(res.status()).toBe(200)
     expect(res.headers()['content-type']).toContain('application/pdf')
     expect((await res.body()).subarray(0, 5).toString()).toBe('%PDF-')
+  })
+
+  // Each click counts one download (api/track-resume-download.js), from either link
+  test('a click on either resume link counts a download', async ({ page, context }) => {
+    const counted = []
+    await page.route('**/api/track-resume-download', (route) => {
+      counted.push(route.request().method())
+      return route.fulfill({ status: 204 })
+    })
+    await page.goto('/')
+    for (const link of resumeLinks(page)) {
+      const pdfTab = context.waitForEvent('page')
+      await link.click()
+      await (await pdfTab).close()
+    }
+    await expect.poll(() => counted).toEqual(['POST', 'POST'])
   })
 })
 

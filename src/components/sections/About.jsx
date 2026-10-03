@@ -138,7 +138,6 @@ export default function About({ isVisible }) {
               maxHeight: 380,
               borderRadius: 4,
               border: '0.5px solid var(--color-line)',
-              position: 'relative',
               overflow: 'hidden',
             }}
           >
@@ -149,21 +148,6 @@ export default function About({ isVisible }) {
               alt={photoAlt.streetwear}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '40% 25%', display: 'block' }}
             />
-            <div
-              className="eyebrow"
-              style={{
-                position: 'absolute',
-                bottom: 10,
-                left: 10,
-                background: 'var(--color-paper)',
-                padding: '3px 8px',
-                borderRadius: 20,
-                border: '0.5px solid var(--color-line)',
-                color: 'var(--color-muted)',
-              }}
-            >
-              Canon SL3
-            </div>
           </div>
 
           {/* Rotating quote */}

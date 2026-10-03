@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef } from 'react'
 import { gsap } from 'gsap'
-import { EMAIL, RESUME_URL } from '../../data/contact'
+import { EMAIL } from '../../data/contact'
 import { useCopyText } from '../../hooks/useCopyText'
 import { entranceStart, entranceEnd, pulseAvailability } from '../../utils/motion'
-import { trackResumeDownload } from '../../utils/trackResumeDownload'
 
 // copy: the row copies its value when clicked or tapped, and links nowhere
 const links = [
@@ -193,33 +192,6 @@ export default function Contact({ isVisible }) {
                 </Row>
               )
             })}
-
-            {/* Resume download */}
-            <div style={{ marginTop: 32 }}>
-              <a
-                href={RESUME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={trackResumeDownload}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  padding: '12px 24px',
-                  background: 'var(--color-ink)',
-                  borderRadius: 4,
-                  textDecoration: 'none',
-                  transition: 'opacity 0.2s ease',
-                }}
-                {...dimOnMouseHover('0.8')}
-              >
-                <span style={{ fontSize: 12, color: 'var(--color-paper)', fontFamily: 'var(--font-sans)', letterSpacing: '0.06em' }}>
-                  Download Resume
-                </span>
-                <span className="pill pill-gold" style={{ fontSize: 9, padding: '2px 6px' }}>PDF</span>
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </div>
           </div>
         </div>
       </div>

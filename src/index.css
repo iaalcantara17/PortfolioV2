@@ -103,9 +103,8 @@
   --color-night-purple: #534AB7;
   --color-night-ring: #403B6E;
   /* The LinkdUp card: the page's one inverted card, dark on the light page here and
-     light on the dark page in the dark theme (the same flip as Contact's Download
-     Resume button). Its background, edge, text in three strengths, button outlines
-     and tech tags. */
+     light on the dark page in the dark theme. Its background, edge, text in three
+     strengths, button outlines and tech tags. */
   --color-feature: var(--color-night);
   --color-feature-edge: #2a2a2a;
   --color-feature-text: var(--color-night-text);
@@ -991,8 +990,8 @@ nav.site-nav.scrolled {
   background: #0a0a0f;
 }
 
-/* Hover label on a card that opens nothing (Montclair's "In progress"): a follower
-   styled like the photo caption chip in About */
+/* Hover label on a card that opens nothing (Montclair's "In progress"): a follower,
+   a small paper chip */
 .card-hover-label {
   white-space: nowrap;
   background: var(--color-paper);
@@ -1068,8 +1067,8 @@ nav.site-nav.scrolled {
   gap: 10px;
 }
 
-/* A call to action: the Download Resume button's type, at least 44px tall. Gold fill
-   with the night ink on it (dark text on gold in both themes), or a gold outline. */
+/* A call to action (the Hero's two): 12px sans, at least 44px tall. Gold fill with
+   the night ink on it (dark text on gold in both themes), or a gold outline. */
 .cta {
   display: inline-flex;
   align-items: center;
