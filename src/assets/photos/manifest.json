@@ -1,4 +1,166 @@
 {
+  "car-bmw-e34": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-bmw-e36": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-corvette-z06": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-golf-mk2-gti": {
+    "width": 3692,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 246,
+        "height": 400
+      },
+      "1200": {
+        "width": 738,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1477,
+        "height": 2400
+      }
+    }
+  },
+  "car-golf-r32": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-porsche-930": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-porsche-944": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-skyline-r34": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
+  "car-supra-mk4": {
+    "width": 4000,
+    "height": 6000,
+    "variants": {
+      "400": {
+        "width": 267,
+        "height": 400
+      },
+      "1200": {
+        "width": 800,
+        "height": 1200
+      },
+      "2400": {
+        "width": 1600,
+        "height": 2400
+      }
+    }
+  },
   "city": {
     "width": 6000,
     "height": 4000,
