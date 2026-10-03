@@ -3,9 +3,6 @@
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/resume.pdf", "destination": "/Resume_Israel_Alcantara.pdf", "permanent": true }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" }
-  ],
   "headers": [
     {
       "source": "/assets/(.*)",
