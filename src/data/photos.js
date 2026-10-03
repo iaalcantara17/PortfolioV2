@@ -64,3 +64,10 @@ export const photoAlt = {
   portrait: 'Portrait of Israel Alcantara.',
   streetwear: 'Israel standing on a grassy coastal hillside.',
 }
+
+// Where the reel's square crop sits in a photo, as object-position, for a photo the
+// middle crop frames badly. Every other photo is cropped from the middle; the
+// Lightbox always shows the whole photo.
+export const photoFocus = {
+  'car-porsche-930': '50% 85%',
+}

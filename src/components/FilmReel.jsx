@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import Photo from './Photo'
+import { photoFocus } from '../data/photos'
 import { prefersReducedMotion } from '../utils/motion'
 import { LERP as PAGE_LERP } from '../utils/pageScroll'
 
@@ -359,6 +360,7 @@ export default function FilmReel({ photos, descriptions, isVisible, index, onInd
                 photo={photos[i]}
                 sizes={coverSizes(photos[i], layout.frame)}
                 alt={descriptions[i]}
+                style={{ objectPosition: photoFocus[photos[i].name] ?? '50% 50%' }}
                 loading="lazy"
                 draggable={false}
                 showMissing
