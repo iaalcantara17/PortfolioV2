@@ -141,6 +141,14 @@ One line per merged PR. #17 and #18 were closed without merging.
   vercel.json. Vercel routes /api/ to its functions on its own; the 
   Spotify widget and the resume counter were checked on the preview 
   first.
+- #51: brought this file's change list current through #50.
+- #52: nine car show photos added to the Gallery (car-* in the photo 
+  pipeline), the Gallery's photos shuffled once when it mounts 
+  (Fisher-Yates, in useState's initializer; nothing reorders them 
+  after), and photoFocus in data/photos.js, a per-photo object-position 
+  for the reel's square crop, set only for car-porsche-930 (50% 85%). 
+  Every other photo is cropped from the middle, and the Lightbox shows 
+  each one whole.
 
 ## Accessibility status
 
