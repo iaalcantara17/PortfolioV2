@@ -121,6 +121,26 @@ One line per merged PR. #17 and #18 were closed without merging.
   Education card (a blurb and its coursework; Education now grows to 
   fit on short desktop screens), and a "More on GitHub" link at the end 
   of Projects.
+- #48: the final audit's fixes. The cursor dot grows over controls 
+  mounted after load, Projects' and Contact's left columns keep their 
+  gap when stacked below 1024px, Contact's ↗ arrows are on 
+  --color-purple-deep (6.20:1), the project cards' body text and 
+  Skills' title are on the type scale, Projects' repeated note and its 
+  "3 / Projects I own" stat are gone, and dead code and stale comments 
+  were removed.
+- #49: the October 2026 redesign, its decisions recorded under 
+  "Locked". The new section order, the side dots, Hero's Scroll cue and 
+  "Built with craft." removed, the Hero's availability line with Email 
+  me and Download resume, gold for what's ahead and purple for what's 
+  done, the Skills and Experience number blocks dropped, LinkdUp's 
+  Live Demo replaced by Screenshots (five real screens in a hover 
+  preview and the Lightbox), "Alcantara" without the accent everywhere, 
+  14 sourced quotes in About's rotation, and Contact's resume button 
+  and About's camera chip removed.
+- #50: the identity /api rewrite (/api/(.*) to /api/$1) removed from 
+  vercel.json. Vercel routes /api/ to its functions on its own; the 
+  Spotify widget and the resume counter were checked on the preview 
+  first.
 
 ## Accessibility status
 
