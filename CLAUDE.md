@@ -149,6 +149,16 @@ One line per merged PR. #17 and #18 were closed without merging.
   for the reel's square crop, set only for car-porsche-930 (50% 85%). 
   Every other photo is cropped from the middle, and the Lightbox shows 
   each one whole.
+- #55: the Hero name in two fixed versions, split at 600px. Above it, 
+  Israel / Alcan — / tara. as before, unchanged; at 600px and below, 
+  "Israel" then "Alcantara." with no dash. Both are in the markup and 
+  CSS shows one (.hero-name-wide, .hero-name-narrow in index.css); the 
+  typewriter types the one on screen and fills the other in at once. 
+  Experience's category tags get a color each: Tech stays purple, 
+  Leadership is blue (--color-blue, .pill-blue) and Operations 
+  terracotta (--color-rust, .pill-rust), each with its own dark-theme 
+  text color. The Hero's availability line has a comma where its em 
+  dash was.
 
 ## Accessibility status
 
