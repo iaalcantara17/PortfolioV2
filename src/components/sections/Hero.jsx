@@ -416,7 +416,7 @@ export default function Hero({ isVisible }) {
           <div ref={forwardRef} className="hero-forward">
             <p className="hero-availability">
               <span className="availability-dot" aria-hidden="true" />
-              <span>Open to technology analyst, IT, and project management roles — leveraging a software engineering background.</span>
+              <span>Open to technology analyst, IT, and project management roles, leveraging a software engineering background.</span>
             </p>
             <div className="hero-cta">
               {/* Copies the address, as the Contact row does (#11), and reads "Copied"
