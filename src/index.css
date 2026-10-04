@@ -70,10 +70,19 @@
   --color-gold: #D4AF37;
   --color-gold-deep: #9a7d1a;
   --color-green: #1D9E75;
+  /* Experience's category tags only: Tech is purple, Leadership blue, Operations rust */
+  --color-blue: #2E86B5;
+  --color-blue-deep: #175F86;
+  --color-rust: #C2603A;
+  --color-rust-deep: #9A4127;
 
   /* Translucent — suffix is the alpha, e.g. a12 = 0.12 */
   --color-purple-a12: rgba(127, 119, 221, 0.12);
   --color-purple-a30: rgba(127, 119, 221, 0.3);
+  --color-blue-a12: rgba(46, 134, 181, 0.12);
+  --color-blue-a30: rgba(46, 134, 181, 0.3);
+  --color-rust-a12: rgba(194, 96, 58, 0.12);
+  --color-rust-a30: rgba(194, 96, 58, 0.3);
   --color-purple-a40: rgba(127, 119, 221, 0.4);
   --color-gold-a12: rgba(212, 175, 55, 0.12);
   --color-gold-a40: rgba(212, 175, 55, 0.4);
@@ -140,6 +149,8 @@
     --color-purple: #8b84e8;
     --color-purple-deep: #a59ef2;
     --color-purple-ink: #bdb7f7;
+    --color-blue-deep: #7CC0E4;
+    --color-rust-deep: #EE9B78;
 
     --color-paper-a72: rgba(14, 14, 16, 0.72);
     --color-black-a04: rgba(255, 255, 255, 0.04);
@@ -632,6 +643,18 @@ nav.site-nav.scrolled {
   color: var(--color-gold-deep);
 }
 
+.pill-blue {
+  background: var(--color-blue-a12);
+  border-color: var(--color-blue-a30);
+  color: var(--color-blue-deep);
+}
+
+.pill-rust {
+  background: var(--color-rust-a12);
+  border-color: var(--color-rust-a30);
+  color: var(--color-rust-deep);
+}
+
 /* The LinkdUp card's award: .pill-purple, with its text in a purple that reads on
    the card in either theme (--color-feature-accent) */
 .pill-feature-purple {
@@ -715,6 +738,15 @@ nav.site-nav.scrolled {
 /* Hero grid — inherits centered max-width:1440px wrapper from the generic rule above; right column centers its content within itself */
 .hero-grid {
   grid-template-columns: 1fr 1fr;
+}
+
+/* The Hero name's two versions (Hero.jsx): the surname split with the dash, or at
+   600px and below (the phone rule further down) whole on one line */
+.hero-name-wide {
+  display: block;
+}
+.hero-name-narrow {
+  display: none;
 }
 
 /* Photo placeholder */
@@ -1295,6 +1327,12 @@ nav.site-nav.scrolled {
 @media (max-width: 600px) {
   .site-nav-inner {
     padding: 0 16px;
+  }
+  .hero-name-wide {
+    display: none;
+  }
+  .hero-name-narrow {
+    display: block;
   }
   /* The Contact footer's two notes don't fit on one line here: they stack,
      left-aligned (its row layout is set inline, hence !important) */

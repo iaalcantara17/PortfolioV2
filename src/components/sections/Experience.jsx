@@ -2,6 +2,9 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { entranceStart, entranceEnd } from '../../utils/motion'
 
+// Each category's tag color (the .pill-* classes in index.css)
+const tagPill = { Tech: 'pill-purple', Leadership: 'pill-blue', Operations: 'pill-rust' }
+
 const roles = [
   {
     title: 'Software Development Engineer Intern',
@@ -180,7 +183,7 @@ export default function Experience({ isVisible }) {
                       </div>
                     </div>
                     <div className="exp-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-                      <span className="tag pill-purple">{role.tag}</span>
+                      <span className={`tag ${tagPill[role.tag]}`}>{role.tag}</span>
                       <span className="eyebrow" style={{ color: 'var(--color-faint)' }}>{role.period}</span>
                     </div>
                   </div>
