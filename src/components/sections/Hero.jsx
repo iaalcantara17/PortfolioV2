@@ -25,6 +25,10 @@ const NAME_LINE2 = [
   { ch: '—', style: { color: 'var(--color-purple)', fontSize: '0.8em', fontWeight: '700' } },
 ]
 const NAME_LINE3 = 'tara.'.split('').map(ch => ({ ch }))
+// At 600px and below the surname is one line, no dash, in place of lines 2 and 3
+// (.hero-name-wide/.hero-name-narrow in index.css, the same breakpoint as NARROW_NAME)
+const NAME_SURNAME = 'Alcantara.'.split('').map(ch => ({ ch }))
+const NARROW_NAME = '(max-width: 600px)'
 
 const SUBTEXT_CHARS = [
   ...'Builder. '.split('').map(ch => ({ ch })),
@@ -205,6 +209,7 @@ export default function Hero({ isVisible }) {
   const word1Ref = useRef(null)
   const word2Ref = useRef(null)
   const word3Ref = useRef(null)
+  const surnameRef = useRef(null)
   const subtextBodyRef = useRef(null)
   const siempreRef = useRef(null)
   const eyebrowRef = useRef(null)
@@ -241,7 +246,7 @@ export default function Hero({ isVisible }) {
     // the whole Hero fades in together.
     if (prefersReducedMotion) {
       const typed = [
-        [NAME_LINE1, word1Ref], [NAME_LINE2, word2Ref], [NAME_LINE3, word3Ref],
+        [NAME_LINE1, word1Ref], [NAME_LINE2, word2Ref], [NAME_LINE3, word3Ref], [NAME_SURNAME, surnameRef],
         [SUBTEXT_CHARS, subtextBodyRef], [SIEMPRE_CHARS, siempreRef],
       ]
       typed.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
@@ -258,13 +263,18 @@ export default function Hero({ isVisible }) {
     // Eyebrow fades in before typing starts
     gsap.to(eyebrow, { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.15 })
 
-    // Schedule name lines back-to-back
+    // Type the name version on screen, its lines back-to-back. The hidden version goes
+    // in whole at once, so a resize or rotation across the breakpoint shows a full name.
+    const wide = [[NAME_LINE2, word2Ref], [NAME_LINE3, word3Ref]]
+    const narrow = [[NAME_SURNAME, surnameRef]]
+    const [shown, hidden] = window.matchMedia(NARROW_NAME).matches ? [narrow, wide] : [wide, narrow]
+    hidden.forEach(([charDefs, ref]) => charDefs.forEach((charDef) => appendFinalChar(ref.current, charDef)))
     let offset = 0
-    scheduleChars(NAME_LINE1, word1Ref, offset, timers, intervals, resolvers)
-    offset = NAME_LINE1.length * CHAR_STAGGER
-    scheduleChars(NAME_LINE2, word2Ref, offset, timers, intervals, resolvers)
-    offset = (NAME_LINE1.length + NAME_LINE2.length) * CHAR_STAGGER
-    const nameDoneAt = scheduleChars(NAME_LINE3, word3Ref, offset, timers, intervals, resolvers)
+    let nameDoneAt = 0
+    for (const [charDefs, ref] of [[NAME_LINE1, word1Ref], ...shown]) {
+      nameDoneAt = scheduleChars(charDefs, ref, offset, timers, intervals, resolvers)
+      offset += charDefs.length * CHAR_STAGGER
+    }
 
     // Right column's stats fade in right after name resolves — not gated on full
     // animation. The portrait above them is shown from the start.
@@ -362,13 +372,19 @@ export default function Hero({ isVisible }) {
 
             {/* Name — empty on mount, chars appended by typewriter. Screen readers get
                 the plain name; the typed-out lines (split surname, dash, scramble) are
-                hidden from them. */}
+                hidden from them. Above 600px the surname is split with the dash; at
+                600px and below it's whole, on one line (NARROW_NAME). */}
             <h1 style={{ marginBottom: 32 }}>
               <span className="sr-only">Israel Alcantara</span>
               <span aria-hidden="true" style={{ display: 'block' }}>
                 <span ref={word1Ref} style={wordStyle} />
-                <span ref={word2Ref} style={wordStyle} />
-                <span ref={word3Ref} style={wordStyle} />
+                <span className="hero-name-wide">
+                  <span ref={word2Ref} style={wordStyle} />
+                  <span ref={word3Ref} style={wordStyle} />
+                </span>
+                <span className="hero-name-narrow">
+                  <span ref={surnameRef} style={wordStyle} />
+                </span>
               </span>
             </h1>
 
@@ -400,7 +416,7 @@ export default function Hero({ isVisible }) {
           <div ref={forwardRef} className="hero-forward">
             <p className="hero-availability">
               <span className="availability-dot" aria-hidden="true" />
-              <span>Open to technology analyst, IT, and project management roles — leveraging a software engineering background.</span>
+              <span>Open to technology analyst, IT, and project management roles, leveraging a software engineering background.</span>
             </p>
             <div className="hero-cta">
               {/* Copies the address, as the Contact row does (#11), and reads "Copied"
