@@ -149,6 +149,11 @@ One line per merged PR. #17 and #18 were closed without merging.
   for the reel's square crop, set only for car-porsche-930 (50% 85%). 
   Every other photo is cropped from the middle, and the Lightbox shows 
   each one whole.
+- #53: brought this file's change list current through #52.
+- #54: the resume PDF replaced with the version that lists the MBA's 
+  coursework, its empty Title and Author set again by an appended 
+  update (the same way as 1c815bc), and the Montclair card's "Global 
+  Economy" corrected to "Global Economics", as on the resume.
 - #55: the Hero name in two fixed versions, split at 600px. Above it, 
   Israel / Alcan — / tara. as before, unchanged; at 600px and below, 
   "Israel" then "Alcantara." with no dash. Both are in the markup and 
