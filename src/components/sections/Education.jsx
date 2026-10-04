@@ -37,7 +37,7 @@ const schools = [
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
     blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of technology.',
-    coursework: 'Global Economy, Business Statistics, Strategic Information Systems, and Business Essentials.',
+    coursework: 'Global Economics, Business Statistics, Strategic Information Systems, and Business Essentials.',
   },
 ]
 
