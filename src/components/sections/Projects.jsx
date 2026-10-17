@@ -118,8 +118,7 @@ const certificates = [
 ]
 
 // LinkdUp's screens, from a five-person group run on a local copy of the app: create a
-// party, share its code, swipe, vote, lock the plan. The live demo needs its backend,
-// which is down, so the card shows the app instead: the screens cycle in a hover
+// party, share its code, swipe, vote, lock the plan. The screens cycle in a hover
 // preview while the pointer is on the card, and the Screenshots button opens them in
 // the Lightbox (touch and keyboard too).
 const screenshots = [
@@ -305,10 +304,29 @@ export default function Projects({ isVisible }) {
               ))}
             </div>
 
-            {/* Wraps on narrow screens, where the three don't fit on one line */}
+            {/* Wraps on narrow screens, where the four don't fit on one line */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              {/* The live demo is down (its backend's hosting lapsed), so the first
-                  button opens the app's screens in the Lightbox instead */}
+              <a
+                href="https://linkdup.app"
+                data-print-url={printUrl('https://linkdup.app')}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '8px 16px',
+                  background: 'var(--color-night-purple)',
+                  borderRadius: 4,
+                  fontSize: 11,
+                  color: 'var(--color-white)',
+                  textDecoration: 'none',
+                  letterSpacing: '0.06em',
+                  fontFamily: 'var(--font-sans)',
+                }}
+              >
+                <span>Live site <span className="link-arrow">↗</span></span>
+              </a>
               <button
                 type="button"
                 aria-label="View screenshots: LinkdUp"
@@ -319,11 +337,10 @@ export default function Projects({ isVisible }) {
                   alignItems: 'center',
                   gap: 6,
                   padding: '8px 16px',
-                  background: 'var(--color-night-purple)',
-                  border: 'none',
+                  border: '0.5px solid var(--color-feature-outline)',
                   borderRadius: 4,
                   fontSize: 11,
-                  color: 'var(--color-white)',
+                  color: 'var(--color-feature-soft)',
                   letterSpacing: '0.06em',
                   fontFamily: 'var(--font-sans)',
                 }}
