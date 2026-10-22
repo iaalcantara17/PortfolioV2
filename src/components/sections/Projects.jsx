@@ -294,7 +294,7 @@ export default function Projects({ isVisible }) {
               Backend engineer on a five-person team for a{' '}
               <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>production app live at linkdup.app</strong>. I built a locked-step swipe-voting engine that syncs every party member in real time over Supabase Realtime websockets. I integrated the{' '}
               <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for venue discovery at the geographic midpoint and the{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export. Plus a TikTok-style social feed, a followers/block system, and 27+ schema migrations with row-level security.
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export. It also has a TikTok-style social feed, a followers and block system, and 27+ schema migrations with row-level security.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>

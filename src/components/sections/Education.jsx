@@ -33,11 +33,11 @@ const schools = [
     school: 'Montclair State University',
     college: 'Feliciano School of Business',
     status: 'in-progress',
-    period: 'Aug 2026 to Expected Fall 2028',
+    period: 'Aug 2026 to Fall 2028 (expected)',
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
     blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of technology.',
-    coursework: 'Global Economics, Business Statistics, Strategic Information Systems, and Business Essentials.',
+    coursework: 'Global Economy, Business Statistics, Strategic Information Systems, and Business Essentials.',
   },
 ]
 

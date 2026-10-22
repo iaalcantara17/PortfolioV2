@@ -14,7 +14,7 @@ const roles = [
     tag: 'Tech',
     desc: (
       <>
-        Designed and shipped a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, cutting payloads by up to{' '}
+        Designed and shipped a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, cutting payloads by an average of 38 GB/day and by up to{' '}
         <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB/day</strong>. I also added 13 custom metrics, published a cross-region dashboard, and wrote 30+ JUnit tests for round-trip correctness and edge cases.
       </>
     ),
@@ -27,7 +27,7 @@ const roles = [
     tag: 'Leadership',
     desc: (
       <>
-        Supervised a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. I enforced housing policy, ran regular rounds, wrote formal incident reports, and designed monthly community events on a sub-$1k semester budget.
+        Served as resident assistant for a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. I enforced housing policy, ran regular rounds, wrote formal incident reports, and designed monthly community events on a sub-$1k semester budget.
       </>
     ),
   },
@@ -48,12 +48,12 @@ const roles = [
     title: 'Delivery and Lab Technician',
     company: 'Media and Technology Support Services, NJIT',
     location: '',
-    period: 'Oct 2022 to May 2026',
+    period: 'Sep 2022 to May 2026',
     tag: 'Operations',
     desc: (
       <>
         Troubleshot AV systems end-to-end across{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. With a team of 5, I standardized how we set up equipment. Reliability went up 40%, and the repeat call rate dropped 30%.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. With a team of 5, I standardized how we set up equipment. By our estimates, reliability went up 40% and the repeat call rate dropped 30%.
       </>
     ),
   },
@@ -65,8 +65,8 @@ const roles = [
     tag: 'Operations',
     desc: (
       <>
-        I watched over three pools, ran daily chemical checks, and gave CPR/first aid when needed. That kept{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong> safe, and we closed the season with zero accidents.
+        I covered three pools, ran daily chemical checks, and gave CPR/first aid when needed, keeping{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong> safe. We closed the season with zero accidents.
       </>
     ),
   },
@@ -146,7 +146,7 @@ export default function Experience({ isVisible }) {
               up<span style={{ color: 'var(--color-purple)' }}>.</span>
             </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
-              What I did at each stop, and how I carried myself doing it.
+              What I did at each stop, and what came of it.
             </p>
           </div>
         </div>
