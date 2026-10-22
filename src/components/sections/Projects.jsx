@@ -94,7 +94,7 @@ function NoteLink({ link, style }) {
   )
 }
 
-const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Railway', 'Vercel', 'Gemini 2.5']
+const featuredStack = ['React Native', 'TypeScript', 'Node.js', 'Supabase', 'Render', 'Vercel']
 
 // The grid cards' links and More on GitHub: small purple outlined buttons
 const outlineLinkStyle = {
