@@ -16,7 +16,7 @@ export const SHARE_IMAGE = {
   path: '/og-image.png',
   width: 1200,
   height: 630,
-  alt: 'Israel Alcantara, MBA Candidate and CS Graduate, next to a portrait of Israel.',
+  alt: 'Israel Alcantara, MBA Student and CS Graduate, next to a portrait of Israel.',
 }
 
 // schema.org structured data (JSON-LD) for the page: who the site is about, and the

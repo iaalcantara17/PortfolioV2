@@ -367,7 +367,7 @@ export default function Hero({ isVisible }) {
               style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}
             >
               <div style={{ width: 32, height: 1, background: 'var(--color-purple)', flexShrink: 0 }} />
-              <span className="eyebrow">MBA Candidate · CS Graduate</span>
+              <span className="eyebrow">MBA Student · CS Graduate</span>
             </div>
 
             {/* Name — empty on mount, chars appended by typewriter. Screen readers get
