@@ -125,7 +125,7 @@ export default function Skills({ isVisible }) {
             </h2>
 
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
-              Tools I've used in production, in class, and on projects I actually care about.
+              Tools I've used in production, in class, and on projects I care about.
             </p>
           </div>
         </div>
