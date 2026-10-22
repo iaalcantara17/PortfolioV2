@@ -31,7 +31,7 @@ export const structuredData = (baseUrl) => {
         '@id': person,
         name: 'Israel Alcantara',
         url: `${baseUrl}/`,
-        jobTitle: 'Software Engineer',
+        jobTitle: 'MBA Student and CS Graduate',
         // NJIT: BS in Computer Science, earned
         alumniOf: { '@type': 'CollegeOrUniversity', name: 'New Jersey Institute of Technology', url: 'https://www.njit.edu' },
         // Montclair State: MBA in progress, so affiliated rather than an alum yet
