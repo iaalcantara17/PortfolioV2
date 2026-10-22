@@ -152,8 +152,8 @@ One line per merged PR. #17 and #18 were closed without merging.
 - #53: brought this file's change list current through #52.
 - #54: the resume PDF replaced with the version that lists the MBA's 
   coursework, its empty Title and Author set again by an appended 
-  update (the same way as 1c815bc), and the Montclair card's "Global 
-  Economy" corrected to "Global Economics", as on the resume.
+  update (the same way as 1c815bc). The Montclair card's course name is 
+  "Global Economy", matching the resume and the Montclair catalog.
 - #55: the Hero name in two fixed versions, split at 600px. Above it, 
   Israel / Alcan — / tara. as before, unchanged; at 600px and below, 
   "Israel" then "Alcantara." with no dash. Both are in the markup and 
