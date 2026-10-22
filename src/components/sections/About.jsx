@@ -13,9 +13,9 @@ const interestTiers = [
 ]
 
 const bodyParagraphs = [
-  "I'm a CS grad from NJIT and an AWS alum, but that's just the resume talking. What actually drives me is craft. Not just in code, but in everything I do. How I dress, how I show up, how I approach a problem. The details matter to me, and they always have.",
-  "I was raised with a clear set of values. Family, community, hard work, showing up. That's not something I learned in a classroom. It's just how I was brought up, and it shapes how I work, how I treat people, and what I hold myself to.",
-  "Music has been with me through all of it. It sets the tone for whatever I'm doing, certain songs are tied to moments I'll never forget, and it connects me to who I am. I pick up a camera when something is worth capturing, still learning what my eye is drawn to. I play basketball and follow it closely. Outside of that, I stay active, whether that's the gym, running, or getting outside. I push myself when I'm locked in and I know when to ease up.",
+  "I'm a CS grad from NJIT and an AWS alum, but that's the resume talking. What drives me is getting the details right, in my code and in how I dress, show up, and take on a problem. It's always been that way.",
+  "I was raised on a clear set of values. Family, community, hard work, showing up. I didn't learn them in a classroom. They're how I was brought up, and they shape how I work, how I treat people, and what I hold myself to.",
+  "Music has been with me through all of it. It sets the tone for whatever I'm doing and keeps me close to who I am, and certain songs hold moments I'll never forget. I pick up a camera when something is worth capturing, still learning what my eye goes for. I play basketball and follow it closely. I stay active too, with the gym, running, and time outside. I push hard when I'm locked in, and I know when to ease up.",
   "I'm still growing. But I know who I am, and I show up as exactly that.",
 ]
 
