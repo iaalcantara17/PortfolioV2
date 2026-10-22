@@ -293,9 +293,8 @@ export default function Projects({ isVisible }) {
             <p style={{ fontSize: 12, color: 'var(--color-feature-soft)', lineHeight: 1.85, marginBottom: 16 }}>
               Backend engineer on a five-person team for a{' '}
               <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery,{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export, and{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Gemini 2.5</strong> for AI-generated venue pitches. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery and{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
