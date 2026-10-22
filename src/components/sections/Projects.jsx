@@ -271,7 +271,7 @@ export default function Projects({ isVisible }) {
             {/* Award badge */}
             <div style={{ marginBottom: 14 }}>
               <span className="pill pill-feature-purple" style={{ fontSize: 9 }}>
-                2nd Place, NJIT CS491 Capstone 2026
+                2nd Place, NJIT CS/IT 491 Capstone 2026
               </span>
             </div>
 
@@ -287,14 +287,14 @@ export default function Projects({ isVisible }) {
               LinkdUp
             </h3>
             <div style={{ fontSize: 12, color: 'var(--color-feature-faint)', marginBottom: 12 }}>
-              Mobile-first web app for group meetup coordination
+              Mobile-first web app that helps groups plan meetups
             </div>
 
             <p style={{ fontSize: 12, color: 'var(--color-feature-soft)', lineHeight: 1.85, marginBottom: 16 }}>
               Backend engineer on a five-person team for a{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>production app deployed at linkdup.app</strong> — built a locked-step swipe-voting engine synchronized in real time across all party members via Supabase Realtime websockets. Integrated{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for geographic midpoint venue discovery and{' '}
-              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export. Includes a TikTok-style social feed, followers/block system, and 27+ schema migrations with row-level security.
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>production app live at linkdup.app</strong>. I built a locked-step swipe-voting engine that syncs every party member in real time over Supabase Realtime websockets. I integrated the{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Places API</strong> for venue discovery at the geographic midpoint and the{' '}
+              <strong style={{ color: 'var(--color-feature-text)', fontWeight: 500 }}>Google Calendar API</strong> for one-click event export. It also has a TikTok-style social feed, a followers and block system, and 27+ schema migrations with row-level security.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
@@ -370,7 +370,7 @@ export default function Projects({ isVisible }) {
               {/* Opens the certificate in the Lightbox, not a new tab, so no ↗ */}
               <button
                 type="button"
-                aria-label="View certificate: LinkdUp, 2nd Place, NJIT CS491 Capstone 2026"
+                aria-label="View certificate: LinkdUp, 2nd Place, NJIT CS/IT 491 Capstone 2026"
                 aria-haspopup="dialog"
                 {...certificatePreviewProps}
                 onClick={(e) => openLightbox(e, certificates)}
@@ -411,7 +411,7 @@ export default function Projects({ isVisible }) {
               }}
             >
               <div style={{ marginBottom: 8 }}>
-                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems — Compiler</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems · Compiler</span>
               </div>
               <h3
                 style={{
@@ -425,7 +425,7 @@ export default function Projects({ isVisible }) {
                 SFort95 Compiler
               </h3>
               <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
-                A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong> — a state-based lexical analyzer that tokenizes source input, a recursive-descent parser with operator-precedence handling, and an interpreter that executes the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero before they become problems.
+                A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong>. A state-based lexical analyzer tokenizes the source. A recursive-descent parser handles operator precedence, and an interpreter runs the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero early.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
                 {['C++', 'Git', 'Lexer', 'Parser', 'AST'].map((s) => (
@@ -467,7 +467,7 @@ export default function Projects({ isVisible }) {
               }}
             >
               <div style={{ marginBottom: 8 }}>
-                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning — Python</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning · Python</span>
               </div>
               <h3
                 style={{
@@ -481,8 +481,8 @@ export default function Projects({ isVisible }) {
                 Data Analysis App
               </h3>
               <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
-                Upload any CSV, pick your target, and watch it go. The app handles the messy part — missing values, scaling, encoding — automatically, so you can focus on what actually matters: understanding your data. Built a full regression pipeline using a{' '}
-                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong> with real-time prediction and dynamic visualizations that update as you explore.
+                Upload any CSV, pick your target, and watch it go. The app handles missing values, scaling, and encoding for you. I built the full regression pipeline on a{' '}
+                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong>, with real-time prediction and visualizations that update as you explore.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
                 {['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NumPy'].map((s) => (

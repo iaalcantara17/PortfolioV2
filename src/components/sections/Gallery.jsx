@@ -101,7 +101,7 @@ export default function Gallery({ isVisible }) {
               lens<span style={{ color: 'var(--color-purple)' }}>.</span>
             </div>
             <p style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, maxWidth: 360 }}>
-              I shoot on a Canon Rebel SL3. Nothing professional, just a habit of chasing good light, whether that's a skyline at sunset or whatever catches my eye on a hike. Mostly I just like noticing something worth stopping for.
+              I shoot on a Canon Rebel SL3. Nothing professional, just a habit of chasing good light. That might be a skyline at sunset or whatever catches my eye on a hike. Mostly I like noticing what's worth stopping for.
             </p>
           </div>
         </div>

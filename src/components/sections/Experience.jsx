@@ -10,12 +10,12 @@ const roles = [
     title: 'Software Development Engineer Intern',
     company: 'Amazon Web Services, ADC BlackMirror',
     location: 'Arlington, VA',
-    period: 'May 2025 — Aug 2025',
+    period: 'May 2025 to Aug 2025',
     tag: 'Tech',
     desc: (
       <>
-        Built a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, reducing payloads by up to{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB/day</strong>. Instrumented 13 custom metrics, published a cross-region dashboard, and authored 30+ JUnit tests covering round-trip correctness and edge cases.
+        Designed and shipped a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, cutting payloads by an average of 38 GB/day and by up to{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB/day</strong>. I also added 13 custom metrics, published a cross-region dashboard, and wrote 30+ JUnit tests for round-trip correctness and edge cases.
       </>
     ),
   },
@@ -23,11 +23,11 @@ const roles = [
     title: 'Community Assistant',
     company: 'Office of Residential Life, NJIT',
     location: 'Newark, NJ',
-    period: 'Jun 2025 — May 2026',
+    period: 'Jun 2025 to May 2026',
     tag: 'Leadership',
     desc: (
       <>
-        Supervise a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. Enforce housing policy, conduct regular rounds, author formal incident reports, and design monthly community events on a sub-$1k semester budget.
+        Served as resident assistant for a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. I enforced housing policy, ran regular rounds, wrote formal incident reports, and designed monthly community events on a sub-$1k semester budget.
       </>
     ),
   },
@@ -35,12 +35,12 @@ const roles = [
     title: 'Event Coordination Director',
     company: 'Society of Hispanic Professional Engineers, NJIT Chapter',
     location: '',
-    period: 'Mar 2024 — May 2025',
+    period: 'Mar 2024 to May 2025',
     tag: 'Leadership',
     desc: (
       <>
-        Planned and executed{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>12+ networking and professional development events</strong>, coordinating ~10 volunteers. Increased event participation by 50% and cut per-event prep time by 20% through reusable planning templates.
+        Planned and ran{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>12+ networking and professional development events</strong> and coordinated ~10 volunteers. Event participation grew by 50%. Reusable planning templates cut our prep time per event by 20%.
       </>
     ),
   },
@@ -48,12 +48,12 @@ const roles = [
     title: 'Delivery and Lab Technician',
     company: 'Media and Technology Support Services, NJIT',
     location: '',
-    period: 'Oct 2022 — May 2026',
+    period: 'Sep 2022 to May 2026',
     tag: 'Operations',
     desc: (
       <>
         Troubleshot AV systems end-to-end across{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. Standardized equipment setup procedures with a team of 5, improving reliability by 40% and cutting repeat call rate by 30%.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. With a team of 5, I standardized how we set up equipment. By our estimates, reliability went up 40% and the repeat call rate dropped 30%.
       </>
     ),
   },
@@ -61,12 +61,12 @@ const roles = [
     title: 'Beach Attendant and Lifeguard',
     company: 'Adamas Building Services',
     location: 'Long Branch, NJ',
-    period: 'Jul 2023 — Sep 2023',
+    period: 'Jul 2023 to Sep 2023',
     tag: 'Operations',
     desc: (
       <>
-        Monitored three pools, ran daily chemical checks, and delivered CPR/first aid when needed, safeguarding{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong>. Closed the season with zero accidents.
+        I covered three pools, ran daily chemical checks, and gave CPR/first aid when needed, keeping{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong> safe. We closed the season with zero accidents.
       </>
     ),
   },
@@ -146,7 +146,7 @@ export default function Experience({ isVisible }) {
               up<span style={{ color: 'var(--color-purple)' }}>.</span>
             </h2>
             <p data-animate style={{ color: 'var(--color-muted)', fontSize: 12, lineHeight: 1.85, marginBottom: 24 }}>
-              Not just what I built, but where I was, what I did, and how I carried myself doing it.
+              What I did at each stop, and what came of it.
             </p>
           </div>
         </div>

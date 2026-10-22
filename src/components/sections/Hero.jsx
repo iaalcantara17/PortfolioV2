@@ -367,7 +367,7 @@ export default function Hero({ isVisible }) {
               style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}
             >
               <div style={{ width: 32, height: 1, background: 'var(--color-purple)', flexShrink: 0 }} />
-              <span className="eyebrow">Software Engineer · MBA Candidate</span>
+              <span className="eyebrow">MBA Student · CS Graduate</span>
             </div>
 
             {/* Name — empty on mount, chars appended by typewriter. Screen readers get
@@ -416,7 +416,7 @@ export default function Hero({ isVisible }) {
           <div ref={forwardRef} className="hero-forward">
             <p className="hero-availability">
               <span className="availability-dot" aria-hidden="true" />
-              <span>Open to technology analyst, IT, and project management roles, leveraging a software engineering background.</span>
+              <span>Open to technical project management, technology analyst, IT, and cloud roles, with a software engineering background behind me.</span>
             </p>
             <div className="hero-cta">
               {/* Copies the address, as the Contact row does (#11), and reads "Copied"

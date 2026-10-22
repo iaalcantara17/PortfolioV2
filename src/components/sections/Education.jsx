@@ -22,10 +22,10 @@ const schools = [
     school: 'New Jersey Institute of Technology',
     college: 'Ying Wu College of Computing',
     status: 'earned',
-    period: 'Sep 2022 — May 2026',
+    period: 'Sep 2022 to May 2026',
     logo: { src: njitLogo, width: 192, height: 192 },
     diploma: { image: photoByName['njit-diploma'], alt: 'NJIT diploma, Bachelor of Science in Computer Science' },
-    blurb: 'Four years built the technical foundation. Java, C, Python and a few others along the way, systems design, algorithms, a compiler project for a cut-down version of Fortran, and a full capstone build from scratch.',
+    blurb: 'Four years built my technical foundation. I worked in Java, C, Python, and a few others along the way, and studied systems design and algorithms. I wrote a compiler for a cut-down version of Fortran and built a full capstone from scratch.',
     coursework: 'Advanced Data Structures & Algorithms, Database System Design & Management, Principles of Operating Systems, Introduction to Computer Networks, Introduction to Machine Learning, Introduction to Cybersecurity, Designing the User Experience, Programming Language Concepts, Design in Software Engineering, Intensive Programming in Linux, Introduction to Computer Science I & II, and a Senior Capstone Project.',
   },
   {
@@ -33,11 +33,11 @@ const schools = [
     school: 'Montclair State University',
     college: 'Feliciano School of Business',
     status: 'in-progress',
-    period: 'Aug 2026 — Expected Fall 2028',
+    period: 'Aug 2026 to Fall 2028 (expected)',
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
     blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of technology.',
-    coursework: 'Global Economics, Business Statistics, Strategic Information Systems, and Business Essentials.',
+    coursework: 'Global Economy, Business Statistics, Strategic Information Systems, and Business Essentials.',
   },
 ]
 

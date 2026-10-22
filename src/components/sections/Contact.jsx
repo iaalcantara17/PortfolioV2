@@ -122,7 +122,7 @@ export default function Contact({ isVisible }) {
                 I'm still growing. But I know who I am, and I show up as exactly that. If that's someone you want on your team, I'd like to hear from you.
               </p>
               <p style={{ color: 'var(--color-muted)', fontSize: 13, lineHeight: 1.9 }}>
-                Whether it's a role, a conversation, or just something worth talking about, my inbox is open.
+                My inbox is open for a role, a conversation, or anything else worth talking about.
               </p>
             </div>
           </div>
