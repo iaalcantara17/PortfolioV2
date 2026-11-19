@@ -109,95 +109,6 @@ const outlineLinkStyle = {
   fontFamily: 'var(--font-sans)',
 }
 
-// The cards under LinkdUp's, in page order. A link with a note shows it in a bubble
-// (NoteLink); the card then becomes the bubble's frame (position: relative).
-const gridProjects = [
-  {
-    kicker: 'Systems · Compiler',
-    title: 'SFort95 Compiler',
-    desc: (
-      <>
-        A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong>. A state-based lexical analyzer tokenizes the source. A recursive-descent parser handles operator precedence, and an interpreter runs the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero early.
-      </>
-    ),
-    stack: ['C++', 'Git', 'Lexer', 'Parser', 'AST'],
-    links: [
-      { label: 'Lexer', url: 'https://github.com/iaalcantara17/Lexical-Analyzer-for-SFort95-Language' },
-      { label: 'Parser', url: 'https://github.com/iaalcantara17/Parser-for-SFort95-Language' },
-      { label: 'Interpreter', url: 'https://github.com/iaalcantara17/SFort95-Interpreter' },
-    ],
-  },
-  {
-    kicker: 'Machine Learning · Python',
-    title: 'Data Analysis App',
-    desc: (
-      <>
-        Upload any CSV, pick your target, and watch it go. The app handles missing values, scaling, and encoding for you. I built the full regression pipeline on a{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong>, with real-time prediction and visualizations that update as you explore.
-      </>
-    ),
-    stack: ['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NumPy'],
-    links: [
-      // The demo runs on Streamlit, which puts idle apps to sleep
-      { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
-      { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
-    ],
-  },
-]
-
-// One of the cards under LinkdUp's: kicker, title, write-up, tech pills and links
-function ProjectCard({ project }) {
-  const hasNote = project.links.some((l) => l.note)
-  return (
-    <div
-      className="grid-card tilt-card"
-      onMouseMove={(e) => handleTilt(e, e.currentTarget)}
-      onMouseLeave={(e) => resetTilt(e.currentTarget)}
-      style={{
-        background: 'var(--color-surface)',
-        borderRadius: 4,
-        padding: '22px 24px',
-        border: '0.5px solid var(--color-line)',
-        ...(hasNote && { position: 'relative' }),
-      }}
-    >
-      <div style={{ marginBottom: 8 }}>
-        <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>{project.kicker}</span>
-      </div>
-      <h3
-        style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: 18,
-          color: 'var(--color-ink)',
-          letterSpacing: '-0.02em',
-          marginBottom: 8,
-        }}
-      >
-        {project.title}
-      </h3>
-      <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
-        {project.desc}
-      </p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
-        {project.stack.map((s) => (
-          <span key={s} className="pill" style={{ fontSize: 9 }}>{s}</span>
-        ))}
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-        {project.links.map((l) =>
-          l.note ? (
-            <NoteLink key={l.label} link={l} style={outlineLinkStyle} />
-          ) : (
-            <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={outlineLinkStyle}>
-              <span>{l.label} <span className="link-arrow">↗</span></span>
-            </a>
-          ),
-        )}
-      </div>
-    </div>
-  )
-}
-
 // LinkdUp's capstone certificate, opened in the Lightbox like the NJIT diploma in Education
 const certificates = [
   {
@@ -486,7 +397,114 @@ export default function Projects({ isVisible }) {
 
           {/* Grid cards */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            {gridProjects.map((p) => <ProjectCard key={p.title} project={p} />)}
+
+            {/* SFort95 Compiler */}
+            <div
+              className="grid-card tilt-card"
+              onMouseMove={(e) => handleTilt(e, e.currentTarget)}
+              onMouseLeave={(e) => resetTilt(e.currentTarget)}
+              style={{
+                background: 'var(--color-surface)',
+                borderRadius: 4,
+                padding: '22px 24px',
+                border: '0.5px solid var(--color-line)',
+              }}
+            >
+              <div style={{ marginBottom: 8 }}>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems · Compiler</span>
+              </div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 18,
+                  color: 'var(--color-ink)',
+                  letterSpacing: '-0.02em',
+                  marginBottom: 8,
+                }}
+              >
+                SFort95 Compiler
+              </h3>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+                A full three-stage compiler in <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>C++</strong>. A state-based lexical analyzer tokenizes the source. A recursive-descent parser handles operator precedence, and an interpreter runs the parsed AST with Fortran95-compliant semantics. Runtime checks catch undefined variables, type mismatches, and division by zero early.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
+                {['C++', 'Git', 'Lexer', 'Parser', 'AST'].map((s) => (
+                  <span key={s} className="pill" style={{ fontSize: 9 }}>{s}</span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {[
+                  { label: 'Lexer', url: 'https://github.com/iaalcantara17/Lexical-Analyzer-for-SFort95-Language' },
+                  { label: 'Parser', url: 'https://github.com/iaalcantara17/Parser-for-SFort95-Language' },
+                  { label: 'Interpreter', url: 'https://github.com/iaalcantara17/SFort95-Interpreter' },
+                ].map((l) => (
+                  <a
+                    key={l.label}
+                    href={l.url}
+                    data-print-url={printUrl(l.url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={outlineLinkStyle}
+                  >
+                    <span>{l.label} <span className="link-arrow">↗</span></span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Data Analysis App. position: relative makes the card the Live Demo
+                note's frame (NoteLink places it in the card's coordinates). */}
+            <div
+              className="grid-card tilt-card"
+              onMouseMove={(e) => handleTilt(e, e.currentTarget)}
+              onMouseLeave={(e) => resetTilt(e.currentTarget)}
+              style={{
+                background: 'var(--color-surface)',
+                borderRadius: 4,
+                padding: '22px 24px',
+                border: '0.5px solid var(--color-line)',
+                position: 'relative',
+              }}
+            >
+              <div style={{ marginBottom: 8 }}>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning · Python</span>
+              </div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 18,
+                  color: 'var(--color-ink)',
+                  letterSpacing: '-0.02em',
+                  marginBottom: 8,
+                }}
+              >
+                Data Analysis App
+              </h3>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
+                Upload any CSV, pick your target, and watch it go. The app handles missing values, scaling, and encoding for you. I built the full regression pipeline on a{' '}
+                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong>, with real-time prediction and visualizations that update as you explore.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
+                {['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NumPy'].map((s) => (
+                  <span key={s} className="pill" style={{ fontSize: 9 }}>{s}</span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {[
+                  // The demo runs on Streamlit, which puts idle apps to sleep
+                  { label: 'Live Demo', url: 'https://milestone-4-data-analysis.streamlit.app/', note: 'The demo can take a few seconds to wake up.' },
+                  { label: 'GitHub', url: 'https://github.com/iaalcantara17/Data-Analysis-App' },
+                ].map((l) =>
+                  l.note ? (
+                    <NoteLink key={l.label} link={l} style={outlineLinkStyle} />
+                  ) : (
+                    <a key={l.label} href={l.url} data-print-url={printUrl(l.url)} target="_blank" rel="noopener noreferrer" style={outlineLinkStyle}>
+                      <span>{l.label} <span className="link-arrow">↗</span></span>
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
           </div>
 
           {/* The rest of the projects, on GitHub, under a rule at the end */}
