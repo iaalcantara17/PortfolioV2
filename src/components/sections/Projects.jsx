@@ -268,11 +268,13 @@ export default function Projects({ isVisible }) {
               position: 'relative',
             }}
           >
-            {/* Award badge */}
-            <div style={{ marginBottom: 14 }}>
+            {/* Award badge, with the project's dates at the right (the eyebrow dates
+                Experience and Education use) */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 14 }}>
               <span className="pill pill-feature-purple" style={{ fontSize: 9 }}>
                 2nd Place, NJIT CS/IT 491 Capstone 2026
               </span>
+              <span className="eyebrow" style={{ color: 'var(--color-feature-faint)' }}>Jan 2026 to May 2026</span>
             </div>
 
             <h3
@@ -410,8 +412,10 @@ export default function Projects({ isVisible }) {
                 border: '0.5px solid var(--color-line)',
               }}
             >
-              <div style={{ marginBottom: 8 }}>
+              {/* Kicker, with the project's dates at the right */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Systems · Compiler</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Mar 2024 to Apr 2024</span>
               </div>
               <h3
                 style={{
@@ -466,8 +470,10 @@ export default function Projects({ isVisible }) {
                 position: 'relative',
               }}
             >
-              <div style={{ marginBottom: 8 }}>
+              {/* Kicker, with the project's dates at the right */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Machine Learning · Python</span>
+                <span className="eyebrow" style={{ color: 'var(--color-muted)' }}>Nov 2024 to Dec 2024</span>
               </div>
               <h3
                 style={{
@@ -482,7 +488,7 @@ export default function Projects({ isVisible }) {
               </h3>
               <p style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.85, marginBottom: 12 }}>
                 Upload any CSV, pick your target, and watch it go. The app handles missing values, scaling, and encoding for you. I built the full regression pipeline on a{' '}
-                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong>, with real-time prediction and visualizations that update as you explore.
+                <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>Gradient Boosting Regressor</strong>, with real-time prediction and visualizations that update as you explore. Built with NJIT classmates Nekhi Glover and Yash Amin.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14 }}>
                 {['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'NumPy'].map((s) => (

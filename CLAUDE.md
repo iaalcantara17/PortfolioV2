@@ -380,6 +380,13 @@ why, but do not change it unilaterally.
      both directions, including fast scrolling.
   7. Report: files changed, what was refactored vs. added, anything 
      that couldn't be cleanly resolved, anything needing a decision.
+- **Master profile sync.** Experience, Projects and Education copy 
+  follows Israel's master profile (LinkedIn, Handshake and the resumes 
+  match it). Don't change those titles, company names, dates or numbers 
+  without new master text from Israel. Experience keeps exactly 5 
+  entries, one paragraph each, numbers as digits, no I or my. Projects 
+  stays 3 cards with sentence descriptions and dates. Portfolio v2 is 
+  not listed as a project.
 
 ## Every task, every session
 

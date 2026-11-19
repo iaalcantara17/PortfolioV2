@@ -22,6 +22,8 @@ const schools = [
     school: 'New Jersey Institute of Technology',
     college: 'Ying Wu College of Computing',
     status: 'earned',
+    // Shown beside the status pill, in purple: a finished credential
+    honors: 'Cum laude',
     period: 'Sep 2022 to May 2026',
     logo: { src: njitLogo, width: 192, height: 192 },
     diploma: { image: photoByName['njit-diploma'], alt: 'NJIT diploma, Bachelor of Science in Computer Science' },
@@ -33,7 +35,7 @@ const schools = [
     school: 'Montclair State University',
     college: 'Feliciano School of Business',
     status: 'in-progress',
-    period: 'Aug 2026 to Fall 2028 (expected)',
+    period: 'Aug 2026 to Dec 2028 (expected)',
     logo: { src: montclairLogo, width: 165, height: 192 },
     hoverLabel: 'In progress',
     blurb: 'The MBA picks up from there, covering statistics, information systems, and the business side of technology.',
@@ -232,7 +234,10 @@ export default function Education({ isVisible }) {
               </div>
 
               <div className="edu-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                <StatusPill status={s.status} />
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  <StatusPill status={s.status} />
+                  {s.honors && <span className="tag pill-purple">{s.honors}</span>}
+                </div>
                 <span className="eyebrow" style={{ color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{s.period}</span>
               </div>
 

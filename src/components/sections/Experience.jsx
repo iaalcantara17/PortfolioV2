@@ -5,68 +5,72 @@ import { entranceStart, entranceEnd } from '../../utils/motion'
 // Each category's tag color (the .pill-* classes in index.css)
 const tagPill = { Tech: 'pill-purple', Leadership: 'pill-blue', Operations: 'pill-rust' }
 
+// The 5 roles most relevant to SWE, cloud, IT and project management work, newest
+// first by end date. Titles, companies, places and dates follow Israel's master
+// profile (LinkedIn, Handshake and the resumes match it); each description is that
+// role's master bullets as one paragraph, kept short enough that all 5 fit one screen.
 const roles = [
   {
-    title: 'Software Development Engineer Intern',
-    company: 'Amazon Web Services, ADC BlackMirror',
-    location: 'Arlington, VA',
-    period: 'May 2025 to Aug 2025',
+    title: 'Geek Squad Agent',
+    company: 'Best Buy',
+    location: 'Secaucus, NJ',
+    period: 'Nov 2026 to Present',
     tag: 'Tech',
     desc: (
       <>
-        Designed and shipped a lossless compression algorithm for CloudWatch metric exports across 3 air-gapped regions, cutting payloads by an average of 38 GB/day and by up to{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB/day</strong>. I also added 13 custom metrics, published a cross-region dashboard, and wrote 30+ JUnit tests for round-trip correctness and edge cases.
+        Serve as the{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>first point of contact</strong> for customers' computer, phone, and device issues, handling check-in and checkout with detailed notes and repair time estimates. Set up new devices, advise customers on whether to repair or replace, and partner with other agents on complex repairs while completing Best Buy's certified training courses.
       </>
     ),
   },
   {
-    title: 'Community Assistant',
-    company: 'Office of Residential Life, NJIT',
+    title: 'Community Assistant, Office of Residential Life',
+    company: 'NJIT',
     location: 'Newark, NJ',
     period: 'Jun 2025 to May 2026',
     tag: 'Leadership',
     desc: (
       <>
-        Served as resident assistant for a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex. I enforced housing policy, ran regular rounds, wrote formal incident reports, and designed monthly community events on a sub-$1k semester budget.
+        Supervised a <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>400-resident</strong> Greek Village complex, running regular rounds, enforcing housing policy, and resolving roommate and conduct issues to finish the term with zero major violations. Planned and ran all 8 to 12 community events for the building each semester, from wellness workshops to study groups, on a $150 semester budget.
+      </>
+    ),
+  },
+  {
+    title: 'Delivery Technician & Lab Technician',
+    company: 'NJIT Media and Technology Support Services (MTSS)',
+    location: 'Newark, NJ',
+    period: 'Sep 2022 to May 2026',
+    tag: 'Operations',
+    desc: (
+      <>
+        Worked with a team of 5 technicians to standardize equipment setup and pre-lecture readiness checks across{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures a year</strong>, improving estimated equipment reliability by 40%. Diagnosed and fixed AV problems with projectors, Crestron control systems, and wireless microphones, cutting the repeat-call rate by an estimated 30%.
+      </>
+    ),
+  },
+  {
+    title: 'Software Development Engineer Intern',
+    company: 'Amazon Web Services (AWS)',
+    location: 'Arlington, VA',
+    period: 'May 2025 to Aug 2025',
+    tag: 'Tech',
+    desc: (
+      <>
+        Designed and shipped a lossless consecutive-duplicate compression algorithm for the BlackMirror metrics pipeline (Java, XML), cutting export payloads by an average of 38 GB a day and up to{' '}
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>60 GB a day</strong> across 3 air-gapped regions. Instrumented 13 custom CloudWatch metrics, built a matching decompressor, wrote 30+ JUnit tests for round-trip correctness, and published a cross-region dashboard.
       </>
     ),
   },
   {
     title: 'Event Coordination Director',
-    company: 'Society of Hispanic Professional Engineers, NJIT Chapter',
-    location: '',
+    company: 'SHPE, NJIT Chapter',
+    location: 'Newark, NJ',
     period: 'Mar 2024 to May 2025',
     tag: 'Leadership',
     desc: (
       <>
         Planned and ran{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>12+ networking and professional development events</strong> and coordinated ~10 volunteers. Event participation grew by 50%. Reusable planning templates cut our prep time per event by 20%.
-      </>
-    ),
-  },
-  {
-    title: 'Delivery and Lab Technician',
-    company: 'Media and Technology Support Services, NJIT',
-    location: '',
-    period: 'Sep 2022 to May 2026',
-    tag: 'Operations',
-    desc: (
-      <>
-        Troubleshot AV systems end-to-end across{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>100+ lectures annually</strong>. With a team of 5, I standardized how we set up equipment. By our estimates, reliability went up 40% and the repeat call rate dropped 30%.
-      </>
-    ),
-  },
-  {
-    title: 'Beach Attendant and Lifeguard',
-    company: 'Adamas Building Services',
-    location: 'Long Branch, NJ',
-    period: 'Jul 2023 to Sep 2023',
-    tag: 'Operations',
-    desc: (
-      <>
-        I covered three pools, ran daily chemical checks, and gave CPR/first aid when needed, keeping{' '}
-        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>~80 swimmers per shift</strong> safe. We closed the season with zero accidents.
+        <strong style={{ color: 'var(--color-ink)', fontWeight: 500 }}>12+ networking and professional development events</strong>, leading a team of about 10 student volunteers and building floor plans, time-blocked agendas, and budgets for the larger ones. Grew opening-event attendance from about 60 to 70 people up to 150, and average event attendance from 30 to 50 up to 50 to 80.
       </>
     ),
   },
